@@ -1,22 +1,36 @@
+@import "elements.less";
+
+.user-select(@value) {
+	user-select: @value;
+	-webkit-user-select: @value;
+	-moz-user-select: @value;
+}
 
 .wm-window {
-	position: absolute;
-	border: 1px solid;
+	@bgcolor: #555;
+	@radius: 2px;
 
-	box-shadow: 0px 5px 5px #999;
+	position: absolute;
+	border: 1px solid @bgcolor;
+
+	.border-radius(@radius, @radius, @radius, @radius);
+	.drop-shadow(0, 5px, 10px, 0.3);
 
 	header {
-		background-color: #1A1A1A;
+		.gradient(@bgcolor, @bgcolor, #666);
 		border: 0;
-		padding: 2px 5px;
+		padding: 4px 8px;
 
 		h1 {
+			.user-select(none);
+			cursor: default;
+
 			padding: 0;
 			margin: 0;
 
-			font-size: 11px;
+			font-size: 12px;
 			font-family: Helvetica, sans-serif;
-			color: #0CF;
+			color: #fff;
 		}
 	}
 
