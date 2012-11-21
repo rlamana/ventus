@@ -1,0 +1,1 @@
+A javascript simple window manager
