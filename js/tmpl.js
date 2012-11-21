@@ -1,10 +1,11 @@
 define(function(require) {
     var $ = require('$');
     var Handlebars = require('vendor/handlebars');
+    var element = require('element');
 
     function load(name, parentRequire, done, config) {
         $.get(name, {}, function(response, status){
-            done(Handlebars.compile(response))
+            done(element(Handlebars.compile(response)));
         }, "html");
     }
 

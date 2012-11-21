@@ -4,26 +4,33 @@ define(function(require) {
 	require('css!../../css/window.less');
 
 	var Window = function (options) {
-		var templateWindow = require("tmpl!../tmpl/window.tmpl");
+		var template = require("tmpl!../tmpl/window.tmpl");
 
-		this.$el = $(templateWindow({
+		this.el = template({
 			title: "Window"
-		}));
+		});
+		this.el.listen(Window.events, this); 
 
 		this.setSize(400, 200);
 
-		$(document.body).append(this.$el);
+		$(document.body).append(this.el);
+	};
+
+	Window.events = {
+		'click': function() {
+			console.log('prueba');
+		}
 	};
 
 	Window.prototype = {
 		setWidth: function(w) {
-			this.$el.width(w);
+			this.el.width(w);
 
 			return this;
 		},
 
 		setHeight: function(h) {
-			this.$el.height(h);
+			this.el.height(h);
 
 			return this;
 		},
@@ -35,8 +42,8 @@ define(function(require) {
 		},
 
 		moveTo: function(x, y) {
-			this.$el.css('left', x);
-			this.$el.css('top', y);
+			this.el.css('left', x);
+			this.el.css('top', y);
 		}
 	}
 
