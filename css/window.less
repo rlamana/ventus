@@ -6,18 +6,51 @@
 	-moz-user-select: @value;
 }
 
+.animation(@value) {
+	-webkit-animation: @value;
+	-moz-animation: @value;
+	animation: @value;
+}
+
+
+/* Wobbly animation */
+
+@-webkit-keyframes wobbly {
+	0% {-webkit-transform:rotate(4deg);}
+	50% {-webkit-transform:rotate(-4deg);}
+	100% {-webkit-transform:rotate(4deg);}
+}
+ 
+@-moz-keyframes wobbly {
+	0% {-moz-transform:rotate(4deg);}
+	50% {-moz-transform:rotate(-4deg);}
+	100% {-moz-transform:rotate(4deg);}
+}
+
+@keyframes wobbly {
+	0% {transform:rotate(4deg);}
+	50% {transform:rotate(-4deg);}
+	100% {transform:rotate(4deg);}
+}
+
+
+/* Window styles */
+
+@bgactive: #555;
+@bgdisabled: #777;
+
 .wm-window {
-	@bgcolor: #555;
 	@radius: 2px;
 
 	position: absolute;
-	border: 1px solid @bgcolor;
+	border: 1px solid @bgdisabled;
 
+	background-color: #fff; 
 	.border-radius(@radius, @radius, @radius, @radius);
 	.drop-shadow(0, 5px, 10px, 0.3);
 
 	header {
-		.gradient(@bgcolor, @bgcolor, #666);
+		.gradient(@bgdisabled, @bgdisabled, #888);
 		border: 0;
 		padding: 4px 8px;
 
@@ -35,6 +68,15 @@
 	}
 
 	section {
-		background-color: #fff; 
 	}
+}
+
+.wm-window.active {
+	header {
+		.gradient(@bgactive, @bgactive, #888);
+	}
+}
+
+.wm-window.drag {
+	.animation(wobbly 0.5s infinite);
 }

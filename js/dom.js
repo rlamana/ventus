@@ -31,7 +31,10 @@ define(function(require) {
 
 	return function(template) {
 		return function(options) {
-			return $(template(options || {}));
+			if(typeof template === 'function')
+				return $(template(options || {}));
+			else
+				return $(template);
 		};
 	};
 });

@@ -1,13 +1,15 @@
 
 define(function(require) {
 	var Window = require('wm/window');
+	var WindowManager = require('wm/windowmanager');
 
 	function main(config) {
 		require('css!../css/normalize.less');
 		require('css!../css/environment.less');
 
-		var win = new Window();
-		win.moveTo(100, 100);
+		var wm = new WindowManager();
+		wm.createWindow();
+		wm.createWindow().moveTo(60, 60);
 	}
 
 	return {main: main};

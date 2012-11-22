@@ -3,52 +3,54 @@ define(function(require) {
 
 	require('css!../../css/window.less');
 
+	var template = require("tmpl!../tmpl/window.tmpl");
+	var Emitter = require('core/emitter');
+
 	var Window = function (options) {
-		var template = require("tmpl!../tmpl/window.tmpl");
+		this.signals = new Emitter();
 
 		this.el = template({
 			title: "Window"
 		});
+
+		// Dom events
 		this.el.listen(this.events, this); 
 
-		this.setSize(400, 200);
+		// Object signals
+		this.signals.on('focus', this.slots.focus, this);
+		this.signals.on('blur', this.slots.blur, this);
+		this.signals.on('drag', this.slots.drag, this);
+		this.signals.on('drop', this.slots.drop, this);
 
-		$(document.body).append(this.el);
+		this.setSize(400, 200);
 	};
 
 	Window.prototype = {
 		events: {
-			'header click': function() {
+			'mousedown': function(e) {
+				this.signals.emit('focus', e, this);
 			},
 
 			'header mousedown': function(e) {
-				this._move = this.toLocal({
-					x: e.clientX,
-					y: e.clientY
-				});
+				this.signals.emit('drag', e, this);
+			}
+		},
+
+		slots: {
+			focus: function(e) {
+				this.el.addClass('active');
 			},
 
-			'header mousemove': function(e) {
-				var place, diff, coord = {
-					x: e.clientX,
-					y: e.clientY
-				};
-
-				if(this._move) {
-					local = this.toLocal(coord);
-					place = {
-						x: coord.x - this._move.x,
-						y: coord.y - this._move.y
-					};
-
-					this.setPosition(place);
-
-					console.log(diff, coord, place);
-				}
+			blur: function(e) {
+				this.el.removeClass('active');
 			},
 
-			'header mouseup': function(e) {
-				this._move = false;
+			drag: function(e) {
+				this.el.addClass('drag');
+			},
+
+			drop: function(e) {
+				this.el.removeClass('drag');
 			}
 		},
 
@@ -72,11 +74,23 @@ define(function(require) {
 			return this;
 		},
 
+		focus: function() {
+			this.signals.emit('focus', e, this);
+		},
+
 		moveTo: function(x, y) {
 			this.el.css('left', x);
 			this.el.css('top', y);
 
 			return this;
+		},
+
+		setZIndex: function(value) {
+			this.el.css('z-index', value);
+		},
+
+		getZIndex: function() {
+			return this.el.css('z-index');
 		},
 
 		setPosition: function(coord) {
