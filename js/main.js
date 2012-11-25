@@ -8,9 +8,10 @@ define(function(require) {
 		require('css!../css/environment.less');
 
 		var wm = new WindowManager();
-		wm.createWindow();
-		wm.createWindow().moveTo(60, 60);
-		wm.createWindow().moveTo(120, 120);		
+
+		for(var i=0; i < 5; i++) {
+			wm.createWindow().moveTo(i*60, i*60);
+		}
 	}
 
 	return {main: main};

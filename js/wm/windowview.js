@@ -25,8 +25,6 @@ define(function(require) {
 
 		this.width = 400;
 		this.height = 200;
-
-		this.state = 'default';
 	};
 
 	WindowView.prototype = {
