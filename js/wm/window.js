@@ -11,34 +11,37 @@ define(function(require) {
 
 		var view = this.view = new WindowView();
 
-		// Listen to presenters signals
-		view.signals.on('focus', this.slots.focus, this);
-		view.signals.on('blur', this.slots.blur, this);
-		view.signals.on('movestart', this.slots.movestart, this);
+		// Listen to views signals
+		view.signals.on('mousedown', this.slots.focus, this);
+		view.signals.on('drag', this.slots.movestart, this);
+		view.signals.on('resize', this.slots.resize, this);
+		view.signals.on('close', this.slots.close, this);
 
+		// Listen to own signals
 		this.signals.on('movestop', this.slots.movestop, this);
 	};
 
 	Window.prototype = {
 		slots: {
-			focus: function(e) {
-				this.signals.emit('focus', e, this);
-				this.view.state = 'focused';
+			focus: function() {
+				this.focus();
 			},
 
-			blur: function(e) {
-				this.signals.emit('blur', e, this);
-				this.view.state = 'blurred';
+			close: function() {
+				this.close();
 			},
 
 			movestart: function(e) {
 				this.signals.emit('movestart', e, this);
-				this.view.state = 'moving';
 			},
 
 			movestop: function(e) {
-				this.view.state = 'default';
-			} 
+				this.view.movestop();
+			},
+
+			resize: function(e) {
+				this.signals.emit('resize', e, this);
+			},
 		},
 
 		setWidth: function(w) {
@@ -57,9 +60,26 @@ define(function(require) {
 			return this;
 		},
 
+		getSize: function() {
+			return {
+				width: this.view.width,
+				height: this.view.height
+			}
+		},
+
+		close: function() {
+			this.signals.emit('close', this);
+			this.view.closed = true;
+		},
+
 		focus: function() {
-			this.signals.emit('focus', e, this);
-			this.view.state = 'focused';
+			this.signals.emit('focus', this);
+			this.view.active = true;
+		},
+
+		blur: function() {
+			this.signals.emit('blur', this);
+			this.view.active = false;
 		},
 
 		moveTo: function(x, y) {

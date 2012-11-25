@@ -32,29 +32,39 @@ define(function(require) {
 	WindowView.prototype = {
 		events: {
 			'mousedown': function(e) {
-				this.signals.emit('focus', e, this);
+				this.signals.emit('mousedown', e, this);
 			},
 
 			'header mousedown': function(e) {
-				this.signals.emit('movestart', e, this);
+				this.signals.emit('drag', e, this);
+				this.el.addClass('move');
+			},
+
+			'header button.wm-close click': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				this.signals.emit('close', this);
+			},
+
+			'button.wm-resize mousedown': function(e) {
+				this.signals.emit('resize', e, this);
 			}
 		},
 
-		set state(value) {
-			switch(value) {
-				case 'focused': 
-					this.el.addClass('active');
-				break;
-				case 'blurred': 
-					this.el.removeClass('active');
-				break;
-				case 'moving': 
-					this.el.addClass('move');
-				break;
-				default: 
-					this.el.removeClass('active');
-					this.el.removeClass('move');
-				break;
+		set active(isActive) {
+			if(isActive) {
+				this.el.addClass('active');
+			} 
+			else {
+				this.el.removeClass('active');
+			}
+		},
+
+		set closed (isClosed) {
+			if(isClosed) {
+				this.el.addClass('closed');
+				//this.detachContent(); @todo implement this function and attachContent();
 			}
 		},
 
@@ -62,8 +72,16 @@ define(function(require) {
 			this.el.width(value);
 		},
 
+		get width() {
+			return parseInt(this.el.width());
+		},
+
 		set height(value) {
 			this.el.height(value);
+		},
+		
+		get height() {
+			return parseInt(this.el.height());
 		},
 
 		set x(value) {
@@ -84,6 +102,10 @@ define(function(require) {
 
 		set z(value) {
 			this.el.css('z-index', value);
+		},
+
+		movestop: function() {
+			this.el.removeClass('move');
 		}
 	}
 

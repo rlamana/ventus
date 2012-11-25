@@ -10,6 +10,7 @@ define(function(require) {
 		var wm = new WindowManager();
 		wm.createWindow();
 		wm.createWindow().moveTo(60, 60);
+		wm.createWindow().moveTo(120, 120);		
 	}
 
 	return {main: main};
