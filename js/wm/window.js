@@ -3,94 +3,77 @@ define(function(require) {
 
 	require('css!../../css/window.less');
 
-	var template = require("tmpl!../tmpl/window.tmpl");
+	var WindowView = require('wm/windowview');
 	var Emitter = require('core/emitter');
 
 	var Window = function (options) {
 		this.signals = new Emitter();
 
-		this.el = template({
-			title: "Window"
-		});
+		var view = this.view = new WindowView();
 
-		// Dom events
-		this.el.listen(this.events, this); 
+		// Listen to presenters signals
+		view.signals.on('focus', this.slots.focus, this);
+		view.signals.on('blur', this.slots.blur, this);
+		view.signals.on('movestart', this.slots.movestart, this);
 
-		// Object signals
-		this.signals.on('focus', this.slots.focus, this);
-		this.signals.on('blur', this.slots.blur, this);
-		this.signals.on('drag', this.slots.drag, this);
-		this.signals.on('drop', this.slots.drop, this);
-
-		this.setSize(400, 200);
+		this.signals.on('movestop', this.slots.movestop, this);
 	};
 
 	Window.prototype = {
-		events: {
-			'mousedown': function(e) {
-				this.signals.emit('focus', e, this);
-			},
-
-			'header mousedown': function(e) {
-				this.signals.emit('drag', e, this);
-			}
-		},
-
 		slots: {
 			focus: function(e) {
-				this.el.addClass('active');
+				this.signals.emit('focus', e, this);
+				this.view.state = 'focused';
 			},
 
 			blur: function(e) {
-				this.el.removeClass('active');
+				this.signals.emit('blur', e, this);
+				this.view.state = 'blurred';
 			},
 
-			drag: function(e) {
-				this.el.addClass('drag');
+			movestart: function(e) {
+				this.signals.emit('movestart', e, this);
+				this.view.state = 'moving';
 			},
 
-			drop: function(e) {
-				this.el.removeClass('drag');
-			}
+			movestop: function(e) {
+				this.view.state = 'default';
+			} 
 		},
 
-		_move: false,
-
 		setWidth: function(w) {
-			this.el.width(w);
-
+			this.view.width = w;
 			return this;
 		},
 
 		setHeight: function(h) {
-			this.el.height(h);
-
+			this.view.height = h;
 			return this;
 		},
 
 		setSize: function(w, h) {
-			this.setWidth(w).setHeight(h);
-
+			this.view.width = w;
+			this.view.height = h;
 			return this;
 		},
 
 		focus: function() {
 			this.signals.emit('focus', e, this);
+			this.view.state = 'focused';
 		},
 
 		moveTo: function(x, y) {
-			this.el.css('left', x);
-			this.el.css('top', y);
-
+			this.view.x = x;
+			this.view.y = y;
 			return this;
 		},
 
 		setZIndex: function(value) {
-			this.el.css('z-index', value);
+			this.view.z = value
 		},
 
 		getZIndex: function() {
-			return this.el.css('z-index');
+			return this.view.z;
 		},
 
 		setPosition: function(coord) {
@@ -99,8 +82,8 @@ define(function(require) {
 
 		getPosition: function() {
 			return {
-				x: parseInt(this.el.css('left')),
-				y: parseInt(this.el.css('top'))
+				x: this.view.x,
+				y: this.view.y
 			};
 		},
 

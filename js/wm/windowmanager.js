@@ -16,35 +16,35 @@ define(function(require) {
 		$(document.body).append(this.el);
 
 		this._windows = [];
-		this._dragging = null;
+		this._moving = null;
 		this._active = null;
 	};
 
 	WindowManager.prototype = {
 		events: {
 			'mousemove': function(e) {
-				var local, drag = this._dragging;
+				var local, move = this._moving;
 
-				if(drag && drag.window) {
-					drag.window.setPosition({
-						x: e.clientX - drag.offset.x,
-						y: e.clientY - drag.offset.y
+				if(move && move.window) {
+					move.window.setPosition({
+						x: e.clientX - move.offset.x,
+						y: e.clientY - move.offset.y
 					});
 				}
 			},
 
 			'mouseup': function(e) {
-				if (!this._dragging)
+				if (!this._moving)
 					return ;
 
-				this._dragging.window.signals.emit('drop');
-				this._dragging = null;
+				this._moving.window.signals.emit('movestop');
+				this._moving = null;
 			}
 		},
 
 		slots: {
-			drag: function(e, win) {
-				this._dragging = {
+			move: function(e, win) {
+				this._moving = {
 					window: win,
 					offset: win.toLocal({
 						x: e.clientX,
@@ -68,12 +68,12 @@ define(function(require) {
 
 		createWindow: function(options) {
 			var win = new Window(options||{});
-			win.signals.on('drag', this.slots.drag, this);
+			win.signals.on('movestart', this.slots.move, this);
 			win.signals.on('focus', this.slots.focus, this);
 
 			this._windows.push(win);
 
-			this.el.append(win.el);
+			this.el.append(win.view.el);
 
 			this._active = win;
 			return win;
