@@ -3,5 +3,5 @@ Ventus WM
 
 A simple window manager written in javascript and CSS3.
 
-Try it: http://rlamana.es/ventus
+<a href="http://rlamana.es/ventus">Try it!</a> (http://rlamana.es/ventus)
 
