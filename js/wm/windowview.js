@@ -27,6 +27,7 @@ define(function(require) {
 
 		this.width = 400;
 		this.height = 200;
+		this.z = 10000;
 
 		this.el.addClass('opened');
 		this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
@@ -116,6 +117,10 @@ define(function(require) {
 
 		set z(value) {
 			this.el.css('z-index', value);
+		},
+
+		get z() {
+			return parseInt(this.el.css('z-index'));
 		},
 
 		movestop: function() {

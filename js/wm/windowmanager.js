@@ -23,6 +23,8 @@ define(function(require) {
 	};
 
 	WindowManager.prototype = {
+		_baseZ: 10000,
+
 		events: {
 			'mousemove': function(e) {
 				var local, 
@@ -80,15 +82,30 @@ define(function(require) {
 			},
 
 			focus: function(win) {
+				var currentZ, maxZ = this._baseZ + 5;
+
 				if (this._active && this._active === win)
 					return;
 
-				var z = 100000 + this._windows.length;
-				win.setZIndex(z + 1);
-
 				if(this._active) {
-					this._active.setZIndex(z);
+					currentZ = this._active.getZIndex();
 					this._active.blur();
+				}
+				else
+					currentZ = this._baseZ;
+
+				// Reorder windows stack (@todo optimize this)
+				this._windows = _.without(this._windows, win);
+				this._windows.push(win);
+				
+				win.setZIndex(currentZ + 1);
+
+				// Refresh z-indexes just every 'maxZ' activations
+				if (currentZ > maxZ + this._windows.length) {
+					for(var z, i=this._windows.length; i--;) {
+						z = this._windows[i].getZIndex();
+						this._windows[i].setZIndex(this._baseZ + (z  - maxZ));
+					}
 				}
 
 				this._active = win;
@@ -114,6 +131,7 @@ define(function(require) {
 
 		createWindow: function(options) {
 			var win = new Window(options||{});
+
 			win.signals.on('movestart', this.slots.move, this);
 			win.signals.on('resize', this.slots.resize, this);
 			win.signals.on('focus', this.slots.focus, this);
