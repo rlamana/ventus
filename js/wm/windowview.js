@@ -14,6 +14,8 @@ define(function(require) {
 	 * signals
 	 */
 	var WindowView = function (options) {
+		var self = this;
+
 		this.signals = new Emitter();
 
 		this.el = template({
@@ -25,6 +27,11 @@ define(function(require) {
 
 		this.width = 400;
 		this.height = 200;
+
+		this.el.addClass('opened');
+		this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+			self.el.removeClass('opened');
+		});
 	};
 
 	WindowView.prototype = {
@@ -65,8 +72,12 @@ define(function(require) {
 		},
 
 		set closed (isClosed) {
+			var self = this;
 			if(isClosed) {
 				this.el.addClass('closed');
+				this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+					//self.el.css('display', 'none');
+				});
 				//this.detachContent(); @todo implement this function and attachContent();
 			}
 		},

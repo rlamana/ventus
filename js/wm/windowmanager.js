@@ -9,7 +9,8 @@ define(function(require) {
 		this.el.css({
 			position: 'absolute',
 			width: '100%',
-			height: '100%'
+			height: '100%',
+			overflow: 'hidden'
 		});
 
 		this.el.listen(this.events, this);
@@ -95,6 +96,19 @@ define(function(require) {
 
 			close: function(win) {
 				// Remove window from manager
+				var id = _.indexOf(this._windows, win), len;
+				if(id === -1) { 
+					console.log('Trying to close a window that doesn\'t exist in this window manager');
+					return;
+				}
+
+				this._windows = _.without(this._windows, win);	
+				len = this._windows.length;
+				if(this._active && this._active === win) {
+					this._active = (len !== 0) ? this._windows[len-1] : null;
+					if (this._active)
+						this._active.focus();
+				}		
 			}
 		},
 
