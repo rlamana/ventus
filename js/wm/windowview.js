@@ -45,6 +45,11 @@ define(function(require) {
 				this.signals.emit('close', this);
 			},
 
+			'header button.wm-close mousedown': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+			},
+
 			'button.wm-resize mousedown': function(e) {
 				this.signals.emit('resize', e, this);
 			}

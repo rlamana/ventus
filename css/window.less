@@ -55,7 +55,7 @@
 	/*border: 1px solid @bgdisabled;*/
 
 	background-color: #fff; 
-	.border-radius(@radius, @radius, @radius, @radius);
+	.border-radius(0, @radius, @radius, 0);
 	.drop-shadow(0, 0px, 20px, 0.6);
 
 
@@ -64,7 +64,7 @@
 	header {
 		.gradient(@bgdisabled, @bgdisabled, @bgdisabled);
 		border: 0;
-		padding: 4px 8px;
+		padding: 4px 0;
 
 		overflow: hidden;
 
@@ -73,6 +73,7 @@
 			cursor: default;
 
 			padding: 0;
+			padding-left: 8px;
 			margin: 0;
 
 			font-size: 12px;
@@ -80,18 +81,26 @@
 			color: #fff;
 		}
 
+		.wm-button-group {
+			padding-right: 5px;
+		}
+
 		button.wm-close {
+			display: block;
+
 			float: right;
 
-			border: 0;
-			color: #fff;
-			background-color: transparent;
-
-			margin:0;
-			padding:0;
+			background-color: @bgdisabled;
+		    border: 1px solid @bgdisabled;
+		    color: #FFFFFF;
+		    
+		    font-size: 12px;
+		    margin: 0;
+		    padding: 0 2px;
 		}
 
 		button.wm-close:hover {
+			border: 1px solid #ddd;
 		}
 	}
 
@@ -121,6 +130,15 @@
 .wm-window.active {
 	header {
 		.gradient(@bgactive, @bgactive, @bgactive);
+
+		button.wm-close {
+			background-color: @bgactive;
+		    border: 1px solid @bgactive;
+		}
+
+		button.wm-close:hover {
+			border: 1px solid #ddd;
+		}
 	}
 }
 
