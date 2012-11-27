@@ -9,9 +9,21 @@ define(function(require) {
 
 		var wm = new WindowManager();
 
+		var randomW, randomH;
 		for(var i=1; i < 6; i++) {
-			wm.createWindow().moveTo(i*60, i*60);
+			randomW = Math.ceil(Math.random()*1000 % 600);
+			randomH = Math.ceil(Math.random()*1000 % 600);
+
+			wm.createWindow()
+				.moveTo(i*60, i*60)
+				.setSize(
+					randomW > 200 ? randomW : 200,
+					randomH > 200 ? randomH : 200
+				);
 		}
+
+		// For developing purposes
+		window.wm = wm;
 	}
 
 	return {main: main};

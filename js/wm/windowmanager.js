@@ -1,6 +1,8 @@
 
 define(function(require) {
 
+	require('css!../../css/expose.less');
+
 	var Window = require('wm/window');
 	var dom = require('dom');
 
@@ -149,6 +151,46 @@ define(function(require) {
 
 			win.focus();
 			return win;
+		},
+
+		expose: function() {
+			var grid = Math.ceil(this._windows.length / 2);
+			var maxWidth = Math.floor(this.el.width() / grid);
+			var maxHeight = Math.floor(this.el.height() / 2);
+
+			var scale;
+
+			for(var z, win, i=this._windows.length; i--;) {
+				win = this._windows[i];
+
+				if(win.view.height > win.view.width) {
+					scale = (win.view.height > maxHeight) ? maxHeight / win.view.height : 1;
+				} 
+				else {
+					scale = (win.view.width > maxWidth) ? maxWidth / win.view.width : 1;
+				}
+
+				scale = 1;
+
+				win.view.el.addClass('expose');
+				//win.view.el.css('-webkit-transform', 'scale('+scale+')');
+				win.view.el.css('-webkit-transition', 'all .5s linear');
+
+				var left = Math.floor((maxWidth - scale*win.view.width) / 2) + i*maxWidth;
+				var top = Math.floor((maxHeight - scale*win.view.height) / 2) /*+ i*maxHeight*/;
+
+				win.view.el.css('top', top);
+				win.view.el.css('left', left);
+			}
+		},
+
+		reset: function() {
+			for(var z, win, i=this._windows.length; i--;) {
+				win = this._windows[i];
+
+				win.view.el.removeClass('expose');
+				
+			}
 		}
 	};
 
