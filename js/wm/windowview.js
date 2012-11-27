@@ -53,7 +53,21 @@ define(function(require) {
 				this.signals.emit('close', this);
 			},
 
-			'header button.wm-close mousedown': function(e) {
+			'header button.wm-maximize click': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				this.signals.emit('maximize', this);
+			},
+
+			'header button.wm-minimize click': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				this.signals.emit('minimize', this);
+			},
+
+			'header button mousedown': function(e) {
 				e.stopPropagation();
 				e.preventDefault();
 			},

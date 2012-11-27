@@ -32,10 +32,10 @@ define(function(require) {
 					resize = this._resizing;
 
 				if(move && move.window) {
-					move.window.setPosition({
-						x: e.clientX - move.offset.x,
-						y: e.clientY - move.offset.y
-					});
+					move.window.setPosition(
+						e.clientX - move.offset.x,
+						e.clientY - move.offset.y
+					);
 				}
 
 				if (resize && resize.window) {
@@ -60,6 +60,11 @@ define(function(require) {
 		},
 
 		slots: {
+			maximize: function(win) {
+				win.setPosition(0,0);
+				win.setSize(this.el.width(), this.el.height());
+			},
+
 			move: function(e, win) {
 				this._moving = {
 					window: win,
@@ -82,7 +87,7 @@ define(function(require) {
 			},
 
 			focus: function(win) {
-				var currentZ, maxZ = this._baseZ + 5;
+				var currentZ, maxZ = this._baseZ + 1000;
 
 				if (this._active && this._active === win)
 					return;
@@ -136,6 +141,7 @@ define(function(require) {
 			win.signals.on('resize', this.slots.resize, this);
 			win.signals.on('focus', this.slots.focus, this);
 			win.signals.on('close', this.slots.close, this);
+			win.signals.on('maximize', this.slots.maximize, this);
 
 			this._windows.push(win);
 

@@ -15,6 +15,8 @@ define(function(require) {
 		view.signals.on('mousedown', this.slots.focus, this);
 		view.signals.on('drag', this.slots.movestart, this);
 		view.signals.on('resize', this.slots.resize, this);
+		view.signals.on('maximize', this.slots.maximize, this);
+		view.signals.on('minimize', this.slots.minimize, this);
 		view.signals.on('close', this.slots.close, this);
 
 		// Listen to own signals
@@ -22,6 +24,7 @@ define(function(require) {
 	};
 
 	Window.prototype = {
+		_restore: null,
 		slots: {
 			focus: function() {
 				this.focus();
@@ -41,7 +44,16 @@ define(function(require) {
 
 			resize: function(e) {
 				this.signals.emit('resize', e, this);
+				this._restore = null;
 			},
+
+			maximize: function() {
+				this.maximize();
+			},
+
+			minimize: function() {
+				this.setSize(0,0);
+			}
 		},
 
 		setWidth: function(w) {
@@ -64,6 +76,28 @@ define(function(require) {
 			return {
 				width: this.view.width,
 				height: this.view.height
+			}
+		},
+
+		maximize: function() {
+			if (typeof this._restore === 'function') {
+				// Restore las size ans position
+				this._restore.apply(this);
+				this._restore = null;
+			} 
+			else {
+				// Create function to restore with old size and pos in its closure
+				this._restore = (function() {
+					var size = this.getSize();
+					var pos = this.getPosition();
+
+					return function() {
+						this.setSize(size.width, size.height);
+						this.setPosition(pos.x, pos.y);
+					}
+				}).apply(this);
+
+				this.signals.emit('maximize', this);
 			}
 		},
 
@@ -96,8 +130,8 @@ define(function(require) {
 			return this.view.z;
 		},
 
-		setPosition: function(coord) {
-			return this.moveTo(coord.x, coord.y);
+		setPosition: function(x, y) {
+			return this.moveTo(x, y);
 		},
 
 		getPosition: function() {
