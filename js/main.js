@@ -9,7 +9,7 @@ define(function(require) {
 
 		var wm = new WindowManager();
 
-		for(var i=0; i < 5; i++) {
+		for(var i=1; i < 6; i++) {
 			wm.createWindow().moveTo(i*60, i*60);
 		}
 	}

@@ -46,6 +46,10 @@ define(function(require) {
 				this.el.addClass('move');
 			},
 
+			'header dblclick': function(e) {
+				this.signals.emit('maximize', this);
+			},
+
 			'header button.wm-close click': function(e) {
 				e.stopPropagation();
 				e.preventDefault();
