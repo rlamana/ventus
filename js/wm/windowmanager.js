@@ -160,7 +160,7 @@ define(function(require) {
 
 			var scale;
 
-			for(var z, win, i=this._windows.length; i--;) {
+			for(var z, win, i=0, len=this._windows.length; i<len; i++) {
 				win = this._windows[i];
 
 				if(win.view.height > win.view.width) {
@@ -170,14 +170,13 @@ define(function(require) {
 					scale = (win.view.width > maxWidth) ? maxWidth / win.view.width : 1;
 				}
 
-				scale = 1;
-
 				win.view.el.addClass('expose');
-				//win.view.el.css('-webkit-transform', 'scale('+scale+')');
+				
 				win.view.el.css('-webkit-transition', 'all .5s linear');
+				win.view.el.css('-webkit-transform', 'scale('+(scale)+')');
 
-				var left = Math.floor((maxWidth - scale*win.view.width) / 2) + i*maxWidth;
-				var top = Math.floor((maxHeight - scale*win.view.height) / 2) /*+ i*maxHeight*/;
+				var left = Math.floor((maxWidth - scale*win.view.width) / 2) + (i%grid)*maxWidth;
+				var top = Math.floor((maxHeight - scale*win.view.height) / 2) + ((i<grid-1)? maxHeight : 0);
 
 				win.view.el.css('top', top);
 				win.view.el.css('left', left);

@@ -90,6 +90,15 @@ define(function(require) {
 			}
 		},
 
+		set enabled(isEnabled) {
+			if(isActive) {
+				this.el.addClass('disabled');
+			} 
+			else {
+				this.el.removeClass('disabled');
+			}
+		},
+
 		set closed (isClosed) {
 			var self = this;
 			if(isClosed) {
