@@ -3,159 +3,262 @@ define(function(require) {
 
 	require('css!../../css/window.less');
 
-	var WindowView = require('wm/windowview');
+	var template = require("tmpl!../tmpl/window.tmpl");
 	var Emitter = require('core/emitter');
 
 	var Window = function (options) {
+		var self = this;
+
 		this.signals = new Emitter();
 
-		var view = this.view = new WindowView();
+		this.el = template({
+			title: "Window"
+		});
 
-		// Listen to views signals
-		view.signals.on('mousedown', this.slots.focus, this);
-		view.signals.on('drag', this.slots.movestart, this);
-		view.signals.on('resize', this.slots.resize, this);
-		view.signals.on('maximize', this.slots.maximize, this);
-		view.signals.on('minimize', this.slots.minimize, this);
-		view.signals.on('close', this.slots.close, this);
+		// Dom events
+		this.el.listen(this.events, this); 
 
-		// Listen to own signals
-		this.signals.on('movestop', this.slots.movestop, this);
+		this.width = 400;
+		this.height = 200;
+		this.z = 10000;
+
+		// Open animation
+		this.el.addClass('opened');
+		this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+			self.el.removeClass('opened');
+		});
+
+		this.enabled = true;
+		this.active = false;
+		this.closed = false;
 	};
 
 	Window.prototype = {
 		_restore: null,
-		slots: {
-			focus: function() {
-				this.focus();
+
+		signals: [
+			'focus',
+			'blur',
+			'maximize',
+			'minimize',
+			'close',
+			'move',
+			'resize'
+		],
+
+		events: {
+			'mousedown': function(e) {
+				this.enabled && this.focus();
 			},
 
-			close: function() {
-				this.close();
+			'header mousedown': function(e) {
+				if(!this.enabled) return;
+
+				this.el.addClass('move');
+				this.signals.emit('move', e, this);
 			},
 
-			movestart: function(e) {
-				this.signals.emit('movestart', e, this);
+			'header dblclick': function(e) {
+				this.enabled && this.maximize();
 			},
 
-			movestop: function(e) {
-				this.view.movestop();
+			'header button.wm-close click': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				this.enabled && this.close()
 			},
 
-			resize: function(e) {
-				this.signals.emit('resize', e, this);
-				this._restore = null;
+			'header button.wm-maximize click': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				this.enabled && this.maximize();
 			},
 
-			maximize: function() {
-				this.maximize();
+			'header button.wm-minimize click': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				this.enabled && this.minimize();
 			},
 
-			minimize: function() {
-				this.setSize(0,0);
+			'header button mousedown': function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+			},
+
+			'button.wm-resize mousedown': function(e) {
+				this.enabled && this.signals.emit('resize', e, this);
 			}
 		},
 
-		setWidth: function(w) {
-			this.view.width = w;
-			return this;
-		},
-
-		setHeight: function(h) {
-			this.view.height = h;
-			return this;
-		},
-
-		setSize: function(w, h) {
-			this.view.width = w;
-			this.view.height = h;
-			return this;
-		},
-
-		getSize: function() {
-			return {
-				width: this.view.width,
-				height: this.view.height
+		set active(value) {
+			if(value) {
+				this.signals.emit('focus', this);
+				this.el.addClass('active');
+			} 
+			else {
+				this.signals.emit('blur', this);
+				this.el.removeClass('active');
 			}
+
+			this._active = value;
+		},
+
+		get active() {
+			return this._active;
+		},
+
+		set enabled(value) {
+			if(!value) {
+				this.el.addClass('disabled');
+			} 
+			else {
+				this.el.removeClass('disabled');
+			}
+
+			this._enabled = value;
+		},
+
+		get enabled() {
+			return this._enabled;
+		},
+
+		set closed (value) {
+			var self = this;
+			if(value) {
+				this.signals.emit('close', this);
+
+				this.el.addClass('closed');
+				this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+					//self.el.css('display', 'none');
+				});
+				//this.detachContent(); @todo implement this function and attachContent();
+			}
+
+			this._closed = value;
+		},
+
+		get closed() {
+			return this._closed;
+		},
+
+		set width(value) {
+			this.el.width(value);
+		},
+
+		get width() {
+			return parseInt(this.el.width());
+		},
+
+		set height(value) {
+			this.el.height(value);
+		},
+		
+		get height() {
+			return parseInt(this.el.height());
+		},
+
+		set x(value) {
+			this.el.css('left', value);
+		},
+
+		set y(value) {
+			this.el.css('top', value);
+		},
+
+		get x() {
+			return parseInt(this.el.css('left'));
+		},
+
+		get y() {
+			return parseInt(this.el.css('top'));
+		},
+
+		set z(value) {
+			this.el.css('z-index', value);
+		},
+
+		get z() {
+			return parseInt(this.el.css('z-index'));
+		},
+
+		resize: function(w, h) {
+			this.width = w;
+			this.height = h;
+			return this;
+		},
+
+		move: function(x, y) {
+			this.x = x;
+			this.y = y;
+			return this;
+		},
+
+		/**
+		 * @return A function that restores this window
+		 */
+		stamp: function() {
+			return (function() {
+				var size = {
+					width: this.width,
+					height: this.height
+				};
+
+				var pos = {
+					x: this.x,
+					y: this.y
+				};
+
+				return function() {
+					this.resize(size.width, size.height);
+					this.move(pos.x, pos.y);
+				}
+			}).apply(this);
 		},
 
 		maximize: function() {
 			if (typeof this._restore === 'function') {
-				// Restore las size ans position
+				// Restore las size and position
 				this._restore.apply(this);
 				this._restore = null;
 			} 
 			else {
 				// Create function to restore with old size and pos in its closure
-				this._restore = (function() {
-					var size = this.getSize();
-					var pos = this.getPosition();
-
-					return function() {
-						this.setSize(size.width, size.height);
-						this.setPosition(pos.x, pos.y);
-					}
-				}).apply(this);
+				this._restore = this.stamp();
 
 				this.signals.emit('maximize', this);
 			}
 		},
 
+		minimize: function() {
+			this.signals.emit('minimize', this);
+		},
+
 		close: function() {
-			this.signals.emit('close', this);
-			this.view.closed = true;
+			this.closed = true;
 		},
 
 		focus: function() {
-			this.signals.emit('focus', this);
-			this.view.active = true;
+			this.active = true;
 		},
 
 		blur: function() {
-			this.signals.emit('blur', this);
-			this.view.active = false;
-		},
-
-		moveTo: function(x, y) {
-			this.view.x = x;
-			this.view.y = y;
-			return this;
-		},
-
-		setZIndex: function(value) {
-			this.view.z = value
-		},
-
-		getZIndex: function() {
-			return this.view.z;
-		},
-
-		setPosition: function(x, y) {
-			return this.moveTo(x, y);
-		},
-
-		getPosition: function() {
-			return {
-				x: this.view.x,
-				y: this.view.y
-			};
+			this.active = false;
 		},
 
 		toLocal: function(coord) {
-			var origin = this.getPosition();
-
 			return {
-				x: coord.x - origin.x,
-				y: coord.y - origin.y
+				x: coord.x - this.x,
+				y: coord.y - this.y
 			};
 		},
 
 		toGlobal: function(coord) {
-			var origin = this.getPosition();
-
 			return {
-				x: coord.x + origin.x,
-				y: coord.y + origin.y
+				x: coord.x + this.x,
+				y: coord.y + this.y
 			};
 		}
 	}

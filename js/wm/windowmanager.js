@@ -24,6 +24,9 @@ define(function(require) {
 		this._resizing = null;
 	};
 
+	WindowManager.behavior = {
+	};
+
 	WindowManager.prototype = {
 		_baseZ: 10000,
 
@@ -34,14 +37,14 @@ define(function(require) {
 					resize = this._resizing;
 
 				if(move && move.window) {
-					move.window.setPosition(
+					move.window.move(
 						e.clientX - move.offset.x,
 						e.clientY - move.offset.y
 					);
 				}
 
 				if (resize && resize.window) {
-					resize.window.setSize(
+					resize.window.resize(
 						resize.current.width + e.clientX - resize.origin.x,
 						resize.current.height + e.clientY - resize.origin.y
 					);
@@ -50,12 +53,11 @@ define(function(require) {
 
 			'mouseup': function(e) {
 				if (this._moving) {
-					this._moving.window.signals.emit('movestop');
+					this._moving.window.el.removeClass('move'); // Change this, no direct access to the view, STATE wrapper to css add,remove,has class
 					this._moving = null;
 				}
 
 				if (this._resizing) {
-					this._resizing.window.signals.emit('resizestop');
 					this._resizing = null;
 				}
 			}
@@ -63,8 +65,12 @@ define(function(require) {
 
 		slots: {
 			maximize: function(win) {
-				win.setPosition(0,0);
-				win.setSize(this.el.width(), this.el.height());
+				win.move(0,0);
+				win.resize(this.el.width(), this.el.height());
+			},
+
+			minimize: function(win) {
+				win.resize(0,0);
 			},
 
 			move: function(e, win) {
@@ -84,7 +90,10 @@ define(function(require) {
 						x: e.clientX,
 						y: e.clientY
 					},
-					current: win.getSize()
+					current: {
+						width: win.width,
+						height: win.height
+					}
 				};
 			},
 
@@ -95,27 +104,33 @@ define(function(require) {
 					return;
 
 				if(this._active) {
-					currentZ = this._active.getZIndex();
+					currentZ = this._active.z;
 					this._active.blur();
 				}
-				else
+				else {
 					currentZ = this._baseZ;
+				}
 
 				// Reorder windows stack (@todo optimize this)
 				this._windows = _.without(this._windows, win);
 				this._windows.push(win);
 				
-				win.setZIndex(currentZ + 1);
+				win.z = currentZ + 1;
 
 				// Refresh z-indexes just every 'maxZ' activations
 				if (currentZ > maxZ + this._windows.length) {
 					for(var z, i=this._windows.length; i--;) {
-						z = this._windows[i].getZIndex();
-						this._windows[i].setZIndex(this._baseZ + (z  - maxZ));
+						z = this._windows[i].z;
+						this._windows[i].z = this._baseZ + (z - maxZ);
 					}
 				}
 
 				this._active = win;
+			},
+
+			blur: function(win) {
+				if(this._active === win)
+					this.active = null;
 			},
 
 			close: function(win) {
@@ -139,15 +154,18 @@ define(function(require) {
 		createWindow: function(options) {
 			var win = new Window(options||{});
 
-			win.signals.on('movestart', this.slots.move, this);
+			// Listen to window signals
+			win.signals.on('move', this.slots.move, this);
 			win.signals.on('resize', this.slots.resize, this);
 			win.signals.on('focus', this.slots.focus, this);
+			win.signals.on('blur', this.slots.focus, this);
 			win.signals.on('close', this.slots.close, this);
 			win.signals.on('maximize', this.slots.maximize, this);
+			win.signals.on('minimize', this.slots.minimize, this);
 
 			this._windows.push(win);
 
-			this.el.append(win.view.el);
+			this.el.append(win.el);
 
 			win.focus();
 			return win;

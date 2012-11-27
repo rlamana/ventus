@@ -15,8 +15,8 @@ define(function(require) {
 			randomH = Math.ceil(Math.random()*1000 % 600);
 
 			wm.createWindow()
-				.moveTo(i*60, i*60)
-				.setSize(
+				.move(i*60, i*60)
+				.resize(
 					randomW > 200 ? randomW : 200,
 					randomH > 200 ? randomH : 200
 				);
