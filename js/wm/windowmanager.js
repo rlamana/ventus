@@ -12,10 +12,10 @@ define(function(require) {
 
 	var WindowManager = function () {
 		// Its root dom element
-		this.el = View("<div class='wm-space' unselectable='on'><div class='wm-overlay' /></div>");
+		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
 		$(document.body).append(this.el);
 
-		this.$overlay = this.el.find('wm-overlay');
+		this.$overlay = this.el.find('.wm-overlay');
 		this.$overlay.css('z-index', this._baseZ-1);
 
 		// Generate mode plugin actions wrapper
