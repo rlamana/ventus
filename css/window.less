@@ -214,6 +214,10 @@
 	}
 }
 
+.wm-window.maximized {
+	-webkit-transition: all .1s ease-out;
+}
+
 .wm-window.closed {
 	.animation(close 0.3s 1 ease-in forwards);
 }
@@ -225,4 +229,3 @@
 .wm-window.move {
 	.animation(wobbly 0.5s 0.1s infinite);
 }
-

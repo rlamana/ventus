@@ -69,6 +69,10 @@ define(function(require) {
 				win.resize(this.el.width(), this.el.height());
 			},
 
+			restore: function(win) {
+				win.restore();
+			},
+
 			minimize: function(win) {
 				win.resize(0,0);
 			},
@@ -162,6 +166,7 @@ define(function(require) {
 			win.signals.on('close', this.slots.close, this);
 			win.signals.on('maximize', this.slots.maximize, this);
 			win.signals.on('minimize', this.slots.minimize, this);
+			win.signals.on('restore', this.slots.restore, this);
 
 			this._windows.push(win);
 

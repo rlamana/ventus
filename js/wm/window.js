@@ -31,6 +31,7 @@ define(function(require) {
 		this.enabled = true;
 		this.active = false;
 		this.closed = false;
+		this.maximized = false;
 	};
 
 	Window.prototype = {
@@ -91,6 +92,26 @@ define(function(require) {
 			'button.wm-resize mousedown': function(e) {
 				this.enabled && this.signals.emit('resize', e, this);
 			}
+		},
+
+		get maximized() {
+			return this._maximized;
+		},
+
+		set maximized(value) {
+			if(value) {
+				this.stamp();
+				this.el.addClass('maximized');
+
+				this.signals.emit('maximize', this);
+			} 
+			else {
+				var self = this;
+				this.signals.emit('restore', this);
+				self.el.removeClass('maximized');			
+			}
+
+			this._maximized = value;
 		},
 
 		set active(value) {
@@ -221,17 +242,7 @@ define(function(require) {
 		restore: function(){},
 
 		maximize: function() {
-			if (typeof this._restore === 'function') {
-				// Restore las size and position
-				this._restore.apply(this);
-				this._restore = null;
-			} 
-			else {
-				// Create function to restore with old size and pos in its closure
-				this._restore = this.stamp();
-
-				this.signals.emit('maximize', this);
-			}
+			this.maximized = !this.maximized;
 		},
 
 		minimize: function() {
