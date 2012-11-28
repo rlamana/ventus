@@ -10,18 +10,19 @@ define(function(require) {
 
 
 	var Window = function (options) {
-		var self = this;
-
 		this.signals = new Emitter();
 
 		// View
-		this.el = WindowView({
+		this.el = WindowView(options||{
 			title: "Window"
 		});
 		this.el.listen(this.events.window, this); 
 
 		this.width = 400;
 		this.height = 200;
+
+		this.x = 0;
+		this.y = 0;
 		this.z = 10000;
 
 		// Open animation
@@ -184,6 +185,22 @@ define(function(require) {
 			return this._enabled;
 		},
 
+		set movable(value) {
+			this._movable = !!value;
+		},
+
+		get movable() {
+			return this._movable;
+		},
+
+		set resizable(value) {
+			this._resizable = !!value;
+		},
+
+		get resizable() {
+			return this._resizable;
+		},
+
 		set closed (value) {
 			var self = this;
 			if(value) {
@@ -192,7 +209,7 @@ define(function(require) {
 				this.el.start('closing', function() {
 					this.el.addClass('closed');
 				}, this);
-				
+
 				//this.detachContent(); @todo implement this function and attachContent();
 			}
 
@@ -297,10 +314,6 @@ define(function(require) {
 
 		blur: function() {
 			this.active = false;
-		},
-
-		drop: function() {
-			this.el.removeClass('move');
 		},
 
 		toLocal: function(coord) {

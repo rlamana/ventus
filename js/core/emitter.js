@@ -96,6 +96,42 @@
 			list.forEach(function(item) {
 				item.funct.apply(item.scope, data);
 			});
+		},
+
+		/**
+		 * Adds listeners to a group of signals, optionally a scope can be provided
+		 *
+		 * @param slots <String> Map of signals and listeners.
+		 * @param scope <Object> The scope for the callback.
+		 */
+		connect: function connect(slots, scope) {
+			if (!slots)
+				return;
+
+			for (var signal in slots) {
+		       	if(!slots.hasOwnProperty(signal)) 
+		       		continue;
+		        
+		       	this.on(signal, slots[signal], scope);
+		    }
+		},
+
+		/**
+		 * Removes listeners to a group of signals, optionally a scope can be provided
+		 *
+		 * @param slots <String> Map of signals and listeners.
+		 * @param scope <Object> The scope for the callback.
+		 */
+		disconnect: function disconnect(slots, scope) {
+			if (!slots)
+				return;
+
+			for (var signal in slots) {
+		       	if(!slots.hasOwnProperty(signal)) 
+		       		continue;
+		        
+		       	this.off(signal, slots[signal], scope);
+		    }
 		}
 	};
 
