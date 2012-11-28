@@ -66,7 +66,7 @@ define(function(require) {
 				e.stopPropagation();
 				e.preventDefault();
 
-				this.enabled && this.close()
+				this.enabled && this.close();
 			},
 
 			'header button.wm-maximize click': function(e) {
@@ -200,7 +200,7 @@ define(function(require) {
 		 * @return A function that restores this window
 		 */
 		stamp: function() {
-			return (function() {
+			this.restore = (function() {
 				var size = {
 					width: this.width,
 					height: this.height
@@ -217,6 +217,8 @@ define(function(require) {
 				}
 			}).apply(this);
 		},
+
+		restore: function(){},
 
 		maximize: function() {
 			if (typeof this._restore === 'function') {
@@ -246,6 +248,10 @@ define(function(require) {
 
 		blur: function() {
 			this.active = false;
+		},
+
+		drop: function() {
+			this.el.removeClass('move');
 		},
 
 		toLocal: function(coord) {

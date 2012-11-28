@@ -53,7 +53,7 @@ define(function(require) {
 
 			'mouseup': function(e) {
 				if (this._moving) {
-					this._moving.window.el.removeClass('move'); // Change this, no direct access to the view, STATE wrapper to css add,remove,has class
+					this._moving.window.drop();
 					this._moving = null;
 				}
 
@@ -181,31 +181,36 @@ define(function(require) {
 			for(var z, win, i=0, len=this._windows.length; i<len; i++) {
 				win = this._windows[i];
 
-				if(win.view.height > win.view.width) {
-					scale = (win.view.height > maxHeight) ? maxHeight / win.view.height : 1;
+				win.stamp();
+
+				if(win.height > win.width) {
+					scale = (win.height > maxHeight) ? maxHeight / win.height : 1;
 				} 
 				else {
-					scale = (win.view.width > maxWidth) ? maxWidth / win.view.width : 1;
+					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
 				}
 
-				win.view.el.addClass('expose');
+				win.el.addClass('expose');
+				win.enabled = false;
 				
-				win.view.el.css('-webkit-transition', 'all .5s linear');
-				win.view.el.css('-webkit-transform', 'scale('+(scale)+')');
+				win.el.css('-webkit-transition', 'left .3s ease-out, top .3s ease-out, -webkit-transform .3s');
+				win.el.css('-webkit-transform', 'scale('+(scale)+')');
 
-				var left = Math.floor((maxWidth - scale*win.view.width) / 2) + (i%grid)*maxWidth;
-				var top = Math.floor((maxHeight - scale*win.view.height) / 2) + ((i<grid-1)? maxHeight : 0);
+				var left = Math.floor((maxWidth - scale*win.width) / 2) + (i%grid)*maxWidth;
+				var top = Math.floor((maxHeight - scale*win.height) / 2) + ((i<grid-1)? maxHeight : 0);
 
-				win.view.el.css('top', top);
-				win.view.el.css('left', left);
+				win.el.css('top', top);
+				win.el.css('left', left);
 			}
 		},
 
 		reset: function() {
 			for(var z, win, i=this._windows.length; i--;) {
 				win = this._windows[i];
-
-				win.view.el.removeClass('expose');
+				win.restore();
+				win.el.css('-webkit-transform', 'scale(1)');
+				win.enabled = true;
+				win.el.removeClass('expose');
 				
 			}
 		}
