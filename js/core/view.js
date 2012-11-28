@@ -29,12 +29,17 @@ define(function(require) {
 		listen: listen
 	});
 
-	return function(template) {
-		return function(options) {
-			if(typeof template === 'function')
-				return $(template(options || {}));
-			else
-				return $(template);
-		};
+	return function(root) {
+		
+		if(typeof root === 'function') { 
+			// It's a template
+			return function(options) {
+				return $(root(options || {}));
+			};
+		}
+		else {
+			// It's a selector
+			return $(root);
+		}
 	};
 });

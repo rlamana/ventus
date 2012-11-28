@@ -3,20 +3,20 @@ define(function(require) {
 
 	require('css!../../css/window.less');
 
-	var template = require("tmpl!../tmpl/window.tmpl");
+	var WindowView = require("tmpl!../tmpl/window.tmpl");
 	var Emitter = require('core/emitter');
+	var View = require('core/view');
 
 	var Window = function (options) {
 		var self = this;
 
 		this.signals = new Emitter();
 
-		this.el = template({
+		// View
+		this.el = WindowView({
 			title: "Window"
 		});
-
-		// Dom events
-		this.el.listen(this.events, this); 
+		this.el.listen(this.events.window, this); 
 
 		this.width = 400;
 		this.height = 200;
@@ -36,62 +36,101 @@ define(function(require) {
 
 	Window.prototype = {
 		_restore: null,
-
-		signals: [
-			'focus',
-			'blur',
-			'maximize',
-			'minimize',
-			'close',
-			'move',
-			'resize'
-		],
+		_moving: null,
+		_resizing: null,
 
 		events: {
-			'mousedown': function(e) {
-				this.enabled && this.focus();
+			window: {
+				'mousedown': function(e) {
+					this.enabled && this.focus();
+				},
+
+				'header mousedown': function(e) {
+					if(!this.enabled) return;
+
+					this._moving = this.toLocal({
+						x: e.clientX,
+						y: e.clientY
+					});
+
+					this.el.addClass('move');
+				},
+
+				'header dblclick': function(e) {
+					this.enabled && this.maximize();
+				},
+
+				'header button.wm-close click': function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+
+					this.enabled && this.close();
+				},
+
+				'header button.wm-maximize click': function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+
+					this.enabled && this.maximize();
+				},
+
+				'header button.wm-minimize click': function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+
+					this.enabled && this.minimize();
+				},
+
+				'header button mousedown': function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+				},
+
+				'button.wm-resize mousedown': function(e) {
+					if(!this.enabled) return;
+
+					this._resizing = {
+						width: this.width - e.clientX,
+						height: this.height - e.clientY
+					};
+				}
 			},
 
-			'header mousedown': function(e) {
-				if(!this.enabled) return;
+			space: {
+				'mousemove': function(e) {
+					this._moving && this.move(
+						e.clientX - this._moving.x,
+						e.clientY - this._moving.y
+					);
+					
+					this._resizing && this.resize(
+						e.clientX + this._resizing.width,
+						e.clientY + this._resizing.height 
+					);
+				},
 
-				this.el.addClass('move');
-				this.signals.emit('move', e, this);
-			},
+				'mouseup': function(e) {
+					if (this._moving) {
+						this.el.removeClass('move');
+						this._moving = null;
+					}
 
-			'header dblclick': function(e) {
-				this.enabled && this.maximize();
-			},
-
-			'header button.wm-close click': function(e) {
-				e.stopPropagation();
-				e.preventDefault();
-
-				this.enabled && this.close();
-			},
-
-			'header button.wm-maximize click': function(e) {
-				e.stopPropagation();
-				e.preventDefault();
-
-				this.enabled && this.maximize();
-			},
-
-			'header button.wm-minimize click': function(e) {
-				e.stopPropagation();
-				e.preventDefault();
-
-				this.enabled && this.minimize();
-			},
-
-			'header button mousedown': function(e) {
-				e.stopPropagation();
-				e.preventDefault();
-			},
-
-			'button.wm-resize mousedown': function(e) {
-				this.enabled && this.signals.emit('resize', e, this);
+					if (this._resizing) {
+						this._restore = null;
+						this._resizing = null;
+					}
+				}
 			}
+		},
+
+		set space(el) {
+			if(el && !el.listen) {
+				console.error("The given space element is not a valid View");
+				return;
+			}
+
+			el.append(this.el);
+			el.listen(this.events.space, this);
 		},
 
 		get maximized() {
@@ -153,7 +192,7 @@ define(function(require) {
 
 				this.el.addClass('closed');
 				this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
-					//self.el.css('display', 'none');
+					//self.window.css('display', 'none');
 				});
 				//this.detachContent(); @todo implement this function and attachContent();
 			}

@@ -1,22 +1,22 @@
 
 define(function(require) {
 
+	require('css!../../css/windowmanager.less');
 	require('css!../../css/expose.less');
 
 	var Window = require('wm/window');
-	var dom = require('dom');
+	var View = require('core/view');
 
 	var WindowManager = function () {
-		this.el = dom("<div class='wm-space'/>")();
-		this.el.css({
-			position: 'absolute',
-			width: '100%',
-			height: '100%',
-			overflow: 'hidden'
-		});
 
-		this.el.listen(this.events, this);
+		// Its root dom element
+		this.el = View("<div class='wm-space' unselectable='on'/>");
 		$(document.body).append(this.el);
+
+		// Overlay
+		this.overlay = View("<div class='wm-overlay' />");
+		this.overlay.css('z-index', this._baseZ-1);
+		this.overlay.appendTo(this.el);
 
 		this._windows = [];
 		this._moving = null;
@@ -24,44 +24,8 @@ define(function(require) {
 		this._resizing = null;
 	};
 
-	WindowManager.behavior = {
-	};
-
 	WindowManager.prototype = {
 		_baseZ: 10000,
-
-		events: {
-			'mousemove': function(e) {
-				var local, 
-					move = this._moving, 
-					resize = this._resizing;
-
-				if(move && move.window) {
-					move.window.move(
-						e.clientX - move.offset.x,
-						e.clientY - move.offset.y
-					);
-				}
-
-				if (resize && resize.window) {
-					resize.window.resize(
-						resize.current.width + e.clientX - resize.origin.x,
-						resize.current.height + e.clientY - resize.origin.y
-					);
-				}
-			},
-
-			'mouseup': function(e) {
-				if (this._moving) {
-					this._moving.window.drop();
-					this._moving = null;
-				}
-
-				if (this._resizing) {
-					this._resizing = null;
-				}
-			}
-		},
 
 		slots: {
 			maximize: function(win) {
@@ -75,30 +39,6 @@ define(function(require) {
 
 			minimize: function(win) {
 				win.resize(0,0);
-			},
-
-			move: function(e, win) {
-				this._moving = {
-					window: win,
-					offset: win.toLocal({
-						x: e.clientX,
-						y: e.clientY
-					})
-				};
-			},
-
-			resize: function(e, win) {
-				this._resizing = {
-					window: win,
-					origin: {
-						x: e.clientX,
-						y: e.clientY
-					},
-					current: {
-						width: win.width,
-						height: win.height
-					}
-				};
 			},
 
 			focus: function(win) {
@@ -155,6 +95,20 @@ define(function(require) {
 			}
 		},
 
+		set expose(value) {
+			if(value) {
+				this._startExpose();
+			} else {
+				this._stopExpose();
+			}
+
+			this._expose = value;
+		},
+
+		get expose() {
+			return this._expose;
+		},
+
 		createWindow: function(options) {
 			var win = new Window(options||{});
 
@@ -170,13 +124,14 @@ define(function(require) {
 
 			this._windows.push(win);
 
-			this.el.append(win.el);
+			win.space = this.el;
 
 			win.focus();
 			return win;
 		},
 
-		expose: function() {
+
+		_startExpose: function() {
 			var grid = Math.ceil(this._windows.length / 2);
 			var maxWidth = Math.floor(this.el.width() / grid);
 			var maxHeight = Math.floor(this.el.height() / 2);
@@ -207,18 +162,26 @@ define(function(require) {
 				win.el.css('top', top);
 				win.el.css('left', left);
 			}
+
+			this._toggleOverlay();
 		},
 
-		reset: function() {
+		_stopExpose: function() {
 			for(var z, win, i=this._windows.length; i--;) {
 				win = this._windows[i];
 				win.restore();
 				win.el.css('-webkit-transform', 'scale(1)');
 				win.enabled = true;
 				win.el.removeClass('expose');
-				
 			}
-		}
+
+			this._toggleOverlay();
+		},
+
+		_toggleOverlay: function() {
+			var opacity = this.overlay.css('opacity');
+			this.overlay.css('opacity', (opacity == 0) ? .6 : 0);
+		},
 	};
 
 	return WindowManager;
