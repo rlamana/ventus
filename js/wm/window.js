@@ -32,6 +32,8 @@ define(function(require) {
 		this.active = false;
 		this.closed = false;
 		this.maximized = false;
+		this.movable = true;
+		this.resizable = true;
 	};
 
 	Window.prototype = {
@@ -46,7 +48,7 @@ define(function(require) {
 				},
 
 				'header mousedown': function(e) {
-					if(!this.enabled) return;
+					if(!this.enabled || !this.movable) return;
 
 					this._moving = this.toLocal({
 						x: e.clientX,
@@ -87,7 +89,7 @@ define(function(require) {
 				},
 
 				'button.wm-resize mousedown': function(e) {
-					if(!this.enabled) return;
+					if(!this.enabled || !this.movable) return;
 
 					this._resizing = {
 						width: this.width - e.clientX,

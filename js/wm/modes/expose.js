@@ -20,11 +20,13 @@ define(function(require) {
 					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
 				}
 
-				win.el.addClass('expose');
-				//win.enabled = false;
-				
-				win.el.css('-webkit-transition', 'left .3s ease-out, top .3s ease-out, -webkit-transform .3s');
+				win.enabled = false;
+				win.movable = false;
+				win.resizable = false;
+	
 				win.el.css('-webkit-transform', 'scale('+(scale)+')');
+				win.el.start('exposing');
+				win.el.addClass('expose');
 
 				var left = Math.floor((maxWidth - scale*win.width) / 2) + (i%grid)*maxWidth;
 				var top = Math.floor((maxHeight - scale*win.height) / 2) + ((i<grid-1)? maxHeight : 0);
@@ -40,9 +42,15 @@ define(function(require) {
 			for(var z, win, i=this.windows.length; i--;) {
 				win = this.windows[i];
 				win.restore();
-				win.el.css('-webkit-transform', 'scale(1)');
+				
+				//win.el.css('-webkit-transform', 'scale(1)');
+				win.el.start('exposing', function() {
+					win.el.removeClass('expose');
+				}, this);
+
+				win.movable = true;
+				win.resizable = true;
 				win.enabled = true;
-				win.el.removeClass('expose');
 			}
 
 			this.overlay = false;
@@ -50,7 +58,10 @@ define(function(require) {
 
 		actions: {
 			focus: function(win) {
-				console.log('focus?');
+			},
+
+			close: function() {
+				this.mode = 'expose';
 			}
 		}
 	};

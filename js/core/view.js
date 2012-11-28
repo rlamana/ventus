@@ -26,10 +26,12 @@ define(function(require) {
 	}
 
 	function start(className, callback, scope) {
+		var self = this;
+		
 		this.addClass(className);
 		this.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
-			$(this).removeClass(className);
-			callback && callback.apply(scope ? scope : this);
+			$(self).removeClass(className);
+			callback && callback.apply(scope ? scope : self);
 		});
 
 		return this;
