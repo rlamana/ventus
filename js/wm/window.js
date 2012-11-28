@@ -4,8 +4,10 @@ define(function(require) {
 	require('css!../../css/window.less');
 
 	var WindowView = require("tmpl!../tmpl/window.tmpl");
+
 	var Emitter = require('core/emitter');
 	var View = require('core/view');
+
 
 	var Window = function (options) {
 		var self = this;
@@ -23,10 +25,7 @@ define(function(require) {
 		this.z = 10000;
 
 		// Open animation
-		this.el.addClass('opened');
-		this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
-			self.el.removeClass('opened');
-		});
+		this.el.start('opening');
 
 		this.enabled = true;
 		this.active = false;
@@ -190,10 +189,10 @@ define(function(require) {
 			if(value) {
 				this.signals.emit('close', this);
 
-				this.el.addClass('closed');
-				this.el.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
-					//self.window.css('display', 'none');
-				});
+				this.el.start('closing', function() {
+					this.el.addClass('closed');
+				}, this);
+				
 				//this.detachContent(); @todo implement this function and attachContent();
 			}
 

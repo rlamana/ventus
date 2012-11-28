@@ -193,15 +193,19 @@
 	-webkit-transition: all .1s ease-out;
 }
 
-.wm-window.closed {
+.wm-window.closing {
 	.animation(close 0.3s 1 ease-in forwards);
 }
 
-.wm-window.opened {
+.wm-window.opening {
 	.animation(appear 0.4s 1 ease-out);
 }
 
 .wm-window.move {
 
 	.animation(wobbly 0.5s 0.1s infinite);
+}
+
+.wm-window.closed {
+	display: none;
 }

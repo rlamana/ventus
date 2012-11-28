@@ -25,8 +25,19 @@ define(function(require) {
 		return this;
 	}
 
+	function start(className, callback, scope) {
+		this.addClass(className);
+		this.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+			$(this).removeClass(className);
+			callback && callback.apply(scope ? scope : this);
+		});
+
+		return this;
+	}
+
 	$.fn.extend({
-		listen: listen
+		listen: listen,
+		start: start
 	});
 
 	return function(root) {
