@@ -9,7 +9,7 @@ define(function(require) {
 	var animationEventNames = "animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd";
 
 	// CSS3 transform, transition, animation hooks, prefixless
-	var hooks = ['transform', 'transition', 'animation'];
+	var hooks = ['transform', 'transition', 'animation', 'transform-origin'];
 	for(var i=hooks.length;i--;) {
 		(function(property) {
 			$.cssHooks[property] = {

@@ -68,7 +68,7 @@ define(function(require) {
 		},
 
 		set overlay(value) {
-			this.$overlay.css('opacity', value ? .6 : 0);
+			this.$overlay.css('opacity', value ? .8 : 0);
 			this._overlay = value;
 		},
 

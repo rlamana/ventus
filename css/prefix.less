@@ -1,13 +1,12 @@
-/*
-    Prefix.less
-    Copyright (c) 2012 Ramón Lamana
 
-    MIT Licensed:
-    http://www.opensource.org/licenses/mit-license.php
-*/
+//  Prefix.less 
+//  Copyright (c) 2012 Ramón Lamana
+//
+//  MIT Licensed:
+//  http://www.opensource.org/licenses/mit-license.php
 
 
-/* User Select */
+// User Select
 
 .user-select(@value) {
   user-select: @value;
@@ -23,18 +22,29 @@
   animation: @value;
 }
 
-.transition(@value) {
-  -webkit-transition: @value;
-  -moz-transition: @value;
-  -ms-transition: @value;
-  -o-transition: @value;
-  transition: @value;
+.transition(...) {
+    @args: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+    -webkit-transition: @args;
+    -moz-transition: @args;
+    -ms-transition: @args; 
+    -o-transition: @args;
+    transition: @args;
+}
+
+.transition-property(...) {
+    @args: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+    -webkit-transition-property: @args;
+    -moz-transition-property: @args;
+    -ms-transition-property: @args; 
+    -o-transition-property: @args;
+    transition-property: @args;
 }
 
 
-/* Transforms */
+// Transforms
 
-.transform(@args) {
+.transform(...) {
+    @args: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
     -webkit-transform: @args; 
     -moz-transform: @args; 
     -ms-transform: @args; 
@@ -65,7 +75,7 @@
 }
 
 
-/* Box Shadows */
+// Box Shadows
 
 .box-shadow(@value) {
   -webkit-box-shadow: @value;
@@ -75,7 +85,7 @@
   box-shadow: @value;
 }
 
-/* Border Radius */
+// Border Radius
 
 .border-radius(@args) {
     -webkit-border-radius: @args;
@@ -88,7 +98,7 @@
 }
 
 
-/* Gradients */
+// Gradients
 
 .gradient(@default: #F5F5F5, @start: #EEE, @stop: #FFF) {
     .linear-gradient-top(@default,@start,0%,@stop,100%);

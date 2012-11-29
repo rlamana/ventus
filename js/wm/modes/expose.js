@@ -8,7 +8,7 @@ define(function(require) {
 			var maxWidth = floor(this.el.width() / grid);
 			var maxHeight = floor(this.el.height() / 2);
 
-			var scale, left, top;
+			var scale, left, top, pos;
 
 			this.el.addClass('expose');
 
@@ -25,17 +25,26 @@ define(function(require) {
 					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
 				}
 
+				scale -= .15; // To add a little padding
+
+				pos = {
+					x: (i%grid)*maxWidth, 
+					y: (i%2)*maxHeight
+				};
+
 				// New position
-				left = floor((maxWidth - scale*win.width) / 2) + (i%grid)*maxWidth;
-				top = floor((maxHeight - scale*win.height) / 2) + ((i<grid-1)? maxHeight : 0);
+				left = pos.x + floor((maxWidth - scale*win.width) / 2);
+				top = pos.y + floor((maxHeight - scale*win.height) / 2);
 
 				win.enabled = false;
 				win.movable = false;
 				win.resizable = false;
 
-				win.el.css('transform', 'scale('+(scale)+')');				
 				win.el.css('top', top);
 				win.el.css('left', left);
+
+				win.el.css('transform-origin', '0 0');
+				win.el.css('transform', 'scale(' + scale + ')');
 			}
 
 			this.overlay = true;
@@ -48,6 +57,7 @@ define(function(require) {
 				
 				win.restore();
 				win.el.css('transform', 'scale(1)');
+				win.el.css('transform-origin', '50% 50%');
 
 				this.el.onTransitionEnd(function(){
 					this.el.removeClass('expose');
