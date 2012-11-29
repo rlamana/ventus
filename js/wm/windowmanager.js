@@ -133,7 +133,6 @@ define(function(require) {
 			this.active = win;
 		},
 
-
 		/**
 		 * Internal action always performed besides the mode definition
 		 */
@@ -141,7 +140,6 @@ define(function(require) {
 			if(this.active === win)
 				this.active = null;
 		},
-
 
 		/**
 		 * Internal action always performed besides the mode definition

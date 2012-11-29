@@ -26,7 +26,10 @@ define(function(require) {
 		this.z = 10000;
 
 		// Open animation
-		this.el.start('opening');
+		this.el.addClass('opening');
+		this.el.onAnimationEnd(function(){
+			this.el.removeClass('opening');
+		}, this);
 
 		this.enabled = true;
 		this.active = false;
@@ -135,6 +138,7 @@ define(function(require) {
 			el.listen(this.events.space, this);
 		},
 
+
 		get maximized() {
 			return this._maximized;
 		},
@@ -154,6 +158,28 @@ define(function(require) {
 
 			this._maximized = value;
 		},
+
+
+		get minimized() {
+			return this._minimized;
+		},
+
+		set minimized(value) {
+			if(value) {
+				this.stamp();
+				this.el.addClass('minimized');
+
+				this.signals.emit('minimized', this);
+			} 
+			else {
+				var self = this;
+				this.signals.emit('restore', this);
+				self.el.removeClass('minimized');			
+			}
+
+			this._minimized = value;
+		},
+
 
 		set active(value) {
 			if(value) {
@@ -208,11 +234,14 @@ define(function(require) {
 			if(value) {
 				this.signals.emit('close', this);
 
-				this.el.start('closing', function() {
+				this.el.addClass('closing');
+				this.el.onAnimationEnd(function(){
+					this.el.removeClass('closing');
 					this.el.addClass('closed');
 				}, this);
 
 				//this.detachContent(); @todo implement this function and attachContent();
+				
 			}
 
 			this._closed = value;
@@ -292,6 +321,8 @@ define(function(require) {
 				return function() {
 					this.resize(size.width, size.height);
 					this.move(pos.x, pos.y);
+
+					return this;
 				}
 			}).apply(this);
 		},
@@ -300,22 +331,27 @@ define(function(require) {
 
 		maximize: function() {
 			this.maximized = !this.maximized;
+			return this;
 		},
 
 		minimize: function() {
-			this.signals.emit('minimize', this);
+			this.minimized = !this.minimized;
+			return this;
 		},
 
 		close: function() {
 			this.closed = true;
+			return this;
 		},
 
 		focus: function() {
 			this.active = true;
+			return this;
 		},
 
 		blur: function() {
 			this.active = false;
+			return this;
 		},
 
 		toLocal: function(coord) {

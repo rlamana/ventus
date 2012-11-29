@@ -25,21 +25,23 @@ define(function(require) {
 		return this;
 	}
 
-	function start(className, callback, scope) {
-		var self = this;
-		
-		this.addClass(className);
-		this.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
-			$(self).removeClass(className);
-			callback && callback.apply(scope ? scope : self);
+	function onAnimationEnd(callback, scope) {
+		$(this).one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function() {
+			callback.apply(scope||this);
 		});
+	}
 
-		return this;
+	function onTransitionEnd(callback, scope) {
+		$(this).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function() {
+			callback.apply(scope||this);
+		});
 	}
 
 	$.fn.extend({
 		listen: listen,
-		start: start
+
+		onAnimationEnd: onAnimationEnd,
+		onTransitionEnd: onTransitionEnd
 	});
 
 	return function(root) {
