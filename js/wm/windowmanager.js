@@ -11,7 +11,6 @@ define(function(require) {
 	var ExposeMode = require('wm/modes/expose');
 
 	var WindowManager = function () {
-		// Its root dom element
 		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
 		$(document.body).append(this.el);
 

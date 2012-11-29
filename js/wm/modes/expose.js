@@ -2,7 +2,7 @@ define(function(require) {
 	
 	var ExposeMode = {
 		plug: function() {
-			var floor = Math.floor, ceil = 	Math.ceil;
+			var floor = Math.floor, ceil = Math.ceil;
 
 			var grid = ceil(this.windows.length / 2);
 			var maxWidth = floor(this.el.width() / grid);
@@ -29,8 +29,10 @@ define(function(require) {
 
 				pos = {
 					x: (i%grid)*maxWidth, 
-					y: (i%2)*maxHeight
+					y: ((i<grid)?0:1)*maxHeight
 				};
+
+				console.log(pos);
 
 				// New position
 				left = pos.x + floor((maxWidth - scale*win.width) / 2);
