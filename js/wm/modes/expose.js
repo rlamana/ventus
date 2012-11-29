@@ -33,9 +33,7 @@ define(function(require) {
 				win.movable = false;
 				win.resizable = false;
 
-				//win.el.css('-webkit-transform', 'scale('+(scale)+')');
-				//win.el.start('exposing');
-				
+				win.el.css('transform', 'scale('+(scale)+')');				
 				win.el.css('top', top);
 				win.el.css('left', left);
 			}
@@ -49,14 +47,12 @@ define(function(require) {
 				win = this.windows[i];
 				
 				win.restore();
-				win.el.css('-webkit-transform', 'scale(1)');
-				
+				win.el.css('transform', 'scale(1)');
+
 				this.el.onTransitionEnd(function(){
 					this.el.removeClass('expose');
 				}, this);
 				
-				
-
 				win.movable = true;
 				win.resizable = true;
 				win.enabled = true;

@@ -1,14 +1,16 @@
 
+@import "prefix.less";
+
 .wm-space.expose {
 	.wm-window {
-		-webkit-transition: all .3s ease-out;
-			/*left .3s ease-out, 
-						top .3s ease-out, 
-						-webkit-transform .3s;*/
+		.transition(all .3s ease-out);
 	}	
 
-	.wm-windowhover {
-		-webkit-box-shadow: 0px 0px 40px #000088;
+	.wm-window {
+	}
+
+	.wm-window:hover {
+		.box-shadow(0px 0px 40px #000088);
 	}
 }
 

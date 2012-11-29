@@ -1,24 +1,24 @@
 
-@import "mixins.less";
+@import "prefix.less";
 
 /* Wobbly animation */
 
 @-webkit-keyframes wobbly {
-	0% {-webkit-transform:rotate(4deg);}
-	50% {-webkit-transform:rotate(-4deg);}
-	100% {-webkit-transform:rotate(4deg);}
+	0% {.transform(rotate(4deg));}
+	50% {.transform(rotate(-4deg));}
+	100% {.transform(rotate(4deg));}
 }
  
 @-moz-keyframes wobbly {
-	0% {-moz-transform:rotate(4deg);}
-	50% {-moz-transform:rotate(-4deg);}
-	100% {-moz-transform:rotate(4deg);}
+	0% {.transform(rotate(4deg));}
+	50% {.transform(rotate(-4deg));}
+	100% {.transform(rotate(4deg));}
 }
 
 @keyframes wobbly {
-	0% {transform:rotate(4deg);}
-	50% {transform:rotate(-4deg);}
-	100% {transform:rotate(4deg);}
+	0% {.transform(rotate(4deg));}
+	50% {.transform(rotate(-4deg));}
+	100% {.transform(rotate(4deg));}
 }
 
 
@@ -83,11 +83,10 @@
 
 	min-width: 130px;
 	min-height: 50px;
-	/*border: 1px solid @bgdisabled;*/
 
 	background-color: #fff; 
-	.border-radius(0, @radius, @radius, 0);
-	.drop-shadow(0, 0px, 20px, 0.6);
+	.border-radius(0 @radius @radius 0);
+	.box-shadow(0 0px 20px rgba(0, 0, 0, 0.6));
 
 
 	font-family: "Open Sans", sans-serif;

@@ -1,4 +1,9 @@
 /**
+ * Copyright © 2009-2012 A. Matías Quezada
+ * https://github.com/amatiasq
+ */
+ 
+/**
  * interface Emitter {
  *   void on(String signal, Function handler, [Object scope]);
  *   void off(String signal, Function handler, [Object scope]);
