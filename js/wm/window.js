@@ -46,6 +46,10 @@ define(function(require) {
 
 		events: {
 			window: {
+				'click': function(e) {
+					this.signals.emit('select', this, e);
+				},
+
 				'mousedown': function(e) {
 					this.enabled && this.focus();
 				},

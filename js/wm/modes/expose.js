@@ -32,8 +32,6 @@ define(function(require) {
 					y: ((i<grid)?0:1)*maxHeight
 				};
 
-				console.log(pos);
-
 				// New position
 				left = pos.x + floor((maxWidth - scale*win.width) / 2);
 				top = pos.y + floor((maxHeight - scale*win.height) / 2);
@@ -50,6 +48,9 @@ define(function(require) {
 			}
 
 			this.overlay = true;
+			this.el.one('click', function() {
+				this.mode = 'default';
+			});
 		},
 
 		unplug: function() {
@@ -79,6 +80,11 @@ define(function(require) {
 
 			close: function() {
 				this.mode = 'expose';
+			},
+
+			select: function(win, e) {
+				this.mode = 'default';
+				win.focus();
 			}
 		}
 	};

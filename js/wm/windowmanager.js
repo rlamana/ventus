@@ -40,7 +40,8 @@ define(function(require) {
 			'close',
 			'maximize',
 			'minimize',
-			'restore'
+			'restore',
+			'select'
 		],
 
 		modes: {
