@@ -3,12 +3,15 @@
 
 .wm-space.expose {
 	.wm-window {
-		-webkit-transform: translate3d(0, 0, 0);
-		.transition(top .5s ease-out, left .5s ease-out);
 	}
 
 	.wm-window:hover {
 		.box-shadow(0px 0px 40px #000088);
+	}
+
+	.wm-window.exposing {
+		-webkit-transform: translate3d(0, 0, 0);
+		.transition(top .5s ease-out, left .5s ease-out);
 	}
 }
 

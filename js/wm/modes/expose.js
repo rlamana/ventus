@@ -2,7 +2,7 @@ define(function(require) {
 	
 	var ExposeMode = {
 		plug: function() {
-			var floor = Math.floor, ceil = Math.ceil;
+			var floor = Math.floor, ceil = Math.ceil, self = this;
 
 			var grid = ceil(this.windows.length / 2);
 			var maxWidth = floor(this.el.width() / grid);
@@ -40,16 +40,19 @@ define(function(require) {
 				win.movable = false;
 				win.resizable = false;
 
-				win.el.css('top', top);
-				win.el.css('left', left);
-
+				win.el.addClass('exposing');
 				win.el.css('transform-origin', '0 0');
 				win.el.css('transform', 'scale(' + scale + ')');
+				win.el.css('top', top);
+				win.el.css('left', left);
+				win.el.onTransitionEnd(function(){
+					win.el.removeClass('exposing');
+				}, this);
 			}
 
 			this.overlay = true;
 			this.el.one('click', function() {
-				this.mode = 'default';
+				self.mode = 'default';
 			});
 		},
 
