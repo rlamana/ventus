@@ -104,6 +104,8 @@ define(function(require) {
 						width: this.width - e.clientX,
 						height: this.height - e.clientY
 					};
+
+					this.el.addClass('resizing');
 				}
 			},
 
@@ -127,6 +129,7 @@ define(function(require) {
 					}
 
 					if (this._resizing) {
+						this.el.removeClass('resizing');
 						this._restore = null;
 						this._resizing = null;
 					}
@@ -152,15 +155,11 @@ define(function(require) {
 		set maximized(value) {
 			if(value) {
 				this.stamp();
-				this.el.addClass('maximized');
-
 				this.signals.emit('maximize', this);
 			} 
 			else {
 				this.signals.emit('restore', this);
-				this.el.onTransitionEnd(function(){
-					this.el.removeClass('maximized');		
-				}, this);			
+	
 			}
 
 			this._maximized = value;
@@ -174,15 +173,10 @@ define(function(require) {
 		set minimized(value) {
 			if(value) {
 				this.stamp();
-				this.el.addClass('minimized');
-
 				this.signals.emit('minimize', this);
 			} 
 			else {
 				this.signals.emit('restore', this);
-				this.el.onTransitionEnd(function(){
-					this.el.removeClass('minimized');		
-				}, this);
 			}
 
 			this._minimized = value;
@@ -338,11 +332,21 @@ define(function(require) {
 		restore: function(){},
 
 		maximize: function() {
+			this.el.addClass('maximazing');
+			this.el.onTransitionEnd(function(){
+				this.el.removeClass('maximazing');
+			}, this);
+
 			this.maximized = !this.maximized;
 			return this;
 		},
 
 		minimize: function() {
+			this.el.addClass('minimizing');
+			this.el.onTransitionEnd(function(){
+				this.el.removeClass('minimizing');
+			}, this);
+			
 			this.minimized = !this.minimized;
 			return this;
 		},
