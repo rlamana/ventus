@@ -35,6 +35,8 @@ define(function(require) {
 		this.active = false;
 		this.closed = false;
 		this.maximized = false;
+		this.minimized = false;
+
 		this.movable = true;
 		this.resizable = true;
 	};
@@ -155,9 +157,10 @@ define(function(require) {
 				this.signals.emit('maximize', this);
 			} 
 			else {
-				var self = this;
 				this.signals.emit('restore', this);
-				self.el.removeClass('maximized');			
+				this.el.onTransitionEnd(function(){
+					this.el.removeClass('maximized');		
+				}, this);			
 			}
 
 			this._maximized = value;
@@ -173,12 +176,13 @@ define(function(require) {
 				this.stamp();
 				this.el.addClass('minimized');
 
-				this.signals.emit('minimized', this);
+				this.signals.emit('minimize', this);
 			} 
 			else {
-				var self = this;
 				this.signals.emit('restore', this);
-				self.el.removeClass('minimized');			
+				this.el.onTransitionEnd(function(){
+					this.el.removeClass('minimized');		
+				}, this);
 			}
 
 			this._minimized = value;
