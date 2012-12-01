@@ -6,6 +6,15 @@
 //  http://www.opensource.org/licenses/mit-license.php
 
 
+// Flexible Box Model
+.flex(@value) {
+  box-flex: @value;
+  -webkit-box-flex: @value;
+  -moz-box-flex: @value;
+  -ms-box-flex: @value;
+  -o-box-flex: @value;
+}
+
 // User Select
 
 .user-select (@value) when (@value = none) {

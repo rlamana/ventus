@@ -27,8 +27,8 @@ define(function(require) {
 			Apps.Terminal.main(this);
 			el.addClass("app app-terminal");
 
-			win.signals.on('focus', function(){
-				el.find('.terminusjs-input-line').focus();
+			win.signals.on('focus click', function(){
+				el.find('.terminusjs-input').focus();
 			})
 		});
 

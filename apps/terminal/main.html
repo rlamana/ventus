@@ -1,15 +1,5 @@
-
-<div class="display"></div>	
-
 <script type="text/javascript" src="apps/terminal/terminus.min.js"></script>
-
-<!-- Example commands -->
 <script type="text/javascript" src="apps/terminal/commands/testcommands.js"></script>
-
-<!-- Super Shape commands example -->
-<!--<script type="text/javascript" src="apps/terminal/commands/three.js"></script>
-<script type="text/javascript" src="apps/terminal/commands/supertags.js"></script>
-<script type="text/javascript" src="apps/terminal/commands/shapecommands.js"></script>-->
 
 <script type="text/javascript">
 	(function(global, $) {
@@ -19,8 +9,7 @@
 				var shell, display;
 
 				var shell = new Terminus.Shell();
-				//shell.include(TestCommands);
-				//shell.include(ShapeCommands);
+				shell.include(TestCommands);
 			
 				display = new Terminus.Display(element, {
 					welcome: "<img src='apps/terminal/images/logo.png'/><p style='margin-top: 0; padding-top: 0'>Terminus.js "+Terminus.version+"<br/>Copyright 2011-2012 Ramón Lamana.</p>",
