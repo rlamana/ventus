@@ -84,14 +84,14 @@
 	min-height: 50px;
 
 	background-color: #fff; 
-	.border-radius(0 @radius @radius 0);
+	.border-radius(0 0 @radius @radius);
 	.box-shadow(0 0px 20px rgba(0, 0, 0, 0.6));
 
 
 	font-family: "Open Sans", sans-serif;
 
 	header {
-		.gradient(@bgdisabled, @bgdisabled, @bgdisabled);
+		background-color: @bgdisabled;
 		border: 0;
 		padding: 4px 0;
 
@@ -174,7 +174,7 @@
 
 .wm-window.active {
 	header {
-		.gradient(@bgactive, @bgactive, @bgactive);
+		background-color: @bgactive;
 
 		button {
 			background-color: @bgactive;
