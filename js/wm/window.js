@@ -12,17 +12,31 @@ define(function(require) {
 	var Window = function (options) {
 		this.signals = new Emitter();
 
+		options = options||{
+			title: "Untitle Window",
+			width: 400,
+			height: 200,
+			x: 0,
+			y: 0,
+			content: ''
+		};
+
 		// View
-		this.el = WindowView(options||{
-			title: "Window"
+		this.el = WindowView({
+			title: options.title
 		});
 		this.el.listen(this.events.window, this); 
 
-		this.width = 400;
-		this.height = 200;
+		// Cache content element
+		this.$content = this.el.find('section.wm-content');
+		if(options.content)
+			this.append(options.content);
 
-		this.x = 0;
-		this.y = 0;
+		this.width = options.width || 400;
+		this.height = options.height || 200;
+
+		this.x = options.x || 0;
+		this.y = options.y || 0;
 		this.z = 10000;
 
 		// Open animation
@@ -378,6 +392,10 @@ define(function(require) {
 				x: coord.x + this.x,
 				y: coord.y + this.y
 			};
+		},
+
+		append: function(el) {
+			el.appendTo(this.$content);
 		}
 	}
 
