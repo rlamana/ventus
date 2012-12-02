@@ -32,6 +32,24 @@ define(function(require) {
 			})
 		});
 
+		// Todo App example
+		require('less!../apps/todo/css/base.less');
+
+		var todoApp = $('<div />');
+		todoApp.load('apps/todo/main.html', function() {
+			var win, el = $(this);
+			var win = wm.createWindow({
+				title: 'Todo',
+				width: 500,
+				height: 400,
+				x: 150,
+				y: 150,
+				content: el
+			});
+
+			win.el.css('background-color', '#f9f9f9');
+		});
+
 		// For developing purposes
 		window.wm = wm;
 	}
