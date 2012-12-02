@@ -69,6 +69,8 @@
 @bgdisabled: #999;
 @time: 0.5s;
 
+@minheight: 50px;
+
 .wm-window {
 	@radius: 4px;
 
@@ -81,7 +83,7 @@
 	position: absolute;
 
 	min-width: 130px;
-	min-height: 50px;
+	min-height: @minheight;
 
 	background-color: #fff; 
 	.border-radius(0 0 @radius @radius);
@@ -89,6 +91,7 @@
 
 	.wm-window-box {
 		height: 100%;
+		min-height: @minheight;
 		width: 100%;
 	
 		header {
@@ -155,6 +158,8 @@
 
 		section {
 			display: block;
+
+			min-height: @minheight;
 
 			overflow-x: hidden;
 			overflow-y: auto;
