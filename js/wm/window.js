@@ -1,7 +1,7 @@
 
 define(function(require) {
 
-	require('css!../../css/window.less');
+	require('less!../../css/window.less');
 
 	var WindowView = require("tmpl!../tmpl/window.tmpl");
 

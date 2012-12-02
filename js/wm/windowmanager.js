@@ -1,8 +1,8 @@
 
 define(function(require) {
 
-	require('css!../../css/windowmanager.less');
-	require('css!../../css/expose.less');
+	require('less!../../css/windowmanager.less');
+	require('less!../../css/expose.less');
 
 	var Window = require('wm/window');
 	var View = require('core/view');
