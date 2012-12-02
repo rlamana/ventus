@@ -28,9 +28,12 @@ define(function(require) {
 		this.el.listen(this.events.window, this); 
 
 		// Cache content element
-		this.$content = this.el.find('section.wm-content');
+		this.$content = this.el.find('.wm-content');
 		if(options.content)
 			this.append(options.content);
+
+		// Cache header element
+		this.$header = this.el.find('header');
 
 		this.width = options.width || 400;
 		this.height = options.height || 200;
@@ -276,6 +279,10 @@ define(function(require) {
 		},
 
 		set height(value) {
+			// This shouldn't be done if flexible box model
+			// worked properly with overflow-y: auto
+			this.$content.height(value - this.$header.outerHeight());
+
 			this.el.height(value);
 		},
 		

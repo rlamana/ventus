@@ -6,8 +6,17 @@
 //  http://www.opensource.org/licenses/mit-license.php
 
 
-// Flexible Box Model
-.flex(@value) {
+// Outdated 2009 W3C Draft Flexible Box Model
+
+.box-orient(@value) {
+  box-orient: @value;
+  -webkit-box-orient: @value;
+  -moz-box-orient: @value;
+  -ms-box-orient: @value;
+  -o-box-orient: @value;
+}
+
+.box-flex(@value) {
   box-flex: @value;
   -webkit-box-flex: @value;
   -moz-box-flex: @value;
@@ -15,9 +24,22 @@
   -o-box-flex: @value;
 }
 
+.display(@value) {
+  display: @value;
+}
+
+.display(@value) when (@value = box) {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: -o-box;
+  display: box;
+}
+
+
 // User Select
 
-.user-select (@value) when (@value = none) {
+.user-select(@value) when (@value = none) {
     -webkit-touch-callout: none;
 }
 

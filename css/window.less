@@ -88,15 +88,17 @@
 	.box-shadow(0 0px 20px rgba(0, 0, 0, 0.6));
 
 	.wm-window-box {
-		display: -webkit-flex;
-      	-webkit-flex-flow: column;
-
 		height: 100%;
+		width: 100%;
 	
 		header {
+			min-height: 17px;
+			height: 17px;
+			padding: 4px 0;
+
 			background-color: @bgdisabled;
 			border: 0;
-			padding: 4px 0;
+			
 
 			overflow: hidden;
 
@@ -153,10 +155,9 @@
 
 		section {
 			display: block;
-			-webkit-flex: 1 0 auto;
 
-			overflow-y: auto;
 			overflow-x: hidden;
+			overflow-y: auto;
 		}
 
 		button.wm-resize {
