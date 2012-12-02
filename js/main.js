@@ -48,6 +48,7 @@ define(function(require) {
 			});
 
 			win.el.css('background-color', '#f9f9f9');
+			win.focus();
 		});
 
 		// For developing purposes
