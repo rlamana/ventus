@@ -10,9 +10,17 @@ body {
 .app {
 	width: 100%;
 }
-
-.app-terminal {
+ 
+.wm-window.active .app {
 	.user-select(all);
+}
+
+/* 
+ *	Terminal app example specific styles 
+ *	@todo It'll be removed with App loading system 
+ */
+
+.app-terminal {	
 	height: auto !important;
 }
 

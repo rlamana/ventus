@@ -40,9 +40,9 @@ define(function(require) {
 			var win, el = $(this);
 			var win = wm.createWindow({
 				title: 'Todo',
-				width: 500,
+				width: 330,
 				height: 400,
-				x: 150,
+				x: 500,
 				y: 150,
 				content: el
 			});
