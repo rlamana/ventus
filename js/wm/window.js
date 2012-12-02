@@ -73,7 +73,7 @@ define(function(require) {
 					this.enabled && this.focus();
 				},
 
-				'header mousedown': function(e) {
+				'.wm-window-title mousedown': function(e) {
 					if(!this.enabled || !this.movable) return;
 
 					this._moving = this.toLocal({
@@ -84,32 +84,32 @@ define(function(require) {
 					this.el.addClass('move');
 				},
 
-				'header dblclick': function(e) {
+				'.wm-window-title dblclick': function(e) {
 					this.enabled && this.maximize();
 				},
 
-				'header button.wm-close click': function(e) {
+				'.wm-window-title button.wm-close click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
 					this.enabled && this.close();
 				},
 
-				'header button.wm-maximize click': function(e) {
+				'.wm-window-title button.wm-maximize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
 					this.enabled && this.maximize();
 				},
 
-				'header button.wm-minimize click': function(e) {
+				'.wm-window-title button.wm-minimize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
 					this.enabled && this.minimize();
 				},
 
-				'header button mousedown': function(e) {
+				'.wm-window-title button mousedown': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 				},
