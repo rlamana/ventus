@@ -5,9 +5,9 @@
 		// To bypass browser cache uncomment this...
 		//urlArgs: "bust=" +  (new Date()).getTime(),
 		paths: {
-	        'tmpl': 'vendor/plugins/tmpl',
-	        'less': 'vendor/plugins/less',
-	        'text': 'vendor/plugins/text',
+	        'tmpl': 'vendor/require-plugins/tmpl',
+	        'less': 'vendor/require-plugins/less',
+	        'text': 'vendor/require-plugins/text',
 
 			'$': 'vendor/jquery',
 			'Underscore': 'vendor/underscore'
