@@ -1,11 +1,10 @@
 
-define(function(require) {
+require(['js/ventus'], function(Ventus) {
 	var Window = require('wm/window');
-	var WindowManager = require('wm/windowmanager');
 
 	function init(config) {
-		require('less!../css/normalize.less');
-		require('less!../css/environment.less');
+		//require('less!../css/normalize.less');
+		//require('less!../css/environment.less');
 
 		var wm = new WindowManager();
 
@@ -55,5 +54,5 @@ define(function(require) {
 		window.wm = wm;
 	}
 
-	return {init: init};
+	init();
 });

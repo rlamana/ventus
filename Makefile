@@ -10,7 +10,7 @@ lessfiles = $(wildcard css/*.less)
 cssfile = ${builddir}${buildname}.css
 
 # Dependencies
-targets = config.js
+targets = config.js less
 
 
 all: ${buildname}.js 
@@ -30,9 +30,9 @@ less: $(lessfiles:.less=.css)
 	@lessc $< >> ${cssfile}
 
 clean:
-	rm ${builddir}${buildname}.js
-	rm ${builddir}${buildname}.min.js
-	rm ${cssfile}
+	rm -f ${builddir}${buildname}.js
+	rm -f ${builddir}${buildname}.min.js
+	rm -f ${cssfile}
 
 install:
 	npm install less

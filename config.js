@@ -27,7 +27,7 @@
 
     //name: '../vendor/almond',
     //include: ['build'],
-    name: "release",
+    name: "bootstrap",
     out: 'build/ventus.js',
    	
    	/*wrap: {

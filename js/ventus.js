@@ -1,5 +1,5 @@
 (function() {
-	var config = {
+	requirejs.config({
 		baseUrl: 'js',
 
 		// To bypass browser cache uncomment this...
@@ -22,11 +22,10 @@
 				'exports': '_'
 			}
 		}
-	};
+	});
 
-	var coreRequire = require.config(config)
-	coreRequire([ 'main' ], function(main) {
-		main.init(config);
+	requirejs(function() {
+		
 	});
 })();
 
