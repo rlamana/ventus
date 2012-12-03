@@ -5,7 +5,7 @@ define(function(require) {
 
     function load(name, parentRequire, done, config) {
         if (!config.isBuild) {
-            $.get(name, {}, function(response, status){
+            $.get(parentRequire.toUrl(name), {}, function(response, status){
                 done(View(Handlebars.compile(response)));
             }, "html");
         }

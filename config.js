@@ -1,39 +1,6 @@
 ({
-    baseUrl: 'js',
-
+    mainConfigFile: 'src/js/ventus.js',
     optimizeAllPluginResources: true,
-
-    // To bypass browser cache uncomment this...
-    //urlArgs: "bust=" +  (new Date()).getTime(),
-
-    paths: {
-        'tmpl': 'vendor/require-plugins/tmpl',
-        'less': 'vendor/require-plugins/less',
-        'text': 'vendor/require-plugins/text',
-
-        '$': 'vendor/jquery',
-        'Underscore': 'vendor/underscore'
-    },
-
-    shim: {
-        '$': {
-            'exports': '$'
-        },
-
-        'Underscore': {
-            'exports': '_'
-        }
-    },
-
-    //name: '../vendor/almond',
-    //include: ['build'],
-    name: "bootstrap",
-    out: 'build/ventus.js',
-   	
-   	/*wrap: {
-        start: "(function(exports) {",
-        end: "})();"
-    },*/
 
   	// How to optimize all the JS files in the build output directory.
     // Right now only the following values

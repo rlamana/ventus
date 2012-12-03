@@ -3,7 +3,7 @@ define(function(require) {
 
 	require('less!../../css/window.less');
 
-	var WindowView = require("tmpl!../tmpl/window.tmpl");
+	var WindowView = require("tmpl!../../tmpl/window.tmpl");
 
 	var Emitter = require('core/emitter');
 	var View = require('core/view');

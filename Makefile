@@ -1,26 +1,25 @@
 buildname = ventus
 
 # Set the source directory
-srcdir = js/
-builddir = build/
+srcdir = src/js
+builddir = build
 
 # Less compiler
 #@lessc $< > $(addprefix ${builddir}, $(notdir $@))
-lessfiles = $(wildcard css/*.less)
-cssfile = ${builddir}${buildname}.css
+lessfiles = $(wildcard src/css/*.less)
+cssfile = ${builddir}/${buildname}.css
 
 # Dependencies
-targets = config.js less
+targets = config.js
 
 
-all: ${buildname}.js 
-#${buildname}.min.js
+all: less debug release
 
-${buildname}.js: ${targets}
-	r.js -o config.js optimize=none out=${builddir}${buildname}.js
+debug: ${targets}
+	r.js -o config.js optimize=none out=${builddir}/${buildname}.js
 
-${buildname}.min.js: ${targets}
-	r.js -o config.js out=${builddir}${buildname}.min.js
+release: ${targets}
+	r.js -o config.js out=${builddir}/${buildname}.min.js
 
 less: $(lessfiles:.less=.css)
 	@echo "LESS compiler finished."
@@ -30,11 +29,12 @@ less: $(lessfiles:.less=.css)
 	@lessc $< >> ${cssfile}
 
 clean:
-	rm -f ${builddir}${buildname}.js
-	rm -f ${builddir}${buildname}.min.js
+	rm -f ${builddir}/${buildname}.js
+	rm -f ${builddir}/${buildname}.min.js
 	rm -f ${cssfile}
 
 install:
+	npm install requirejs
 	npm install less
 
 
