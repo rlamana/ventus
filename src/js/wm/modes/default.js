@@ -2,6 +2,10 @@
 define(function(require) {
 	
 	var DefaultMode = {
+		register: function() {
+			console.log("Default mode registered.");
+		},
+
 		plug: function() {
 		},
 

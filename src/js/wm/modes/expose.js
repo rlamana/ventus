@@ -2,6 +2,26 @@
 define(function() {
 
 	var ExposeMode = {
+
+		// Launch when plugin is registered
+		register: function() {
+			var self = this;
+
+			console.log("Expose mode registered.");
+
+			this.el.on('contextmenu', function(event) {
+				// Right click sets expose mode
+				if (self.mode !== 'expose') {
+					self.mode = 'expose';	
+				} else if(self.mode === 'expose') {
+					self.mode = 'default';
+				}
+
+				return false;		
+			});
+		},
+
+		// Lauch when plugin is enabled
 		plug: function() {
 			var floor = Math.floor, ceil = Math.ceil, self = this;
 
@@ -10,6 +30,8 @@ define(function() {
 			var maxHeight = floor(this.el.height() / 2);
 
 			var scale, left, top, pos;
+
+			//this.active && this.active.blur();
 
 			this.el.addClass('expose');
 
@@ -57,6 +79,7 @@ define(function() {
 			});
 		},
 
+		// Lauch when plugin is disabled
 		unplug: function() {
 			var space = this.el;
 			for(var z, win, i=this.windows.length; i--;) {

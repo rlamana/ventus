@@ -19,10 +19,16 @@ function(Window, View, DefaultMode, ExposeMode) {
 		_.each(this.actions, function(value){
 			this[value] = (function(action) {
 				return function() {
-					this.mode.actions[action] && 
-					this.mode.actions[action].apply(this, arguments);
+					this.currentMode.actions[action] && 
+					this.currentMode.actions[action].apply(this, arguments);
 				}
 			}).call(this, value);
+		}, this);
+
+		// Launch register of every mode plugged-in
+		_.each(this.modes, function(mode) {
+			if(mode.register)
+				mode.register.apply(this);
 		}, this);
 
 		this.windows = [];
@@ -53,7 +59,7 @@ function(Window, View, DefaultMode, ExposeMode) {
 
 			// Unplug old system
 			if (this._mode)
-				this.mode['unplug'] && this.mode.unplug.apply(this);
+				this.currentMode['unplug'] && this.currentMode.unplug.apply(this);
 
 			// Plug new mode system
 			mode['plug'] && mode.plug.apply(this);
@@ -62,6 +68,10 @@ function(Window, View, DefaultMode, ExposeMode) {
 		},
 
 		get mode() {
+			return this._mode;
+		},
+
+		get currentMode() {
 			return this.modes[this._mode];
 		},
 

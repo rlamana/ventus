@@ -9,9 +9,16 @@
 		.box-shadow(0px 0px 40px #000088);
 	}
 
-	.wm-window.exposing {
+	.wm-window.active,
+	.wm-window {
 		-webkit-transform: translate3d(0, 0, 0);
 		.transition(top .5s ease-out, left .5s ease-out);
+
+		section.wm-content {
+			.user-select(none);
+		}
 	}
+
+
 }
 
