@@ -1,18 +1,16 @@
 
-define(function(require) {
-
-	require('less!../../css/window.less');
-
-	var WindowView = require("tmpl!../../tmpl/window.tmpl");
-
-	var Emitter = require('core/emitter');
-	var View = require('core/view');
-
+define([
+	'core/emitter',
+	'core/view',
+	'tmpl!../../tmpl/window.tmpl',
+	'less!../../css/window.less'
+], 
+function(Emitter, View, WindowView) {
 
 	var Window = function (options) {
 		this.signals = new Emitter();
 
-		options = options||{
+		options = options || {
 			title: "Untitle Window",
 			width: 400,
 			height: 200,

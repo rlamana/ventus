@@ -1,5 +1,6 @@
-define(function(require) {
-	
+
+define(function() {
+
 	var ExposeMode = {
 		plug: function() {
 			var floor = Math.floor, ceil = Math.ceil, self = this;

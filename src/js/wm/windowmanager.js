@@ -1,15 +1,13 @@
 
-define(function(require) {
-
-	require('less!../../css/windowmanager.less');
-	require('less!../../css/expose.less');
-
-	var Window = require('wm/window');
-	var View = require('core/view');
-
-	var DefaultMode = require('wm/modes/default');
-	var ExposeMode = require('wm/modes/expose');
-
+define([
+	'wm/window',
+	'core/view',
+	'wm/modes/default',
+	'wm/modes/expose',
+	'less!../../css/windowmanager.less',
+	'less!../../css/expose.less'
+], 
+function(Window, View, DefaultMode, ExposeMode) {
 	var WindowManager = function () {
 		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
 		$(document.body).append(this.el);
@@ -51,7 +49,7 @@ define(function(require) {
 
 		set mode(value) {
 			var mode = this.modes[value];
-			if(!mode) return;
+			if(!mode || this._mode === value) return;
 
 			// Unplug old system
 			if (this._mode)

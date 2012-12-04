@@ -1,8 +1,6 @@
-define(function(require) {
-	
-	var $ = require('$');
-	var _ = require('Underscore');
-	
+
+define(['$', 'Underscore'], function($, _) {
+
 	var splitter = /^(?:(.*)\s)?(\w+)$/;
 
 	var transitionEventNames = "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd";
