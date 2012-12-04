@@ -89,9 +89,14 @@ define(function() {
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
 
-				this.el.onTransitionEnd(function(){
-					this.el.removeClass('expose');
-				}, this);
+				var removeTransform = (function(win){
+					return function () {
+						this.el.removeClass('expose');
+						win.el.css('transform', '');
+					}
+				})(win);
+
+				this.el.onTransitionEnd(removeTransform, this);
 				
 				win.movable = true;
 				win.resizable = true;
