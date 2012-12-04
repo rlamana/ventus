@@ -1,11 +1,6 @@
 
-require([
-	'ventus', 
-	'less!../css/normalize.less', 
-	'less!../css/environment.less', 
-	'less!../../example/apps/todo/css/base.less'
-], 
-function(Ventus) {
+require(['ventus'], function(Ventus) {
+	
 	var wm = new Ventus.WindowManager();
 
 	// Terminal App example

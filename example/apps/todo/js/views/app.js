@@ -11,33 +11,28 @@ $(function( $ ) {
 
 		// Instead of generating a new element, bind to the existing skeleton of
 		// the App already present in the HTML.
-		el: '#todoapp',
-
-		// Our template for the line of statistics at the bottom of the app.
-		statsTemplate: _.template( $('#stats-template').html() ),
+		el: '.todo-app',
 
 		// Delegated events for creating new items, and clearing completed ones.
 		events: {
-			'keypress #new-todo': 'createOnEnter',
-			'click #clear-completed': 'clearCompleted',
-			'click #toggle-all': 'toggleAllComplete'
+			'keypress .todo-app-new': 'createOnEnter',
+			'click .todo-app-toggle-all': 'toggleAllComplete'
 		},
 
 		// At initialization we bind to the relevant events on the `Todos`
 		// collection, when items are added or changed. Kick things off by
 		// loading any preexisting todos that might be saved in *localStorage*.
 		initialize: function() {
-			this.input = this.$('#new-todo');
-			this.allCheckbox = this.$('#toggle-all')[0];
-			this.$footer = this.$('#footer');
-			this.$main = this.$('#main');
+			this.input = this.$('.todo-app-new');
+			this.allCheckbox = this.$('.todo-app-toggle-all')[0];
+			this.$main = this.$('.todo-app-main');
 
-			window.app.Todos.on( 'add', this.addOne, this );
-			window.app.Todos.on( 'reset', this.addAll, this );
+			window.app.Todos.on('add', this.addOne, this);
+			window.app.Todos.on('reset', this.addAll, this);
 			window.app.Todos.on('change:completed', this.filterOne, this);
-			window.app.Todos.on("filter", this.filterAll, this);
+			window.app.Todos.on('filter', this.filterAll, this);
 
-			window.app.Todos.on( 'all', this.render, this );
+			window.app.Todos.on('all', this.render, this );
 
 			app.Todos.fetch();
 		},
@@ -50,20 +45,8 @@ $(function( $ ) {
 
 			if ( app.Todos.length ) {
 				this.$main.show();
-				this.$footer.show();
-
-				this.$footer.html(this.statsTemplate({
-					completed: completed,
-					remaining: remaining
-				}));
-
-				this.$('#filters li a')
-					.removeClass('selected')
-					.filter('[href="#/' + ( app.TodoFilter || '' ) + '"]')
-					.addClass('selected');
 			} else {
 				this.$main.hide();
-				this.$footer.hide();
 			}
 
 			this.allCheckbox.checked = !remaining;
@@ -73,12 +56,12 @@ $(function( $ ) {
 		// appending its element to the `<ul>`.
 		addOne: function( todo ) {
 			var view = new app.TodoView({ model: todo });
-			$('#todo-list').append( view.render().el );
+			$('.todo-list').append( view.render().el );
 		},
 
 		// Add all items in the **Todos** collection at once.
 		addAll: function() {
-			this.$('#todo-list').html('');
+			this.$('.todo-list').html('');
 			app.Todos.each(this.addOne, this);
 		},
 
