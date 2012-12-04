@@ -1,4 +1,6 @@
 ({
+    baseUrl: 'src/js',
+    
     mainConfigFile: 'src/js/ventus.js',
     optimizeAllPluginResources: true,
 
