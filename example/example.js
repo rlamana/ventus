@@ -59,20 +59,17 @@ require(['ventus', '$', 'core/promise'], function(Ventus, $, Promise) {
 		$loader.on('webkitAnimationEnd', function() {
 			$loader.hide();
 				loaded.done();
-			
 		});
 	}, 2000);
 
-	// Horrible crap because Promises.all not working properly...
-	terminalLoaded.getFuture().then(function(launcher) {
-		var terminalLaunch = launcher;
-		todoLoaded.getFuture().then(function(launcher) {
-			var todoLaunch = launcher;
-			loaded.getFuture().then(function() {
-				terminalLaunch();
-				todoLaunch();
-			});
-		});
+	Promise.all([terminalLoaded, todoLoaded, loaded]).then(
+	function(terminalLaunch, todoLaunch) {
+		terminalLaunch[0].call();
+
+		// For look & feel reasons..
+		setTimeout(function() {
+			todoLaunch[0].call();
+		}, 200);
 	});
 
 	// For developing purposes

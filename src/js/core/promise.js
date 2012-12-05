@@ -161,6 +161,10 @@
 		if (!futures || !futures.length)
 			return Promise.done();
 
+		futures = futures.map(function(future) {
+			return future.getFuture ? future.getFuture() : future;
+		});
+
 		var promise = new Promise();
 		var values = [];
 
