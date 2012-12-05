@@ -83,8 +83,9 @@
             }
 
             #loading-screen.hide {
-                /*-webkit-transition: all 10s ease-out;*/
                 -webkit-animation: moveout 1.5s .2s ease forwards;
+                -moz-animation: moveout 1.5s .2s ease forwards;
+                animation: moveout 1.5s .2s ease forwards;
             }
 
             /* Out animation */
@@ -92,6 +93,18 @@
                 0% {-webkit-transform: translateX(0);}
                 30% {-webkit-transform: translateX(-10%) scale(.95);}
                 100% {-webkit-transform: translateX(150%) scale(.95);}
+            }
+
+            @-moz-keyframes moveout {
+                0% {-moz-transform: translateX(0);}
+                30% {-moz-transform: translateX(-10%) scale(.95);}
+                100% {-moz-transform: translateX(150%) scale(.95);}
+            }
+
+            @keyframes moveout {
+                0% {transform: translateX(0);}
+                30% {transform: translateX(-10%) scale(.95);}
+                100% {transform: translateX(150%) scale(.95);}
             }
         </style>
     </head>

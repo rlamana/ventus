@@ -56,7 +56,7 @@ require(['ventus', '$', 'core/promise'], function(Ventus, $, Promise) {
 	// Termporal timeout
 	setTimeout(function() {
 		$loader.addClass('hide');
-		$loader.on('webkitAnimationEnd', function() {
+		$loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
 			$loader.hide();
 				loaded.done();
 		});
