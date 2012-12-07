@@ -279,7 +279,7 @@ function(Emitter, View, WindowView) {
 		set height(value) {
 			// This shouldn't be done if flexible box model
 			// worked properly with overflow-y: auto
-			this.$content.height(value - this.$header.outerHeight());
+			//this.$content.height(value - this.$header.outerHeight());
 
 			this.el.height(value);
 		},

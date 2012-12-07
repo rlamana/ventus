@@ -90,19 +90,20 @@
 	.box-shadow(0 0px 20px rgba(0, 0, 0, 0.6));
 
 	.wm-window-box {
+		.display(flex);
+		.flex-flow(column);
+
 		height: 100%;
 		min-height: @minheight;
 		width: 100%;
 	
 		header.wm-window-title {
-			min-height: 17px;
-			height: 17px;
 			padding: 4px 0;
+			height: 17px;
 
 			background-color: @bgdisabled;
 			border: 0;
 			
-
 			overflow: hidden;
 
 			h1 {
@@ -158,6 +159,7 @@
 
 		section.wm-content {
 			display: block;
+			.flex(1);
 
 			min-height: @minheight;
 

@@ -5,36 +5,8 @@
 //  MIT Licensed:
 //  http://www.opensource.org/licenses/mit-license.php
 
-
-// Outdated 2009 W3C Draft Flexible Box Model
-
-.box-orient(@value) {
-  box-orient: @value;
-  -webkit-box-orient: @value;
-  -moz-box-orient: @value;
-  -ms-box-orient: @value;
-  -o-box-orient: @value;
-}
-
-.box-flex(@value) {
-  box-flex: @value;
-  -webkit-box-flex: @value;
-  -moz-box-flex: @value;
-  -ms-box-flex: @value;
-  -o-box-flex: @value;
-}
-
-.display(@value) {
-  display: @value;
-}
-
-.display(@value) when (@value = box) {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-box;
-  display: -o-box;
-  display: box;
-}
+// Flexible Box Layout
+@import "flex.prefix.less";
 
 
 // User Select
