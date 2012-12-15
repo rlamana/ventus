@@ -72,11 +72,12 @@
 @minheight: 50px;
 
 .wm-window {
+	opacity: 0.98;
+	display: none;
+
 	@radius: 4px;
 
 	.user-select(none);
-
-	opacity: 0.98;
 
 	overflow: hidden;
 
@@ -218,7 +219,7 @@
 }
 
 .wm-window.opening {
-	.animation(appear 0.4s 1 ease-out);
+	.animation(appear 0.4s 1 ease-out forwards);
 }
 
 .wm-window.resizing {

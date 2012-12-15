@@ -10,7 +10,7 @@ define([
 function(Window, View, DefaultMode, ExposeMode) {
 	var WindowManager = function () {
 		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
-		$(document.body).append(this.el);
+		$(document.body).prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
 		this.$overlay.css('z-index', this._baseZ-1);
@@ -35,6 +35,10 @@ function(Window, View, DefaultMode, ExposeMode) {
 		this.active = null;
 
 		this.mode = 'default';
+
+		// Binding sub-functions to this object
+		this.createWindow.fromQuery = this.createWindow.fromQuery.bind(this);
+		this.createWindow.fromElement = this.createWindow.fromElement.bind(this);
 	};
 
 	WindowManager.prototype = {
@@ -168,6 +172,16 @@ function(Window, View, DefaultMode, ExposeMode) {
 					this.active.focus();
 			}		
 		}
+	};
+
+	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
+		options.content = View(selector);
+		return this.createWindow(options);
+	};
+
+	WindowManager.prototype.createWindow.fromElement = function(element, options) {
+		options.content = View(element);
+		return this.createWindow(options);
 	};
 
 	return WindowManager;

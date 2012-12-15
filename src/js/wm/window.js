@@ -40,12 +40,7 @@ function(Emitter, View, WindowView) {
 		this.y = options.y || 0;
 		this.z = 10000;
 
-		// Open animation
-		this.el.addClass('opening');
-		this.el.onAnimationEnd(function(){
-			this.el.removeClass('opening');
-		}, this);
-
+		this.opened = false;
 		this.enabled = true;
 		this.active = false;
 		this.closed = false;
@@ -268,6 +263,26 @@ function(Emitter, View, WindowView) {
 			return this._closed;
 		},
 
+		set opened (value) {
+			var self = this;
+			if(value) {
+				this.signals.emit('open', this);
+
+				// Open animation
+				this.el.css('display', 'block');
+				this.el.addClass('opening');
+				this.el.onAnimationEnd(function(){
+					this.el.removeClass('opening');
+				}, this);
+			}
+
+			this._opened = value;
+		},
+
+		get opened() {
+			return this._opened;
+		},
+
 		set width(value) {
 			this.el.width(value);
 		},
@@ -310,6 +325,10 @@ function(Emitter, View, WindowView) {
 
 		get z() {
 			return parseInt(this.el.css('z-index'));
+		},
+
+		open: function() {
+			this.opened = true;
 		},
 
 		resize: function(w, h) {
