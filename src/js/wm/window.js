@@ -251,10 +251,10 @@ function(Emitter, View, WindowView) {
 				this.el.onAnimationEnd(function(){
 					this.el.removeClass('closing');
 					this.el.addClass('closed');
+					this.el.hide();
 				}, this);
 
 				//this.detachContent(); @todo implement this function and attachContent();
-				
 			}
 
 			this._closed = value;
@@ -270,7 +270,7 @@ function(Emitter, View, WindowView) {
 				this.signals.emit('open', this);
 
 				// Open animation
-				this.el.css('display', 'block');
+				this.el.show();
 				this.el.addClass('opening');
 				this.el.onAnimationEnd(function(){
 					this.el.removeClass('opening');

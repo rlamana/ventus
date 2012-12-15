@@ -12,7 +12,6 @@ cssfile = ${builddir}/${buildname}.css
 # Dependencies
 targets = config.js
 
-
 all: less debug release
 
 debug: ${targets}
