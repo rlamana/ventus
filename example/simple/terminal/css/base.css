@@ -1,8 +1,13 @@
+.terminal-window {
+	background-color: #111 !important;
+}
+
 .terminusjs {
 	font-family: 'Ubuntu Mono', monospaced !important;
-	font-size: .9em;
+	font-size: 15px;
 
-	height: 100% !important;
+	width: 100%;
+
 	background: url(../img/logo.png) no-repeat -100 -100; /* Preload logo image*/
 	margin: 0;
 	padding: 0px 18px;

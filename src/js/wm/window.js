@@ -21,7 +21,8 @@ function(Emitter, View, WindowView) {
 
 		// View
 		this.el = WindowView({
-			title: options.title
+			title: options.title,
+			classname: options.classname||''
 		});
 		this.el.listen(this.events.window, this); 
 
