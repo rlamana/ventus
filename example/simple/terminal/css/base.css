@@ -1,10 +1,13 @@
 .terminusjs {
+	font-family: 'Ubuntu Mono', monospaced !important;
+	font-size: .9em;
+
 	height: 100% !important;
 	background: url(../img/logo.png) no-repeat -100 -100; /* Preload logo image*/
 	margin: 0;
 	padding: 0px 18px;
 	background-color: #111;
-	font-family: 'Ubuntu Mono', monospace;
+
 	font-weight: 400;
 	color: #ddd;
 }

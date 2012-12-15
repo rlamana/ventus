@@ -10,8 +10,8 @@
         <meta name="viewport" content="width=device-width">
 
         <link href='css/normalize.css' rel='stylesheet' type='text/css' />
-        <link href='css/simple.css' rel='stylesheet' type='text/css' />
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,300,400,700,800" rel="stylesheet" type="text/css" />
+        <link href='css/example.css' rel='stylesheet' type='text/css' />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
 
         <!-- TodoMVC App styles -->
         <link href='todo/css/base.css' rel='stylesheet' type='text/css' />
@@ -21,12 +21,12 @@
         <link href='terminal/css/base.css' rel='stylesheet' type='text/css' />
         <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     </head>
-    <body>
+    <body unselectable="on">
         <!--[if lt IE 8]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-        <div class="apps" style="display:none">
+        <div class="apps" style="display:none" unselectable="on">
             <!-- TodoMVC App example with Backbone -->
 
             <div class="todo-app">
@@ -69,27 +69,28 @@
             <script type="text/javascript" src="terminal/terminus.min.js"></script>
             <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
             <script type="text/javascript">
-                var terminus = new Terminus('.terminal-app', {
-                    welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
-                });
+                $(document).ready(function(){
+                    var terminus = new Terminus('.terminal-app', {
+                        welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
+                    });
 
-                terminus.shell.include([TestCommands]);
+                    terminus.shell.include([TestCommands]);
+                });
             </script>
         </div>
 
         <!-- Ventus Loader Screen -->
 
-        <!-- <div id="loading-screen">
+        <div id="loading-screen" unselectable="on">
             <section>
                 <div class="content">
                     <header>
                         <h1>Ventus</h1>
-                        <h2>The CSS3 Window Manager Experiment</h2>
                     </header>
                     <p><img src="img/loader.gif" /> Loading...</p>
                 </div>
             </section>
-        </div>-->
+        </div>
 
         <script type="text/javascript" src="../../src/js/vendor/modernizr.js"></script>
         <script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
@@ -119,11 +120,18 @@
                     y: 150
                 });
 
-                terminalWin.open();
-                // For look & feel reasons..
+                // Hide loader when loaded
+                var loader = $("#loading-screen");
                 setTimeout(function() {
-                   todoWin.open();
-                }, 200);
+                    loader.addClass('hide');
+                    loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
+                        loader.hide();
+
+                        // Open windows
+                        terminalWin.open();
+                        setTimeout(function(){todoWin.open();}, 200); // For look & feel reasons
+                    });
+                }, 2000);
             });
 
         </script>

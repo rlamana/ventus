@@ -203,7 +203,7 @@
 		}
 	}
 
-	section.wm-content {
+	.wm-content {
 		.user-select(all);
 	}
 }
@@ -228,6 +228,10 @@
 
 .wm-window.move {
 	.animation(wobbly 0.5s 0.2s infinite);
+
+	* {
+		.user-select(none);
+	}
 }
 
 .wm-window.closed {
