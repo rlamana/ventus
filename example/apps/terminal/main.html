@@ -6,15 +6,16 @@
 		global.Apps = global.Apps || {};
 		global.Apps.Terminal = {
 			main: function(element) {
-				var shell, display;
-
-				var shell = new Terminus.Shell();
-				shell.include(TestCommands);
-			
-				display = new Terminus.Display(element, {
-					welcome: "<img src='apps/terminal/images/logo.png'/><p style='margin-top: 0; padding-top: 0'>Terminus.js "+Terminus.version+"<br/>Copyright 2011-2012 Ramón Lamana.</p>",
-					shell: shell
+				var terminus = new Terminus(element, {
+					welcome: "<div class='identity'><img src='apps/terminal/images/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2011-2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
 				});
+
+				terminus.shell.include([TestCommands, {
+					hello: function() {
+						this.write('<span style="color:blue">Hello World!</span>', 'web');
+						this.exit(0);
+					}
+				}]);
 			}
 		};
 	})(window, jQuery);
