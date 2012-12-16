@@ -2,7 +2,10 @@
  * Ventus example
  * Copyright © 2012 Ramón Lamana
  */
-require(['ventus', '$', 'core/promise'], 
+require({
+    baseUrl: '../../src/js'
+}, 
+['ventus', '$', 'core/promise'], 
     function(Ventus, $, Promise) {
         var wm = new Ventus.WindowManager();
 
@@ -49,17 +52,24 @@ require(['ventus', '$', 'core/promise'],
 
         // Hide loader when loaded
         var loader = $("#loading-screen");
-        setTimeout(function() {
-            loader.addClass('hide');
-            loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
-                loader.hide();
 
-                // Open windows
-                terminalWin.open();
-                setTimeout(function(){todoWin.open();}, 200); // For look & feel reasons
-                setTimeout(function(){aboutWin.open();}, 400);
-                setTimeout(function(){playerWin.open()}, 600);
-                
+        // For look & feel reasons
+        function openWithDelay(win, delay) {
+            setTimeout(function(){win.open();}, delay);
+        }
+
+        setTimeout(function() {
+            $(document).ready(function() {
+                loader.addClass('hide');
+                loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
+                    loader.hide();
+
+                    // Open windows
+                    openWithDelay(terminalWin, 0);
+                    openWithDelay(todoWin, 200);
+                    openWithDelay(aboutWin, 400);
+                    openWithDelay(playerWin, 600);   
+                });
             });
         }, 2000);
 
