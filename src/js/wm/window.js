@@ -198,10 +198,12 @@ function(Emitter, View, WindowView) {
 			if(value) {
 				this.signals.emit('focus', this);
 				this.el.addClass('active');
+				this.el.removeClass('inactive');
 			} 
 			else {
 				this.signals.emit('blur', this);
 				this.el.removeClass('active');
+				this.el.addClass('inactive');
 			}
 
 			this._active = value;
