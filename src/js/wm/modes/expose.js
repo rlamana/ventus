@@ -31,8 +31,6 @@ define(['less!../../../css/expose.less'],function() {
 
 			var scale, left, top, pos;
 
-			//this.active && this.active.blur();
-
 			this.el.addClass('expose');
 
 			for(var z, win, i=0, len=this.windows.length; i<len; i++) {
@@ -61,7 +59,6 @@ define(['less!../../../css/expose.less'],function() {
 
 				win.enabled = false;
 				win.movable = false;
-				win.resizable = false;
 
 				win.el.addClass('exposing');
 				win.el.css('transform-origin', '0 0');
@@ -99,7 +96,6 @@ define(['less!../../../css/expose.less'],function() {
 				this.el.onTransitionEnd(removeTransform, this);
 				
 				win.movable = true;
-				win.resizable = true;
 				win.enabled = true;
 			}
 

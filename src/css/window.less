@@ -90,6 +90,10 @@
 	.border-radius(0 0 @radius @radius);
 	.box-shadow(0 0px 20px rgba(0, 0, 0, 0.6));
 
+	.wm-window-overlay {
+		display: none;
+	}
+
 	.wm-window-box {
 		.display(flex);
 		.flex-flow(column);
@@ -187,9 +191,31 @@
 			width: 10px;
 		}
 	}
-	
+
 	* {
 		.user-select(none);
+	}
+}
+
+.wm-window.disabled {
+	* {
+		.user-select(none);
+	}
+
+	.wm-window-overlay {
+		display: block;
+
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+
+		background: black;
+		opacity: 0;
+
+		z-index: 30000;
 	}
 }
 
@@ -215,6 +241,25 @@
 
 	* {
 		.user-select(all);
+	}
+}
+
+.wm-window.noresizable {
+	.wm-window-box {
+		header.wm-window-title {
+			button.wm-maximize,
+			button.wm-minimize {
+				display: none;
+			}
+		}
+	
+		section.wm-content  {
+			overflow-y: hidden;
+		}
+
+		button.wm-resize {
+			display: none;
+		}
 	}
 }
 

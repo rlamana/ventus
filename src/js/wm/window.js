@@ -16,7 +16,8 @@ function(Emitter, View, WindowView) {
 			height: 200,
 			x: 0,
 			y: 0,
-			content: ''
+			content: '',
+			resizable: true
 		};
 
 		// View
@@ -49,7 +50,9 @@ function(Emitter, View, WindowView) {
 		this.minimized = false;
 
 		this.movable = true;
-		this.resizable = true;
+		this.resizable = (typeof options.resizable !== 'undefined') ? 
+			options.resizable :
+			true;
 	};
 
 	Window.prototype = {
@@ -64,15 +67,19 @@ function(Emitter, View, WindowView) {
 				},
 
 				'mousedown': function(e) {
-					this.enabled && this.focus();
+					this.focus();
+				},
+
+				'.wm-content click': function(e) {
+					this.enabled && this.signals.emit('click', this, e);
 				},
 
 				'.wm-window-title mousedown': function(e) {
 					if(!this.enabled || !this.movable) return;
 
 					this._moving = this.toLocal({
-						x: e.clientX || e.originalEvent.pageX,
-						y: e.clientY || e.originalEvent.pageY
+						x: e.originalEvent.pageX,
+						y: e.originalEvent.pageY
 					});
 
 					this.el.addClass('move');
@@ -81,7 +88,7 @@ function(Emitter, View, WindowView) {
 				},
 
 				'.wm-window-title dblclick': function(e) {
-					this.enabled && this.maximize();
+					(this.enabled && this.resizable) && this.maximize();
 				},
 
 				'.wm-window-title button.wm-close click': function(e) {
@@ -95,7 +102,7 @@ function(Emitter, View, WindowView) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					this.enabled && this.maximize();
+					(this.enabled && this.resizable) && this.maximize();
 				},
 
 				'.wm-window-title button.wm-minimize click': function(e) {
@@ -111,11 +118,11 @@ function(Emitter, View, WindowView) {
 				},
 
 				'button.wm-resize mousedown': function(e) {
-					if(!this.enabled || !this.movable) return;
+					if(!this.enabled || !this.resizable) return;
 
 					this._resizing = {
-						width: this.width - (e.clientX || e.originalEvent.pageX),
-						height: this.height - (e.clientY || e.originalEvent.pageY)
+						width: this.width - e.originalEvent.pageX,
+						height: this.height - e.originalEvent.pageY
 					};
 
 					this.el.addClass('resizing');
@@ -127,13 +134,13 @@ function(Emitter, View, WindowView) {
 			space: {
 				'mousemove': function(e) {
 					this._moving && this.move(
-						(e.clientX || e.originalEvent.pageX) - this._moving.x,
-						(e.clientY || e.originalEvent.pageY) - this._moving.y
+						e.originalEvent.pageX - this._moving.x,
+						e.originalEvent.pageY - this._moving.y
 					);
 					
 					this._resizing && this.resize(
-						(e.clientX || e.originalEvent.pageX) + this._resizing.width,
-						(e.clientY || e.originalEvent.pageY) + this._resizing.height 
+						e.originalEvent.pageX + this._resizing.width,
+						e.originalEvent.pageY + this._resizing.height 
 					);
 				},
 
@@ -241,6 +248,13 @@ function(Emitter, View, WindowView) {
 		},
 
 		set resizable(value) {
+			if(!value) {
+				this.el.addClass('noresizable');
+			} 
+			else {
+				this.el.removeClass('noresizable');
+			}
+
 			this._resizable = !!value;
 		},
 
@@ -258,9 +272,10 @@ function(Emitter, View, WindowView) {
 					this.el.removeClass('closing');
 					this.el.addClass('closed');
 					this.el.hide();
-				}, this);
 
-				//this.detachContent(); @todo implement this function and attachContent();
+					// Remove element
+					this.$content.html('');
+				}, this);
 			}
 
 			this._closed = value;
