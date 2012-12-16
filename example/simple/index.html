@@ -70,13 +70,11 @@
             <script type="text/javascript" src="terminal/terminus.min.js"></script>
             <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
             <script type="text/javascript">
-                $(document).ready(function(){
-                    var terminus = new Terminus('.terminal-app', {
-                        welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
-                    });
-
-                    terminus.shell.include([TestCommands]);
+                var terminus = new Terminus('.terminal-app', {
+                    welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
                 });
+
+                terminus.shell.include([TestCommands]);
             </script>
         </div>
 
@@ -113,6 +111,10 @@
                     x: 60,
                     y: 60
                 });
+
+                terminalWin.signals.on('select', function(){
+                    terminus.display.focus();
+                })
 
                 var todoWin = wm.createWindow.fromQuery('.todo-app', {
                     title: 'Todo',
