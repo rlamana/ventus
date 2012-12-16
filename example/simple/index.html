@@ -103,6 +103,8 @@
             require(['ventus', '$', 'core/promise'], function(Ventus, $, Promise) {
                 var wm = new Ventus.WindowManager();
 
+                window.wm = wm; // For debugging reasons
+
                 var terminalWin = wm.createWindow.fromQuery('.terminal-app', {
                     title: 'Terminal',
                     classname: 'terminal-window',
@@ -139,6 +141,5 @@
             });
 
         </script>
-        <!--<script type="text/javascript" src="example.js"></script>-->
     </body>
 </html>

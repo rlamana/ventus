@@ -1,5 +1,5 @@
 
-define(function() {
+define(['less!../../../css/expose.less'],function() {
 
 	var ExposeMode = {
 

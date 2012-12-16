@@ -1,5 +1,5 @@
 
-define(function(require) {
+define(['less!../../../css/windowmanager.less'], function() {
 	
 	var DefaultMode = {
 		register: function() {

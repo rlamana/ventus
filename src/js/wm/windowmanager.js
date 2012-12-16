@@ -4,10 +4,9 @@ define([
 	'core/view',
 	'wm/modes/default',
 	'wm/modes/expose',
-	'less!../../css/windowmanager.less',
-	'less!../../css/expose.less'
+	'wm/modes/fullscreen'
 ], 
-function(Window, View, DefaultMode, ExposeMode) {
+function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	var WindowManager = function () {
 		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
 		$(document.body).prepend(this.el);
@@ -54,7 +53,8 @@ function(Window, View, DefaultMode, ExposeMode) {
 
 		modes: {
 			'default': DefaultMode,
-			'expose': ExposeMode
+			'expose': ExposeMode,
+			'fullscreen': FullscreenMode
 		},
 
 		set mode(value) {
