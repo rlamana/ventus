@@ -32,6 +32,15 @@ define(['$', 'Underscore'], function($, _) {
 				var selector = data[1];
 				var event = data[2];
 
+				if (event === 'mousedown')
+					event += ' touchstart';
+				else if (event === 'mousemove')
+					event += ' touchmove';
+				else if (event === 'mouseup')
+					event += ' touchend';
+				else if (event === 'click')
+					event += ' touchend';
+
 				if (typeof handler === 'string')
 					handler = scope[handler];
 

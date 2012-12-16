@@ -71,11 +71,13 @@ function(Emitter, View, WindowView) {
 					if(!this.enabled || !this.movable) return;
 
 					this._moving = this.toLocal({
-						x: e.clientX,
-						y: e.clientY
+						x: e.clientX || e.originalEvent.pageX,
+						y: e.clientY || e.originalEvent.pageY
 					});
 
 					this.el.addClass('move');
+
+					e.preventDefault();
 				},
 
 				'.wm-window-title dblclick': function(e) {
@@ -112,24 +114,26 @@ function(Emitter, View, WindowView) {
 					if(!this.enabled || !this.movable) return;
 
 					this._resizing = {
-						width: this.width - e.clientX,
-						height: this.height - e.clientY
+						width: this.width - (e.clientX || e.originalEvent.pageX),
+						height: this.height - (e.clientY || e.originalEvent.pageY)
 					};
 
 					this.el.addClass('resizing');
+
+					e.preventDefault();
 				}
 			},
 
 			space: {
 				'mousemove': function(e) {
 					this._moving && this.move(
-						e.clientX - this._moving.x,
-						e.clientY - this._moving.y
+						(e.clientX || e.originalEvent.pageX) - this._moving.x,
+						(e.clientY || e.originalEvent.pageY) - this._moving.y
 					);
 					
 					this._resizing && this.resize(
-						e.clientX + this._resizing.width,
-						e.clientY + this._resizing.height 
+						(e.clientX || e.originalEvent.pageX) + this._resizing.width,
+						(e.clientY || e.originalEvent.pageY) + this._resizing.height 
 					);
 				},
 
