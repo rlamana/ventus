@@ -1,4 +1,7 @@
-
+/**
+ * Ventus
+ * Copyright © 2012 Ramón Lamana
+ */
 define(['less!../../../css/expose.less'],function() {
 
 	var ExposeMode = {

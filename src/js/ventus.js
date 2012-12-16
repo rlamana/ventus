@@ -1,4 +1,7 @@
-
+/**
+ * Ventus
+ * Copyright © 2012 Ramón Lamana
+ */
 requirejs.config({
 	// To bypass browser cache uncomment this...
 	//urlArgs: "bust=" +  (new Date()).getTime(),

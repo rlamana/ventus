@@ -1,4 +1,7 @@
-
+/**
+ * Ventus
+ * Copyright © 2012 Ramón Lamana
+ */
 define([
 	'wm/window',
 	'core/view',
