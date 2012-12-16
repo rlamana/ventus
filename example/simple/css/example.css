@@ -101,3 +101,10 @@ body {
 	30% {transform: translateX(-10%) scale(.95);}
 	100% {transform: translateX(150%) scale(.95);}
 }
+
+/* Player Window */
+
+.player-window {
+	background-color: black;
+}
+

@@ -21,6 +21,10 @@
         <link href='terminal/css/base.css' rel='stylesheet' type='text/css' />
         <link href='terminal/css/terminus.css' rel='stylesheet' type='text/css' />
         <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+
+        <!-- Video App -->
+        <link href="player/video-js.css" rel="stylesheet" type='text/css' />
+        <script src="player/video.js"></script>
     </head>
     <body unselectable="on">
         <!--[if lt IE 8]>
@@ -76,7 +80,15 @@
 
                 terminus.shell.include([TestCommands]);
             </script>
-        </div>
+       
+
+            <!-- Video Player App -->
+            <div class="player-app">
+                <video class="video-js vjs-default-skin" controls preload="auto" width="635" height="264" poster="player/oceans-clip.jpg" data-setup="{}">
+                    <source src="player/oceans-clip.mp4" type='video/mp4'>
+                </video>
+            </div>
+         </div>
 
         <!-- Ventus Loader Screen -->
 
@@ -114,9 +126,9 @@
                     y: 60
                 });
 
-                terminalWin.signals.on('select', function(){
+                terminalWin.signals.on('click', function(win){
                     terminus.display.focus();
-                })
+                });
 
                 var todoWin = wm.createWindow.fromQuery('.todo-app', {
                     title: 'Todo',
@@ -124,6 +136,16 @@
                     height: 400,
                     x: 500,
                     y: 150
+                });
+
+                var playerWin = wm.createWindow.fromQuery('.player-app', {
+                    title: 'Video Player',
+                    classname: 'player-window',
+                    width: 635,
+                    height: 289,
+                    x: 700,
+                    y: 350,
+                    resizable: false
                 });
 
                 // Hide loader when loaded
@@ -136,6 +158,7 @@
                         // Open windows
                         terminalWin.open();
                         setTimeout(function(){todoWin.open();}, 200); // For look & feel reasons
+                        setTimeout(function(){playerWin.open();}, 400); // For look & feel reasons
                     });
                 }, 2000);
             });
