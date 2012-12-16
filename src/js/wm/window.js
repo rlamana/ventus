@@ -351,6 +351,7 @@ function(Emitter, View, WindowView) {
 
 		open: function() {
 			this.opened = true;
+			return this;
 		},
 
 		resize: function(w, h) {

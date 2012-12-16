@@ -88,6 +88,23 @@
                     <source src="player/oceans-clip.mp4" type='video/mp4'>
                 </video>
             </div>
+
+            <!-- About App -->
+            <div class="about-app">
+                <h1>Ventus</h1>
+                <h2>HTML5 & CSS3 Window Manager Experiment</h2> 
+
+                <button class="expose-button">Try Exposé</button>
+                <p>or <strong>right-click</strong> to activate it</p>
+
+                <div class="copyright">
+                    <p>Copyright (c) 2012 Ramón Lamana</p>
+                    <p class="vendor">
+                        Basejs by A. Matías Quezada.<br/>
+                        Video.js by Steve Heffernan and Zencoder Inc.
+                    </p>
+                </div>
+            </div>
          </div>
 
         <!-- Ventus Loader Screen -->
@@ -122,7 +139,7 @@
                     classname: 'terminal-window',
                     width: 600,
                     height: 300,
-                    x: 60,
+                    x: 50,
                     y: 60
                 });
 
@@ -134,8 +151,8 @@
                     title: 'Todo',
                     width: 330,
                     height: 400,
-                    x: 500,
-                    y: 150
+                    x: 380,
+                    y: 120
                 });
 
                 var playerWin = wm.createWindow.fromQuery('.player-app', {
@@ -143,9 +160,17 @@
                     classname: 'player-window',
                     width: 635,
                     height: 289,
-                    x: 700,
-                    y: 350,
+                    x: 500,
+                    y: 320,
                     resizable: false
+                });
+
+                var aboutWin = wm.createWindow.fromQuery('.about-app', {
+                    title: 'About Ventus',
+                    width: 250,
+                    height: 280,
+                    x: 780,
+                    y: 20
                 });
 
                 // Hide loader when loaded
@@ -158,9 +183,17 @@
                         // Open windows
                         terminalWin.open();
                         setTimeout(function(){todoWin.open();}, 200); // For look & feel reasons
-                        setTimeout(function(){playerWin.open();}, 400); // For look & feel reasons
+                        setTimeout(function(){aboutWin.open();}, 400);
+                        setTimeout(function(){playerWin.open().focus();}, 600);
+                        
                     });
                 }, 2000);
+
+                // Exposé test button
+                $(".expose-button").click(function(){
+                    wm.mode = 'expose';
+                    return false;
+                });
             });
 
         </script>
