@@ -12,8 +12,7 @@ requirejs.config({
         'text': 'vendor/require-plugins/text',
 
 		'$': 'vendor/jquery',
-		'Underscore': 'vendor/underscore',
-		'domready': 'vendor/domready'
+		'Underscore': 'vendor/underscore'
 	},
 
 	shim: {
@@ -23,10 +22,6 @@ requirejs.config({
 
 		'Underscore': {
 			'exports': '_'
-		},
-
-		'domready': {
-			'exports': 'domready'
 		}
 	}
 });	

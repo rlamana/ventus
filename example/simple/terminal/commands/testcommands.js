@@ -2,7 +2,7 @@
  * Copyright © 2012 Ramón Lamana
  */
  
-(function(global, Terminus) {
+(function(global) {
 
 	'use strict';
 
@@ -37,6 +37,11 @@
 
 	};
 
-	global.TestCommands = TestCommands;
-
-})( window, window.Terminus );
+	if (typeof module !== 'undefined' && module.exports)
+		module.exports = TestCommands;
+	else if (typeof define !== 'undefined' && define.amd)
+		define(function() { return TestCommands });
+	else
+		global.TestCommands = TestCommands;
+	
+})(this);

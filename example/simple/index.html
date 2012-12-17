@@ -27,6 +27,7 @@
         <script src="player/video.js"></script>
 
         <script type="text/javascript" src="../../src/js/vendor/modernizr.js"></script>
+        <script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
     </head>
     <body unselectable="on">
         <!--[if lt IE 8]>
@@ -56,35 +57,12 @@
                 <input class="edit" value="<%- title %>">
             </script>
 
-            <script src="todo/vendor/jquery.js"></script>
-            <script src="todo/vendor/lodash.js"></script>
-
-            <script src="todo/js/lib/backbone-min.js"></script>
-            <script src="todo/js/lib/backbone-localstorage.js"></script>
-            <script src="todo/js/models/todo.js"></script>
-            <script src="todo/js/collections/todos.js"></script>
-            <script src="todo/js/views/todos.js"></script>
-            <script src="todo/js/views/app.js"></script>
-            <script src="todo/js/routers/router.js"></script>
-            <script src="todo/js/app.js"></script>
-
-
             <!-- Terminus App example -->
 
             <div class="terminal-app"></div>
-
-            <script type="text/javascript" src="terminal/terminus.min.js"></script>
-            <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
-            <script type="text/javascript">
-                var terminus = new Terminus('.terminal-app', {
-                    welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
-                });
-
-                terminus.shell.include([TestCommands]);
-            </script>
-       
-
+            
             <!-- Video Player App -->
+
             <div class="player-app">
                 <video class="video-js vjs-default-skin" controls preload="auto" width="635" height="264" poster="player/oceans-clip.jpg" data-setup="{}">
                     <source src="player/oceans-clip.mp4" type='video/mp4'>
@@ -122,7 +100,7 @@
             </section>
         </div>
 
-        <script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
+        <!-- Ventus -->
         <script type="text/javascript" src="../../src/js/config.js"></script>
         <script type="text/javascript" src="example.js"></script>
 

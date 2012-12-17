@@ -5,60 +5,66 @@
 require({
     baseUrl: '../../src/js'
 }, 
-['ventus', '$', 'domready'], 
-function(Ventus, $, domready) {
-    var wm = new Ventus.WindowManager();
+[
+    'ventus', 
+    '$',
+    '../../example/simple/terminal/main',
+    '../../example/simple/todo/main'    
+    
+], function(Ventus, $, terminalApp, todoApp) {
+    $(document).ready(function() {
+        var wm = new Ventus.WindowManager();
 
-    window.wm = wm; // For debugging reasons
+        window.wm = wm; // For debugging reasons
 
-    var terminalWin = wm.createWindow.fromQuery('.terminal-app', {
-        title: 'Terminal',
-        classname: 'terminal-window',
-        width: 600,
-        height: 300,
-        x: 50,
-        y: 60
-    });
+        var terminalWin = wm.createWindow.fromQuery('.terminal-app', {
+            title: 'Terminal',
+            classname: 'terminal-window',
+            width: 600,
+            height: 300,
+            x: 50,
+            y: 60
+        });
 
-    terminalWin.signals.on('click', function(win){
-        terminus.display.focus();
-    });
+        terminalWin.signals.on('click', function(win){
+            //terminalApp.display.focus();
+        });
 
-    var todoWin = wm.createWindow.fromQuery('.todo-app', {
-        title: 'Todo',
-        width: 330,
-        height: 400,
-        x: 670,
-        y: 60
-    });
+        var todoWin = wm.createWindow.fromQuery('.todo-app', {
+            title: 'Todo',
+            width: 330,
+            height: 400,
+            x: 670,
+            y: 60
+        });
 
-    var playerWin = wm.createWindow.fromQuery('.player-app', {
-        title: 'Video Player',
-        classname: 'player-window',
-        width: 635,
-        height: 289,
-        x: 490,
-        y: 320,
-        resizable: false
-    });
+        var playerWin = wm.createWindow.fromQuery('.player-app', {
+            title: 'Video Player',
+            classname: 'player-window',
+            width: 635,
+            height: 289,
+            x: 490,
+            y: 320,
+            resizable: false
+        });
 
-    var aboutWin = wm.createWindow.fromQuery('.about-app', {
-        title: 'About Ventus',
-        width: 250,
-        height: 280,
-        x: 140,
-        y: 380
-    });
+        var aboutWin = wm.createWindow.fromQuery('.about-app', {
+            title: 'About Ventus',
+            width: 250,
+            height: 280,
+            x: 140,
+            y: 380
+        });
 
-    // Hide loader when loaded
-    var loader = $("#loading-screen");
+        // Hide loader when loaded
+        var loader = $("#loading-screen");
 
-    // For look & feel reasons
-    function openWithDelay(win, delay) {
-        setTimeout(function(){win.open();}, delay);
-    }
+        // For look & feel reasons
+        function openWithDelay(win, delay) {
+            setTimeout(function(){win.open();}, delay);
+        }
 
-    //domready(function() {
+        
         setTimeout(function() {
             loader.addClass('hide');
             loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
@@ -71,11 +77,12 @@ function(Ventus, $, domready) {
                 openWithDelay(playerWin, 600);   
             });
         }, 2000);
-    //});
+        
 
-    // Exposé test button
-    $(".expose-button").click(function(){
-        wm.mode = 'expose';
-        return false;
+        // Exposé test button
+        $(".expose-button").click(function(){
+            wm.mode = 'expose';
+            return false;
+        });
     });
 });

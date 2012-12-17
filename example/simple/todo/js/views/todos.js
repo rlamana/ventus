@@ -1,14 +1,11 @@
-var app = app || {};
+define([
+	'$',
+	'underscore',
+	'backbone',
+	'common'
+], function( $, _, Backbone, Common ) {
 
-$(function() {
-	'use strict';
-
-	// Todo Item View
-	// --------------
-
-	// The DOM element for a todo item...
-	app.TodoView = Backbone.View.extend({
-
+	var TodoView = Backbone.View.extend({
 		//... is a list tag.
 		tagName:  'li',
 
@@ -50,8 +47,8 @@ $(function() {
 		isHidden : function () {
 			var isCompleted = this.model.get('completed');
 			return ( // hidden cases only
-				(!isCompleted && app.TodoFilter === 'completed')
-				|| (isCompleted && app.TodoFilter === 'active')
+				(!isCompleted && Common.TodoFilter === 'completed')
+				|| (isCompleted && Common.TodoFilter === 'active')
 			);
 		},
 
@@ -81,7 +78,7 @@ $(function() {
 
 		// If you hit `enter`, we're through editing the item.
 		updateOnEnter: function( e ) {
-			if ( e.which === ENTER_KEY ) {
+			if ( e.which === Common.ENTER_KEY ) {
 				this.close();
 			}
 		},
@@ -91,4 +88,6 @@ $(function() {
 			this.model.destroy();
 		}
 	});
+
+	return TodoView;
 });

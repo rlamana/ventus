@@ -1,14 +1,9 @@
-var app = app || {};
+define([
+	'underscore',
+	'backbone'
+], function( _, Backbone ) {
 
-(function() {
-	'use strict';
-
-	// Todo Model
-	// ----------
-
-	// Our basic **Todo** model has `title`, `order`, and `completed` attributes.
-	app.Todo = Backbone.Model.extend({
-
+	var TodoModel = Backbone.Model.extend({
 		// Default attributes for the todo
 		// and ensure that each todo created has `title` and `completed` keys.
 		defaults: {
@@ -22,7 +17,7 @@ var app = app || {};
 				completed: !this.get('completed')
 			});
 		}
-
 	});
 
-}());
+	return TodoModel;
+});

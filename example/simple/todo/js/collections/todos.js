@@ -1,17 +1,13 @@
-var app = app || {};
+define([
+	'underscore',
+	'backbone',
+	'lib/backbone/localstorage',
+	'models/todo'
+], function( _, Backbone, Store, Todo ) {
 
-(function() {
-	'use strict';
-
-	// Todo Collection
-	// ---------------
-
-	// The collection of todos is backed by *localStorage* instead of a remote
-	// server.
-	var TodoList = Backbone.Collection.extend({
-
+	var TodosCollection = Backbone.Collection.extend({
 		// Reference to this collection's model.
-		model: app.Todo,
+		model: Todo,
 
 		// Save all of the todo items under the `"todos"` namespace.
 		localStorage: new Store('todos-backbone'),
@@ -43,7 +39,5 @@ var app = app || {};
 		}
 	});
 
-	// Create our global collection of **Todos**.
-	app.Todos = new TodoList();
-
-}());
+	return new TodosCollection();
+});

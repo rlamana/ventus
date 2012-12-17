@@ -1,10 +1,9 @@
-var app = app || {};
-
-(function() {
-	'use strict';
-
-	// Todo Router
-	// ----------
+define([
+	'$',
+	'backbone',
+	'collections/todos',
+	'common'
+], function( $, Backbone, Todos, Common ) {
 
 	var Workspace = Backbone.Router.extend({
 		routes:{
@@ -13,15 +12,13 @@ var app = app || {};
 
 		setFilter: function( param ) {
 			// Set the current filter to be used
-			window.app.TodoFilter = param.trim() || '';
+			Common.TodoFilter = param.trim() || '';
 
 			// Trigger a collection filter event, causing hiding/unhiding
-			// of Todo view items
-			window.app.Todos.trigger('filter');
+			// of the Todo view items
+			Todos.trigger('filter');
 		}
 	});
 
-	app.TodoRouter = new Workspace();
-	Backbone.history.start();
-
-}());
+	return Workspace;
+});
