@@ -8,10 +8,9 @@ require({
 [
     'ventus', 
     '$',
-    '../../example/simple/terminal/main',
     '../../example/simple/todo/main'    
     
-], function(Ventus, $, terminalApp, todoApp) {
+], function(Ventus, $, todoApp) {
     $(document).ready(function() {
         var wm = new Ventus.WindowManager();
 
@@ -27,7 +26,7 @@ require({
         });
 
         terminalWin.signals.on('click', function(win){
-            //terminalApp.display.focus();
+            terminal.display.focus();
         });
 
         var todoWin = wm.createWindow.fromQuery('.todo-app', {
@@ -76,7 +75,7 @@ require({
                 openWithDelay(aboutWin, 400);
                 openWithDelay(playerWin, 600);   
             });
-        }, 2000);
+        }, 3000);
         
 
         // Exposé test button

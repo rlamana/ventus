@@ -1,7 +1,6 @@
 /**
  * Copyright © 2012 Ramón Lamana
  */
- 
 (function(global) {
 
 	'use strict';
@@ -34,14 +33,8 @@
 				self.exit(0);
 			});
 		}
-
 	};
 
-	if (typeof module !== 'undefined' && module.exports)
-		module.exports = TestCommands;
-	else if (typeof define !== 'undefined' && define.amd)
-		define(function() { return TestCommands });
-	else
-		global.TestCommands = TestCommands;
+	global.TestCommands = TestCommands;
 	
 })(this);

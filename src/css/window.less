@@ -191,10 +191,6 @@
 			width: 10px;
 		}
 	}
-
-	* {
-		.user-select(none);
-	}
 }
 
 .wm-window.disabled {
@@ -226,6 +222,10 @@
 }
 
 .wm-window.active {
+	* {
+		.user-select(text);
+	}
+
 	header.wm-window-title  {
 		background-color: @bgactive;
 
@@ -237,10 +237,6 @@
 		button:hover {
 			border: 1px solid #ddd;
 		}
-	}
-
-	* {
-		.user-select(all);
 	}
 }
 
