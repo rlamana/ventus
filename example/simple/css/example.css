@@ -1,4 +1,10 @@
 body {
+	background: url(../img/bg2.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
 	font-family: "Open Sans", sans-serif;
 	background-color: #fff;
 
@@ -12,17 +18,15 @@ body {
 }
 
 .wm-space {
-	background: url(../img/bg2.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-
 	user-select: none;
 }
 
 .buttonbar {
-	z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	z-index: 0;
 	padding: 0 20px;
 }
 
