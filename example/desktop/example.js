@@ -8,7 +8,7 @@ require({
 [
     'ventus', 
     '$',
-    '../../example/simple/todo/main'    
+    '../../example/desktop/todo/main'    
     
 ], function(Ventus, $, todoApp) {
     $(document).ready(function() {
