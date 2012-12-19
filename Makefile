@@ -7,12 +7,13 @@ builddir = build
 # Less compiler
 #@lessc $< > $(addprefix ${builddir}, $(notdir $@))
 lessfiles = $(wildcard src/css/*.less)
+handlebarfiles = $(wildcard src/tpl/*.handlebars)
 cssfile = ${builddir}/${buildname}.css
 
 # Dependencies
 targets = config.js
 
-all: less debug release
+all: less handlebars debug release
 
 debug: ${targets}
 	r.js -o config.js optimize=none out=${builddir}/${buildname}.js
@@ -24,8 +25,15 @@ less: $(lessfiles:.less=.css)
 	@echo "LESS compiler finished."
 
 %.css: %.less
-	@echo Compiling $<
-	@lessc $< >> ${cssfile}
+	@echo Compiling LESS $<
+	@lessc --yui-compress $< >> ${cssfile}
+
+handlebars: $(handlebarfiles:.handlebars=.handlebars.js)
+	@echo "HANDLEBARS template compiler finished."
+
+%.handlebars.js: %.handlebars
+	@echo Compiling HANDLEBARS $<
+	handlebars --amd $< > $<.js
 
 clean:
 	rm -f ${builddir}/${buildname}.js
@@ -35,5 +43,6 @@ clean:
 install:
 	npm install requirejs
 	npm install less
+	npm install handlebars
 
 

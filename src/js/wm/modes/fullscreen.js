@@ -1,8 +1,9 @@
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
+ * https://github.com/rlamana
  */
-define(['less!../../../css/fullscreen.less'], function() {
+define(['less!../../../css/fullscreen'], function() {
 
 	var FullscreenMode = {
 

@@ -1,5 +1,9 @@
-
-define(['$', 'Underscore'], function($, _) {
+/**
+ * Ventus
+ * Copyright © 2012 Ramón Lamana
+ * https://github.com/rlamana
+ */
+define(['$', 'underscore'], function($, _) {
 
 	var splitter = /^(?:(.*)\s)?(\w+)$/;
 

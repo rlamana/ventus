@@ -3,126 +3,78 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Ventus: The CSS3 Window Manager Experiment</title>
-        <meta name="viewport" content="width=device-width">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Ventus: The CSS3 Window Manager Experiment</title>
+		<meta name="viewport" content="width=device-width">
 
-        <link href='css/normalize.css' rel='stylesheet' type='text/css' />
-        <link href='css/example.css' rel='stylesheet' type='text/css' />
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
+		<link href='css/normalize.css' rel='stylesheet' type='text/css' />
+		<link href='css/example.css' rel='stylesheet' type='text/css' />
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
 
-        <!-- TodoMVC App styles -->
-        <link href='todo/css/base.css' rel='stylesheet' type='text/css' />
-        <link href='http://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic' rel='stylesheet' type='text/css' />
+		<script type="text/javascript" src="../../src/js/vendor/modernizr.js"></script>
+		<script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
+	</head>
+	<body unselectable="on">
+		<!--[if lt IE 8]>
+			<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+		<![endif]-->
 
-         <!-- Terminus App styles -->
-        <link href='terminal/css/base.css' rel='stylesheet' type='text/css' />
-        <link href='terminal/css/terminus.css' rel='stylesheet' type='text/css' />
-        <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+		<div class="buttonbar">
+			<button class="button create-button">Create Window</button>
+			<button class="button expose-button">Exposé</button>
+		</div>
 
-        <!-- Video App -->
-        <link href="player/video-js.css" rel="stylesheet" type='text/css' />
-        <script src="player/video.js"></script>
+		<script type="text/javascript" src="../../src/js/config.js"></script>
+		<script type="text/javascript" src="../../build/ventus.js"></script>
+		<script type="text/javascript">
+			require({
+				baseUrl: '../../src/js'
+			}, 
+			[
+				'ventus', 
+				'$' 
+			], 
+			function(Ventus, $) {
+				$(document).ready(function() {
+					var wm = new Ventus.WindowManager();
 
-        <script type="text/javascript" src="../../src/js/vendor/modernizr.js"></script>
-        <script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
-    </head>
-    <body unselectable="on">
-        <!--[if lt IE 8]>
-            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-        <![endif]-->
+					var pos = 50;
+					window.wm = wm; // For debugging reasons      
 
-        <div class="apps" style="display:none" unselectable="on">
-            <!-- TodoMVC App example with Backbone -->
+					$('.create-button').click(function(){
+						wm.createWindow({
+							x: (pos += 60),
+							y: pos,
+							width: 250,
+							height: 200
+						})
+						.open();
+					});
 
-            <div class="todo-app">
-                <header class="todo-app-header">
-                    <input class="todo-app-new" placeholder="What needs to be done?" autofocus>
-                </header>
-                <section class="todo-app-main">
-                    <input class="todo-app-toggle-all" type="checkbox">
-                    <!--<label for="toggle-all">Mark all as complete</label>-->
-                    <ul class="todo-list"></ul>
-                </section>
-            </div>
+					$('.expose-button').click(function(){
+						if(wm.mode === 'expose')
+							wm.mode = 'default';
+						else 
+							wm.mode = 'expose';
+						
+						return false;
+					});
+				});
+			});
+		</script>
 
-            <script type="text/template" id="item-template">
-                <div class="view">
-                    <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-                    <label><%- title %></label>
-                    <button class="destroy"></button>
-                </div>
-                <input class="edit" value="<%- title %>">
-            </script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-11674457-1']);
+			_gaq.push(['_trackPageview']);
 
-            <!-- Terminus App example -->
-
-            <div class="terminal-app"></div>
-            <script type="text/javascript" src="terminal/terminus.min.js"></script> 
-            <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
-            <script type="text/javascript">
-                var terminal = new Terminus('.terminal-app', {
-                    welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
-                });
-
-                terminal.shell.include([TestCommands]);
-            </script>
-            
-            <!-- Video Player App -->
-
-            <div class="player-app">
-                <video class="video-js vjs-default-skin" controls preload="auto" width="635" height="264" poster="player/oceans-clip.jpg" data-setup="{}">
-                    <source src="player/oceans-clip.mp4" type='video/mp4'>
-                </video>
-            </div>
-
-            <!-- About App -->
-            <div class="about-app">
-                <h1>Ventus</h1>
-                <h2>HTML5 & CSS3 Window Manager Experiment</h2> 
-
-                <button class="expose-button">Try Exposé</button>
-                <p>or <strong>right-click</strong> to activate it</p>
-
-                <div class="copyright">
-                    <p>Copyright (c) 2012 Ramón Lamana</p>
-                    <p class="vendor">
-                        Basejs by A. Matías Quezada.<br/>
-                        Video.js by Steve Heffernan and Zencoder Inc.
-                    </p>
-                </div>
-            </div>
-         </div>
-
-        <!-- Ventus Loader Screen -->
-
-        <div id="loading-screen" unselectable="on">
-            <section>
-                <div class="content">
-                    <header>
-                        <h1>Ventus</h1>
-                    </header>
-                    <p><img src="img/loader.gif" /> Loading...</p>
-                </div>
-            </section>
-        </div>
-
-        <!-- Ventus -->
-        <script type="text/javascript" src="../../src/js/config.js"></script>
-        <script type="text/javascript" src="example.js"></script>
-
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-11674457-1']);
-            _gaq.push(['_trackPageview']);
-
-            (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
-    </body>
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</body>
 </html>

@@ -1,6 +1,7 @@
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
+ * https://github.com/rlamana
  */
 define([
 	'wm/window',

@@ -1,14 +1,15 @@
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
+ * https://github.com/rlamana
  */
 define([
 	'core/emitter',
 	'core/view',
-	'tmpl!../../tmpl/window.tmpl',
-	'less!../../css/window.less'
+	'tpl!../../tpl/window',
+	'less!../../css/window'
 ], 
-function(Emitter, View, WindowView) {
+function(Emitter, View, WindowTemplate) {
 
 	var Window = function (options) {
 		this.signals = new Emitter();
@@ -24,10 +25,10 @@ function(Emitter, View, WindowView) {
 		};
 
 		// View
-		this.el = WindowView({
+		this.el = View(WindowTemplate({
 			title: options.title,
 			classname: options.classname||''
-		});
+		}));
 		this.el.listen(this.events.window, this); 
 
 		// Cache content element

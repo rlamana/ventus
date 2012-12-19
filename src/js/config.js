@@ -1,18 +1,20 @@
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
+ * https://github.com/rlamana
  */
 requirejs.config({
 	// To bypass browser cache uncomment this...
 	//urlArgs: "bust=" +  (new Date()).getTime(),
 	
 	paths: {
-        'tmpl': 'vendor/require-plugins/tmpl',
+        'tpl': 'vendor/require-plugins/tpl',
         'less': 'vendor/require-plugins/less',
         'text': 'vendor/require-plugins/text',
 
-		'$': 'vendor/jquery',
-		'Underscore': 'vendor/underscore'
+		'$': 'vendor/jquery', //'empty:'
+		'handlebars': 'vendor/handlebars', //'empty:'
+		'underscore': 'vendor/underscore' //'empty:'
 	},
 
 	shim: {
@@ -20,7 +22,7 @@ requirejs.config({
 			'exports': '$'
 		},
 
-		'Underscore': {
+		'underscore': {
 			'exports': '_'
 		}
 	}

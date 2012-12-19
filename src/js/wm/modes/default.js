@@ -1,8 +1,9 @@
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
+ * https://github.com/rlamana
  */
-define(['less!../../../css/windowmanager.less'], function() {
+define(['less!../../../css/windowmanager'], function() {
 	
 	var DefaultMode = {
 		register: function() {
