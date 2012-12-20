@@ -11,15 +11,15 @@ templatefiles = $(wildcard src/tpl/*.tpl)
 cssfile = ${builddir}/${buildname}.css
 
 # Dependencies
-targets = config.js
+targets = build.js
 
 all: less handlebars debug release
 
 debug: ${targets}
-	r.js -o config.js debug=true optimize=none out=${builddir}/${buildname}.js
+	r.js -o build.js debug=true optimize=none out=${builddir}/${buildname}.js
 
 release: ${targets}
-	r.js -o config.js debug=false out=${builddir}/${buildname}.min.js
+	r.js -o build.js debug=false out=${builddir}/${buildname}.min.js
 
 less: $(lessfiles:.less=.css)
 	@echo LESS compiler finished.

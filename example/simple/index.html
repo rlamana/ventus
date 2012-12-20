@@ -14,8 +14,10 @@
 		<link href='../../build/ventus.css' rel='stylesheet' type='text/css' />
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
 
-		<script type="text/javascript" src="../../src/js/vendor/modernizr.js"></script>
-		<script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
+		<script type="text/javascript" src="../../vendor/modernizr.js"></script>
+		<script type="text/javascript" src="../../vendor/require.js"></script> 
+		<script type="text/javascript" src="../../vendor/jquery.js"></script> 
+		<script type="text/javascript" src="../../vendor/handlebars.js"></script> 
 	</head>
 	<body unselectable="on">
 		<!--[if lt IE 8]>
@@ -27,17 +29,13 @@
 			<button class="button expose-button">Exposé</button>
 		</div>
 
-		<script type="text/javascript" src="../../build/ventus.min.js"></script>
 		<script type="text/javascript">
-			require({
-				baseUrl: '../../src/js',
-				debug: false
+			require(['../../build/ventus']);
+			/*require({
+				baseUrl: '../../build'
 			}, 
-			[
-				'ventus', 
-				'$' 
-			], 
-			function(Ventus, $) {
+			['ventus'], 
+			function(Ventus) {
 				$(document).ready(function() {
 					var wm = new Ventus.WindowManager();
 
@@ -63,7 +61,7 @@
 						return false;
 					});
 				});
-			});
+			});*/
 		</script>
 
 		<script type="text/javascript">

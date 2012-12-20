@@ -12,17 +12,7 @@ requirejs.config({
         'less': 'vendor/require-plugins/less',
         'text': 'vendor/require-plugins/text',
 
-		'$': 'vendor/jquery', //'empty:'
-		'handlebars': 'vendor/handlebars' //'empty:'
-	},
-
-	shim: {
-		'$': {
-			'exports': '$'
-		},
-
-		'Handlebars': {
-			'exports': 'Handlebars'
-		}
+		'$': 'empty:',
+		'handlebars': 'empty:'
 	}
 });	
