@@ -3,13 +3,13 @@
  * Copyright © 2012 Ramón Lamana
  */
 require({
-    baseUrl: '../../src/js'
+    baseUrl: '../../src/js',
+    debug: false
 }, 
 [
     'ventus', 
     '$',
-    '../../example/desktop/todo/main'    
-    
+    '../../example/desktop/todo/main'
 ], function(Ventus, $, todoApp) {
     $(document).ready(function() {
         var wm = new Ventus.WindowManager();

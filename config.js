@@ -1,4 +1,6 @@
 ({
+	debug: false,
+	
     baseUrl: 'src/js',
     
     mainConfigFile: 'src/js/config.js',

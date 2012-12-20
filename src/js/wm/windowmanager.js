@@ -4,13 +4,14 @@
  * https://github.com/rlamana
  */
 define([
+	'$',
 	'wm/window',
 	'core/view',
 	'wm/modes/default',
 	'wm/modes/expose',
 	'wm/modes/fullscreen'
 ], 
-function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	var WindowManager = function () {
 		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
 		$(document.body).prepend(this.el);
@@ -19,7 +20,7 @@ function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		this.$overlay.css('z-index', this._baseZ-1);
 
 		// Generate mode plugin actions wrapper
-		_.each(this.actions, function(value){
+		this.actions.forEach(function(value){
 			this[value] = (function(action) {
 				return function() {
 					this.currentMode.actions[action] && 
@@ -29,7 +30,8 @@ function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		}, this);
 
 		// Launch register of every mode plugged-in
-		_.each(this.modes, function(mode) {
+		Object.keys(this.modes).forEach(function(modeName) {
+			var mode = this.modes[modeName];
 			if(mode.register)
 				mode.register.apply(this);
 		}, this);
@@ -101,7 +103,7 @@ function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			win.signals.on('close', this._close, this);
 
 			// Connect window signals to manager mode actions
-			_.each(this.actions, function(action){
+			this.actions.forEach(function(action){
 				win.signals.on(action, this[action], this);
 			}, this);
 
@@ -119,7 +121,8 @@ function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		_focus: function(win) {
 			var currentZ, 
 				baseZ = 10000, 
-				maxZ = baseZ + 10000;
+				maxZ = baseZ + 10000,
+				index;
 
 			if (this.active && this.active === win)
 				return;
@@ -133,7 +136,8 @@ function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			}
 
 			// Reorder windows stack (@todo optimize this)
-			this.windows = _.without(this.windows, win);
+			index = this.windows.indexOf(win);
+			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
 			
 			win.z = currentZ + 1;
@@ -162,13 +166,13 @@ function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		 */
 		_close: function(win) {
 			// Remove window from manager
-			var id = _.indexOf(this.windows, win), len;
+			var id = this.windows.indexOf(win), len;
 			if(id === -1) { 
 				console.log('Trying to close a window that doesn\'t exist in this window manager');
 				return;
 			}
 
-			this.windows = _.without(this.windows, win);	
+			this.windows.splice(id, 1); // Remove from array
 			len = this.windows.length;
 			if(this.active && this.active === win) {
 				this.active = (len !== 0) ? this.windows[len-1] : null;

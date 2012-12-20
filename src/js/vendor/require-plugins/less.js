@@ -12,7 +12,7 @@ define(function() {
 
             this.options = config.css;
 
-            if (config.isBuild) {
+            if (config.isBuild || (!config.debug)) {
                 done();
                 return;
             }
