@@ -30,11 +30,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		}, this);
 
 		// Launch register of every mode plugged-in
-		Object.keys(this.modes).forEach(function(modeName) {
-			var mode = this.modes[modeName];
-			if(mode.register)
-				mode.register.apply(this);
-		}, this);
+		for(var mode in this.modes) {
+			if(this.modes.hasOwnProperty(mode) && 
+			   this.modes[mode].register) {
+					this.modes[mode].register.apply(this);
+			}
+		}
 
 		this.windows = [];
 		this.active = null;

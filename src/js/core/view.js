@@ -31,12 +31,16 @@ define(['$'], function($, _) {
 
 	$.fn.extend({
 		listen: function (map, scope) {
-			Object.keys(map).forEach(function(key) {
-				var handler = map[key];
+			var handler, data, selector, event;
+			for(var key in map) {
+				if(!map.hasOwnProperty(key))
+					continue;
+
+				handler = map[key];
 			
-				var data = key.match(splitter);
-				var selector = data[1];
-				var event = data[2];
+				data = key.match(splitter);
+				selector = data[1];
+				event = data[2];
 
 				if (event === 'mousedown')
 					event += ' touchstart';
@@ -57,7 +61,7 @@ define(['$'], function($, _) {
 					this.on(event, selector, handler.bind(scope));
 				else
 					this.on(event, handler.bind(scope));
-			}, this);
+			}
 
 			return this;
 		},
