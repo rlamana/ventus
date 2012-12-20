@@ -8,7 +8,7 @@ define(function(require) {
 
     function load(name, req, load, config) {
         if (!config.isBuild) {
-            req(['$', 'handlebars'], function($, Handlebars) {
+            req(['$', 'templates'], function($, Handlebars) {
                 $.get(req.toUrl(name) + extension, {}, function(response, status){
                     load(Handlebars.compile(response));
                 }, "html");

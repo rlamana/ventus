@@ -13,17 +13,12 @@ requirejs.config({
         'text': 'vendor/require-plugins/text',
 
 		'$': 'vendor/jquery', //'empty:'
-		'handlebars': 'vendor/handlebars', //'empty:'
-		'underscore': 'vendor/underscore' //'empty:'
+		'templates': 'vendor/handlebars' //'empty:'
 	},
 
 	shim: {
 		'$': {
 			'exports': '$'
-		},
-
-		'underscore': {
-			'exports': '_'
 		}
 	}
 });	

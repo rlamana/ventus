@@ -3,7 +3,7 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['$', 'underscore'], function($, _) {
+define(['$'], function($, _) {
 
 	var splitter = /^(?:(.*)\s)?(\w+)$/;
 
@@ -31,7 +31,9 @@ define(['$', 'underscore'], function($, _) {
 
 	$.fn.extend({
 		listen: function (map, scope) {
-			_.each(map, function(handler, key) {
+			Object.keys(map).forEach(function(key) {
+				var handler = map[key];
+			
 				var data = key.match(splitter);
 				var selector = data[1];
 				var event = data[2];
