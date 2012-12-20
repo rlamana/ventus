@@ -97,6 +97,9 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		createWindow: function(options) {
 			var win = new Window(options);
 
+			// Show 'default' mode
+			this.mode = 'default';
+
 			// Connect window signals to the manager listeners
 			win.signals.on('focus', this._focus, this);
 			win.signals.on('blur', this._blur, this);
