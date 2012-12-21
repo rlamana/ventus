@@ -1,0 +1,104 @@
+
+//  Prefix.less 
+//  Copyright (c) 2012 Ramón Lamana
+//
+//  MIT Licensed:
+//  http://www.opensource.org/licenses/mit-license.php
+
+// Flexible Box Layout
+@import "flex.prefix.less";
+
+
+// User Select
+
+.user-select(@value) when (@value = none) {
+    -webkit-touch-callout: none;
+}
+
+.user-select(@value) {
+  user-select: @value;
+  
+  -webkit-user-select: @value;
+  -moz-user-select: @value;
+  -ms-user-select: @value;
+  -o-user-select: @value;
+}
+
+
+// Animation
+
+.animation(@value) {
+  -webkit-animation: @value;
+  -moz-animation: @value;
+  animation: @value;
+}
+
+
+// Transition
+
+.transition(@val1, @val2:X, ...) {
+    @args: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+    -webkit-transition: @args;
+    -moz-transition: @args;
+    -ms-transition: @args; 
+    -o-transition: @args;
+    transition: @args;
+}
+
+.transition-property(...) {
+    @args: ~`'@{arguments}'.replace(/\[|\]/g, '')`;
+    -webkit-transition-property: @args;
+    -moz-transition-property: @args;
+    -ms-transition-property: @args; 
+    -o-transition-property: @args;
+    transition-property: @args;
+}
+
+
+// Transforms
+
+.transform(@val1, @val2:X, ...) {
+    @args: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+    -webkit-transform: @args; 
+    -moz-transform: @args; 
+    -ms-transform: @args; 
+    -o-transform: @args; 
+    transform: @args;
+}
+
+
+// Box Shadows
+
+.box-shadow(@value) {
+  -webkit-box-shadow: @value;
+  -moz-box-shadow: @value;
+  -ms-box-shadow: @value;
+  -o-box-shadow: @value;
+  box-shadow: @value;
+}
+
+
+// Border Radius
+
+.border-radius(@args) {
+    -webkit-border-radius: @args;
+    -moz-border-radius: @args;
+    -ms-border-radius: @args;
+    -o-border-radius: @args;
+    border-radius: @args;
+
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+
+// Gradients
+
+.linear-gradient(@value) {
+    -webkit-linear-gradient: @value; 
+    -moz-linear-gradient: @value; 
+    -ms-linear-gradient: @value; 
+    -o-linear-gradient: @value; 
+    linear-gradient: @value;
+}
+

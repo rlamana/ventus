@@ -1,0 +1,124 @@
+
+//  Flex.prefix.less (part of Prefix.less)
+//  Copyright (c) 2012 Ramón Lamana
+//
+//  MIT Licensed:
+//  http://www.opensource.org/licenses/mit-license.php
+
+// Support for the new 2012 CSS Flexible Box Layout Module in all
+// browsers supporting at least the 2009 specs draft too.
+
+// W3C Candidate Recommendation, 18 September 2012
+// http://www.w3.org/TR/css3-flexbox/#flex-wrap
+
+
+// 'display' property new values
+
+.display(@value) {
+  display: @value;
+}
+
+.display(@value) when (@value = flex) {
+  // Old 2009 specs
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: -o-box;
+
+  // New specs
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+}
+
+
+// 'flex-flow' property
+
+.flex-flow(@value) {
+  -webkit-flex-flow: @value;
+  -moz-flex-flow: @value;
+  -ms-flex-flow: @value;
+  -o-flex-flow: @value;
+  flex-flow: @value;
+}
+
+.flex-flow(@value) when (@value = column) {
+  // Old 2009 specs
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  -o-box-orient: vertical;
+}
+
+.flex-flow(@value) when (@value = row) {
+  // Old 2009 specs
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  -o-box-orient: horizontal;
+}
+
+
+// 'flex-direction' property
+
+.flex-direction(@value) {
+  -webkit-flex-flow: @value;
+  -moz-flex-flow: @value;
+  -ms-flex-flow: @value;
+  -o-flex-flow: @value;
+  flex-flow: @value;
+}
+
+.flex-direction(@value) when (@value = column) {
+  // Old 2009 specs
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  -o-box-orient: vertical;
+}
+
+.flex-direction(@value) when (@value = row) {
+  // Old 2009 specs
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  -o-box-orient: horizontal;
+}
+
+
+// 'flex-wrap' property
+
+.flex-wrap(@value) {
+  -webkit-flex-wrap: @value;
+  -moz-flex-wrap: @value;
+  -ms-flex-wrap: @value;
+  -o-flex-wrap: @value;
+  flex-wrap: @value;
+}
+
+// 'flex' property
+
+.flex(@values) {
+  -webkit-flex: @values;
+  -moz-flex: @values;
+  -ms-flex: @values;
+  -o-flex: @values;
+  flex: @values;
+}
+
+.flex(@value) when (@value = 1) {
+  -webkit-box-flex: @value;
+  -moz-box-flex: @value;
+  -ms-box-flex: @value;
+  -o-box-flex: @value;
+}
+
+.flex(@value) when (@value = 0) {
+  -webkit-box-flex: @value;
+  -moz-box-flex: @value;
+  -ms-box-flex: @value;
+  -o-box-flex: @value;
+}
+
