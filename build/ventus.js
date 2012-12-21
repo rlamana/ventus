@@ -343,7 +343,7 @@ var requirejs, require, define;
     };
 }());
 
-define("../../vendor/almond", function(){});
+define("almond", function(){});
 
 /**
  * Basejs
@@ -494,7 +494,7 @@ define("../../vendor/almond", function(){});
 	if (typeof module !== 'undefined' && module.exports)
 		module.exports = Emitter;
 	else if (typeof define !== 'undefined' && define.amd)
-		define('core/emitter',[],function() { return Emitter });
+		define('ventus/core/emitter',[],function() { return Emitter });
 	else
 		root.Emitter = Emitter;
 
@@ -505,7 +505,7 @@ define("../../vendor/almond", function(){});
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('core/view',['$'], function($, _) {
+define('ventus/core/view',['$'], function($, _) {
 
 	var splitter = /^(?:(.*)\s)?(\w+)$/;
 
@@ -611,7 +611,7 @@ define('tpl',['require'],function(require) {
                 return;
             }
 
-            if ((typeof config.debug === 'undefined') || config.debug)  {
+            /*if ((typeof config.debug === 'undefined') || config.debug)  {
                 // In debug mode compile template on the fly
                 req(['$'], function($) {
                     $.get(req.toUrl(name) + extension, {}, function(response, status){
@@ -619,20 +619,28 @@ define('tpl',['require'],function(require) {
                     }, "html");
                 });
             } 
-            else {
+            else*/ {
                 // In release mode require the compiled template js file
                 req([name + extension], function() {
                     done(Handlebars.templates[templateName]);
                 });
             }
         });
+    };
+
+    function write(pluginName, name, write) {
+        write("define('"+name+extension+"', function() {");
+        write("done(Handlebars.templates['"+name+extension+"']);});");
     }
 
     return {
-        load: load
+        load: load,
+        write: write
     };
 });
 
+define('tpl/window.tpl', function() {debugger;
+done(Handlebars.templates['tpl/window.tpl']);});
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -654,7 +662,7 @@ define('less',[],function() {
 
             // Dynamically loading
             // Less can only be loaded on the browser
-            require(['vendor/less'], function() {
+            /*require(['vendor/less'], function() {
                 var ext = 'less';
                 name = parentRequire.toUrl(name).replace(/\.[^/.]+$/, "");
 
@@ -665,7 +673,8 @@ define('less',[],function() {
                 less.sheets = [style];
                 less.refresh();
                 done(style);
-            });
+            });*/
+            done();
         },
 
         write: function write(pluginName, name, write) {
@@ -681,9 +690,9 @@ define('less',[],function() {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('wm/window',[
-	'core/emitter',
-	'core/view',
+define('ventus/wm/window',[
+	'ventus/core/emitter',
+	'ventus/core/view',
 	'tpl!../../tpl/window',
 	'less!../../css/window'
 ], 
@@ -1136,7 +1145,7 @@ function(Emitter, View, WindowTemplate) {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('wm/modes/default',['less!../../../css/windowmanager'], function() {
+define('ventus/wm/modes/default',['less!../../../css/windowmanager'], function() {
 	
 	var DefaultMode = {
 		register: function() {
@@ -1174,7 +1183,7 @@ define('wm/modes/default',['less!../../../css/windowmanager'], function() {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('wm/modes/expose',['less!../../../css/expose'],function() {
+define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
 
 	var ExposeMode = {
 
@@ -1300,7 +1309,7 @@ define('wm/modes/expose',['less!../../../css/expose'],function() {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('wm/modes/fullscreen',['less!../../../css/fullscreen'], function() {
+define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function() {
 
 	var FullscreenMode = {
 
@@ -1373,13 +1382,13 @@ define('wm/modes/fullscreen',['less!../../../css/fullscreen'], function() {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('wm/windowmanager',[
+define('ventus/wm/windowmanager',[
 	'$',
-	'wm/window',
-	'core/view',
-	'wm/modes/default',
-	'wm/modes/expose',
-	'wm/modes/fullscreen'
+	'ventus/wm/window',
+	'ventus/core/view',
+	'ventus/wm/modes/default',
+	'ventus/wm/modes/expose',
+	'ventus/wm/modes/fullscreen'
 ], 
 function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	var WindowManager = function () {
@@ -1574,10 +1583,13 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('ventus',['require','wm/windowmanager','wm/window'],function(require) {
+define('ventus',['require','$','ventus/wm/windowmanager','ventus/wm/window'],function(require) {
+	
+	var $ = require('$');
+
 	return {
-		WindowManager: require('wm/windowmanager'),
-		Window: require('wm/window')
+		WindowManager: require('ventus/wm/windowmanager'),
+		Window: require('ventus/wm/window')
 	};
 });
 
@@ -1588,9 +1600,9 @@ define('ventus',['require','wm/windowmanager','wm/window'],function(require) {
         return $;
     });
 
-    /*define('handlebars', function () {
+    define('handlebars', function () {
         return Handlebars;
-    });*/
+    });
 
     return require('ventus');
 }));

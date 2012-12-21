@@ -15,9 +15,6 @@
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
 
 		<script type="text/javascript" src="../../vendor/modernizr.js"></script>
-		<script type="text/javascript" src="../../vendor/require.js"></script> 
-		<script type="text/javascript" src="../../vendor/jquery.js"></script> 
-		<script type="text/javascript" src="../../vendor/handlebars.js"></script> 
 	</head>
 	<body unselectable="on">
 		<!--[if lt IE 8]>
@@ -29,8 +26,14 @@
 			<button class="button expose-button">Exposé</button>
 		</div>
 
+		<!--<script type="text/javascript" src="../../vendor/require.js"></script> -->
+		<script type="text/javascript" src="../../vendor/jquery.js"></script> 
+		<script type="text/javascript" src="../../vendor/handlebars.js"></script>
+		<script type="text/javascript" src="../../build/ventus.js"></script>
 		<script type="text/javascript">
-			require(['../../build/ventus']);
+			/*require(['../../build/ventus'], function(Ventus){
+				debugger;
+			});*/
 			/*require({
 				baseUrl: '../../build'
 			}, 
