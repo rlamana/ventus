@@ -1,13 +1,13 @@
 buildname = ventus
 
 # Set the source directory
-srcdir = ventus
+srcdir = src/ventus
 builddir = build
 
 # Less compiler
 #@lessc $< > $(addprefix ${builddir}, $(notdir $@))
-lessfiles = $(wildcard ventus/css/*.less)
-templatefiles = $(wildcard ventus/tpl/*.tpl)
+lessfiles = $(wildcard ${srcdir}/css/*.less)
+templatefiles = $(wildcard ${srcdir}/tpl/*.tpl)
 cssfile = ${builddir}/${buildname}.css
 
 # Dependencies
@@ -41,7 +41,7 @@ clean:
 	rm -f ${builddir}/${buildname}.js
 	rm -f ${builddir}/${buildname}.min.js
 	rm -f ${cssfile}
-	rm -f $(wildcard ventus/tpl/*.tpl.js)
+	rm -f $(wildcard ${srcdir}/tpl/*.tpl.js)
 
 install:
 	npm install requirejs

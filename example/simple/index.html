@@ -26,45 +26,35 @@
 			<button class="button expose-button">Exposé</button>
 		</div>
 
-		<!--<script type="text/javascript" src="../../vendor/require.js"></script> -->
 		<script type="text/javascript" src="../../vendor/jquery.js"></script> 
 		<script type="text/javascript" src="../../vendor/handlebars.js"></script>
 		<script type="text/javascript" src="../../build/ventus.js"></script>
 		<script type="text/javascript">
-			/*require(['../../build/ventus'], function(Ventus){
-				debugger;
-			});*/
-			/*require({
-				baseUrl: '../../build'
-			}, 
-			['ventus'], 
-			function(Ventus) {
-				$(document).ready(function() {
-					var wm = new Ventus.WindowManager();
+			$(document).ready(function() {
+				var wm = new Ventus.WindowManager();
 
-					var pos = 50;
-					window.wm = wm; // For debugging reasons      
+				var pos = 50;
+				window.wm = wm; // For debugging reasons      
 
-					$('.create-button').click(function(){
-						wm.createWindow({
-							x: (pos += 60),
-							y: pos,
-							width: 250,
-							height: 200
-						})
-						.open();
-					});
-
-					$('.expose-button').click(function(){
-						if(wm.mode === 'expose')
-							wm.mode = 'default';
-						else 
-							wm.mode = 'expose';
-
-						return false;
-					});
+				$('.create-button').click(function(){
+					wm.createWindow({
+						x: (pos += 60),
+						y: pos,
+						width: 250,
+						height: 200
+					})
+					.open();
 				});
-			});*/
+
+				$('.expose-button').click(function(){
+					if(wm.mode === 'expose')
+						wm.mode = 'default';
+					else 
+						wm.mode = 'expose';
+
+					return false;
+				});
+			});
 		</script>
 
 		<script type="text/javascript">

@@ -4,16 +4,15 @@
     baseUrl: 'vendor',
     
     paths: {
-        'ventus': '../ventus',
+        'ventus': '../src/ventus',
 
-        'tpl': '../ventus/plugins/tpl',
-        'less': '../ventus/plugins/less',
-        'text': '../ventus/plugins/text',
+        'tpl': '../src/plugins/tpl',
+        'less': '../src/plugins/less',
+        'text': '../src/plugins/text',
 
         '$': 'jquery'
     },
 
-    /*mainConfigFile: 'src/js/config.js',*/
     optimizeAllPluginResources: true,
 
     include: ['almond', 'ventus'],
@@ -22,7 +21,7 @@
     optimize: 'uglify',
 
     wrap: {
-        startFile: "ventus/wrap.start",
-        endFile: "ventus/wrap.end"
+        startFile: "src/wrap.start",
+        endFile: "src/wrap.end"
     }
 })

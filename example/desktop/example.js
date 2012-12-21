@@ -2,15 +2,7 @@
  * Ventus example
  * Copyright © 2012 Ramón Lamana
  */
-require({
-    baseUrl: '../../src/js',
-    debug: false
-}, 
-[
-    'ventus', 
-    '$',
-    '../../example/desktop/todo/main'
-], function(Ventus, $, todoApp) {
+(function($, Ventus) {
     $(document).ready(function() {
         var wm = new Ventus.WindowManager();
 
@@ -63,7 +55,6 @@ require({
             setTimeout(function(){win.open();}, delay);
         }
 
-        
         setTimeout(function() {
             loader.addClass('hide');
             loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
@@ -84,4 +75,4 @@ require({
             return false;
         });
     });
-});
+})($, Ventus);

@@ -6,8 +6,8 @@
 define([
 	'ventus/core/emitter',
 	'ventus/core/view',
-	'tpl!../../tpl/window',
-	'less!../../css/window'
+	'tpl!ventus/tpl/window',
+	'less!ventus/css/window'
 ], 
 function(Emitter, View, WindowTemplate) {
 

@@ -9,7 +9,9 @@ define(function(require) {
     function load(name, req, done, config) {
         req(['handlebars'], function(Handlebars) {
             var templateName = name.replace(/^.*[\\\/]/, '') + extension;
+
             if (config.isBuild) {
+                req([name + extension]);
                 done();
                 return;
             }
@@ -32,8 +34,8 @@ define(function(require) {
     };
 
     function write(pluginName, name, write) {
-        write("define('"+name+extension+"', function() {");
-        write("done(Handlebars.templates['"+name+extension+"']);});");
+        //write("define('"+name+extension+"', function() {");
+        //write("done(Handlebars.templates['"+name+extension+"']);});");
     }
 
     return {

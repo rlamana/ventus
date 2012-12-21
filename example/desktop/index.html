@@ -27,8 +27,7 @@
         <link href="player/video-js.css" rel="stylesheet" type='text/css' />
         <script src="player/video.js"></script>
 
-        <script type="text/javascript" src="../../src/js/vendor/modernizr.js"></script>
-        <script type="text/javascript" src="../../src/js/vendor/require.js"></script> 
+        <script type="text/javascript" src="../../vendor/modernizr.js"></script>
     </head>
     <body unselectable="on">
         <!--[if lt IE 8]>
@@ -99,7 +98,7 @@
 
         <!-- Ventus Loader Screen -->
 
-        <div id="loading-screen" unselectable="on">
+        <div id="loading-screen" unselectable="on" style="opacity:0">
             <section>
                 <div class="content">
                     <header>
@@ -111,7 +110,11 @@
         </div>
 
         <!-- Ventus -->
-        <script type="text/javascript" src="../../build/ventus.min.js"></script>
+        <script type="text/javascript" src="../../vendor/jquery.js"></script> 
+        <script type="text/javascript" src="../../vendor/handlebars.js"></script>
+        <script type="text/javascript" src="../../build/ventus.js"></script> 
+        <script type="text/javascript" data-main="todo/main.js" src="../../vendor/require.js"></script> 
+
         <script type="text/javascript" src="example.js"></script>
 
         <script type="text/javascript">

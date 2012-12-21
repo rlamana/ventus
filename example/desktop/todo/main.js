@@ -20,8 +20,8 @@ define(function() {
 			}
 		},
 		paths: {
-			'$': '../../../../src/js/vendor/zepto',
-			underscore: '../../../../src/js/vendor/underscore',
+			'$': '../../../../vendor/jquery',
+			underscore: 'lib/underscore',
 			backbone: 'lib/backbone/backbone',
 			text: 'lib/require/text'
 		}
