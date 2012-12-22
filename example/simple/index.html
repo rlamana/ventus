@@ -34,10 +34,12 @@
 				var wm = new Ventus.WindowManager();
 
 				var pos = 50;
+				var num = 1;
 				window.wm = wm; // For debugging reasons      
 
 				$('.create-button').click(function(){
 					wm.createWindow({
+						title: 'Window ' + (num++),
 						x: (pos += 60),
 						y: pos,
 						width: 250,

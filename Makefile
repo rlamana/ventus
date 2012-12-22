@@ -21,7 +21,7 @@ debug: ${targets}
 release: ${targets}
 	r.js -o build.js debug=false out=${builddir}/${buildname}.min.js
 
-less: $(lessfiles:.less=.css)
+less: cleanless $(lessfiles:.less=.css)
 	@echo LESS compiler finished.
 	@echo
 
@@ -42,6 +42,9 @@ clean:
 	rm -f ${builddir}/${buildname}.min.js
 	rm -f ${cssfile}
 	rm -f $(wildcard ${srcdir}/tpl/*.tpl.js)
+
+cleanless:
+	@rm -f ${cssfile}
 
 install:
 	npm install requirejs
