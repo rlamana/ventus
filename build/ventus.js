@@ -740,7 +740,7 @@ function(Emitter, View, WindowTemplate) {
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
 		if(options.content)
-			this.append(options.content);
+			this.$content.append(options.content);
 
 		// Cache header element
 		this.$header = this.el.find('header');
