@@ -65,8 +65,8 @@
 
 /* Window styles */
 
-@bgactive: #d6e2e0;
-@bgdisabled: #3a656c;
+@bgactive: #fff;
+@bgdisabled: #f4efe8;
 @time: 0.5s;
 
 @minheight: 50px;
@@ -109,11 +109,11 @@
 
 			height: 100%;
 
-			padding: 0 20px;
+			padding: 0 16px;
 			height: 44px;
 
-			/*background-color: @bgdisabled;*/
-			background-image: -webkit-linear-gradient(left , rgb(220,235,232) 32%, rgb(209,223,224) 66%);
+			background-color: @bgdisabled;
+			/*background-image: -webkit-linear-gradient(left , rgb(220,235,232) 32%, rgb(209,223,224) 66%);*/
 
 			border: 0;
 			border-top: 1px solid #f1f6f2;
@@ -133,7 +133,7 @@
 
 				font-size: 14px;
 				font-weight: 400;
-				color: #1a4653;
+				color: #e46b4f;
 			}
 
 			.wm-button-group {
@@ -154,8 +154,6 @@
 
 			    width: 16px;
 				height: 16px;
-
-
 		    }
 
 			button:hover {
@@ -229,6 +227,8 @@
 }
 
 .wm-window.inactive {
+	opacity: .9;
+
 	* {
 		.user-select(none);
 	}
