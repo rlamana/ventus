@@ -21,7 +21,11 @@ function(Emitter, View, WindowTemplate) {
 			x: 0,
 			y: 0,
 			content: '',
-			resizable: true
+
+			movable: true,
+			resizable: true,
+			widget: false,
+			titlebar: true,
 		};
 
 		// View
@@ -46,6 +50,7 @@ function(Emitter, View, WindowTemplate) {
 		this.y = options.y || 0;
 		this.z = 10000;
 
+		// State
 		this.opened = false;
 		this.enabled = true;
 		this.active = false;
@@ -53,6 +58,7 @@ function(Emitter, View, WindowTemplate) {
 		this.maximized = false;
 		this.minimized = false;
 
+		// Properties
 		this.widget = false;
 		this.movable = true;
 		this.resizable = (typeof options.resizable !== 'undefined') ? 

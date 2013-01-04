@@ -33,11 +33,14 @@
             title: 'Video Player',
             classname: 'player-window',
             width: 635,
-            height: 289,
+            height: 264,
             x: 490,
             y: 320,
             resizable: false
         });
+
+        playerWin.titlebar = false;
+        playerWin.widget = true;
 
         var aboutWin = wm.createWindow.fromQuery('.about-app', {
             title: 'About Ventus',
