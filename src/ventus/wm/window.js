@@ -37,7 +37,7 @@ function(Emitter, View, WindowTemplate) {
 			this.$content.append(options.content);
 
 		// Cache header element
-		this.$header = this.el.find('header');
+		this.$titlebar = this.el.find('header');
 
 		this.width = options.width || 400;
 		this.height = options.height || 200;
@@ -54,11 +54,12 @@ function(Emitter, View, WindowTemplate) {
 		this.minimized = false;
 
 		this.widget = false;
-
 		this.movable = true;
 		this.resizable = (typeof options.resizable !== 'undefined') ? 
 			options.resizable :
 			true;
+
+		this.titlebar = true;
 	};
 
 	Window.prototype = {
@@ -326,6 +327,19 @@ function(Emitter, View, WindowTemplate) {
 
 		get widget() {
 			return this._widget;
+		},
+
+		set titlebar(value) {
+			if(value) 
+				this.$titlebar.removeClass('hide')
+			else
+				this.$titlebar.addClass('hide');
+
+			this._titlebar = value;
+		},
+
+		get titlebar() {
+			return this._titlebar;
 		},
 
 		set width(value) {
