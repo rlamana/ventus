@@ -46,19 +46,19 @@
 
 @-webkit-keyframes close {
 	0% {.transform(scale(1,1));}
-	20% {.transform(scale(1.1, 1.1));}
+	20% {.transform(scale(1.2, 1.2));}
 	100% {.transform(scale(0,0));}
 }
 
 @-moz-keyframes close {
 	0% {.transform(scale(1,1));}
-	20% {.transform(scale(1.1, 1.1));}
+	20% {.transform(scale(1.2, 1.2));}
 	100% {.transform(scale(0,0));}
 }
 
 @keyframes close {
 	0% {.transform(scale(1,1));}
-	20% {.transform(scale(1.1, 1.1));}
+	20% {.transform(scale(1.2, 1.2));}
 	100% {.transform(scale(0,0));}
 }
 
@@ -117,7 +117,7 @@
 			background-image: -webkit-linear-gradient(left, #e7d8cb, #e1e3d8);
 
 			border: 1px solid rgba(255,255,255, .5);
-			border-bottom: 1px solid rgba(0,0,0, .5);
+			border-bottom: 1px solid rgba(0,0,0, .1);
 			
 			overflow: hidden;
 
@@ -244,7 +244,7 @@
 		.user-select(none);
 	}
 
-	.filter(grayscale(50%)); 
+	.filter(~'contrast(60%)'); 
 	
 }
 

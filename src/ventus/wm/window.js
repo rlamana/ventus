@@ -53,6 +53,8 @@ function(Emitter, View, WindowTemplate) {
 		this.maximized = false;
 		this.minimized = false;
 
+		this.widget = false;
+
 		this.movable = true;
 		this.resizable = (typeof options.resizable !== 'undefined') ? 
 			options.resizable :
@@ -64,6 +66,21 @@ function(Emitter, View, WindowTemplate) {
 		_moving: null,
 		_resizing: null,
 
+		slots: {
+			move: function(e) {
+				if(!this.enabled || !this.movable) return;
+
+				this._moving = this.toLocal({
+					x: e.originalEvent.pageX,
+					y: e.originalEvent.pageY
+				});
+
+				this.el.addClass('move');
+
+				e.preventDefault();
+			}
+		},
+
 		events: {
 			window: {
 				'click': function(e) {
@@ -72,6 +89,9 @@ function(Emitter, View, WindowTemplate) {
 
 				'mousedown': function(e) {
 					this.focus();
+
+					if(this.widget)
+						this.slots.move.call(this, e);
 				},
 
 				'.wm-content click': function(e) {
@@ -79,16 +99,7 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'.wm-window-title mousedown': function(e) {
-					if(!this.enabled || !this.movable) return;
-
-					this._moving = this.toLocal({
-						x: e.originalEvent.pageX,
-						y: e.originalEvent.pageY
-					});
-
-					this.el.addClass('move');
-
-					e.preventDefault();
+					this.slots.move.call(this, e);
 				},
 
 				'.wm-window-title dblclick': function(e) {
@@ -208,7 +219,6 @@ function(Emitter, View, WindowTemplate) {
 			this._minimized = value;
 		},
 
-
 		set active(value) {
 			if(value) {
 				this.signals.emit('focus', this);
@@ -307,6 +317,15 @@ function(Emitter, View, WindowTemplate) {
 
 		get opened() {
 			return this._opened;
+		},
+
+
+		set widget(value) {
+			this._widget = value;
+		},
+
+		get widget() {
+			return this._widget;
 		},
 
 		set width(value) {
