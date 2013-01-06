@@ -33,7 +33,7 @@
             title: 'Video Player',
             classname: 'player-window',
             width: 635,
-            height: 264,
+            height: 300,
             x: 490,
             y: 320,
             resizable: false
