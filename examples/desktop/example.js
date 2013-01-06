@@ -39,8 +39,8 @@
             resizable: false
         });
 
-        playerWin.titlebar = false;
-        playerWin.widget = true;
+        /*playerWin.titlebar = false;
+        playerWin.widget = true;*/
 
         var aboutWin = wm.createWindow.fromQuery('.about-app', {
             title: 'About Ventus',
