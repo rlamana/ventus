@@ -70,7 +70,7 @@
 @bginactive: #888;
 @time: 0.5s;
 
-@minheight: 50px;
+@minheight: 60px;
 
 .wm-window {
 	opacity: 0.98;
@@ -84,10 +84,9 @@
 
 	position: absolute;
 
-	min-width: 130px;
+	min-width: 200px;
 	min-height: @minheight;
 
-	outline: 1px solid rgba(50, 50, 50, .1);
 	.box-shadow(0 0 12px 1px rgba(0, 0, 0, 0.6));
 	background-color: #fff;
 
@@ -122,6 +121,10 @@
 
 			h1 {
 				.flex(1);
+
+				.display(flex); // Firefox hack
+				.flex-flow(row);
+				.align-items(center);
 
 				.user-select(none);
 				cursor: default;
@@ -203,11 +206,6 @@
 
 			overflow-x: hidden;
 			overflow-y: auto;
-
-			outline: 1px solid rgba(255, 255, 255, .2);
-			outline-offset: -1px;
-
-			outline-top: 1px solid rgba(0,0,0,.3);
 		}
 
 		button.wm-resize {
