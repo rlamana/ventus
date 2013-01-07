@@ -15,13 +15,13 @@ targets = build.js
 
 all: less handlebars debug release
 
-debug: ${targets}
+debug: ${builddir} ${targets}
 	r.js -o build.js debug=true optimize=none out=${builddir}/${buildname}.js
 
-release: ${targets}
+release: ${builddir} ${targets}
 	r.js -o build.js debug=false out=${builddir}/${buildname}.min.js
 
-less: cleanless $(lessfiles:.less=.css)
+less: ${builddir} cleanless $(lessfiles:.less=.css)
 	@echo LESS compiler finished.
 	@echo
 
@@ -29,7 +29,7 @@ less: cleanless $(lessfiles:.less=.css)
 	@echo Compiling LESS $<
 	@lessc --yui-compress $< >> ${cssfile}
 
-handlebars: $(templatefiles:.tpl=.tpl.js)
+handlebars: ${builddir} $(templatefiles:.tpl=.tpl.js)
 	@echo HANDLEBARS template compiler finished.
 	@echo
 
@@ -42,9 +42,13 @@ clean:
 	rm -f ${builddir}/${buildname}.min.js
 	rm -f ${cssfile}
 	rm -f $(wildcard ${srcdir}/tpl/*.tpl.js)
+	rm -Rf ${builddir}
 
 cleanless:
 	@rm -f ${cssfile}
+
+${builddir}:
+	@mkdir -p ${builddir}
 
 install:
 	npm install requirejs
