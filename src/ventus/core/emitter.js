@@ -3,7 +3,7 @@
  * Copyright © 2009-2012 A. Matías Quezada
  * https://github.com/amatiasq
  */
- 
+
 /**
  * interface Emitter {
  *   void on(String signal, Function handler, [Object scope]);
@@ -17,6 +17,7 @@
  */
 
 (function(root) {
+
 	"use strict";
 
 	function equals(handler, scope, expected) {
@@ -115,11 +116,9 @@
 				return;
 
 			for (var signal in slots) {
-		       	if(!slots.hasOwnProperty(signal)) 
-		       		continue;
-		        
-		       	this.on(signal, slots[signal], scope);
-		    }
+				if(slots.hasOwnProperty(signal))
+					this.on(signal, slots[signal], scope);
+			}
 		},
 
 		/**
@@ -133,11 +132,9 @@
 				return;
 
 			for (var signal in slots) {
-		       	if(!slots.hasOwnProperty(signal)) 
-		       		continue;
-		        
-		       	this.off(signal, slots[signal], scope);
-		    }
+				if(slots.hasOwnProperty(signal))
+					this.off(signal, slots[signal], scope);
+			}
 		}
 	};
 

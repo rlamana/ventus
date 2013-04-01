@@ -4,14 +4,13 @@
  * https://github.com/rlamana
  */
 define(['less!../../../css/fullscreen'], function() {
+	'use strict';
 
 	var FullscreenMode = {
 
 		// Launch when plugin is registered
 		register: function() {
-			var self = this;
-
-			console.log("Fullscreen mode registered.");
+			console.log('Fullscreen mode registered.');
 		},
 
 		// Lauch when plugin is enabled
@@ -28,10 +27,9 @@ define(['less!../../../css/fullscreen'], function() {
 
 		// Lauch when plugin is disabled
 		unplug: function() {
-			var space = this.el;
-			for(var z, win, i=this.windows.length; i--;) {
+			for(var win, i=this.windows.length; i--;) {
 				win = this.windows[i];
-				
+
 				win.restore();
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
@@ -40,11 +38,11 @@ define(['less!../../../css/fullscreen'], function() {
 					return function () {
 						this.el.removeClass('fullscreen');
 						win.el.css('transform', '');
-					}
+					};
 				})(win);
 
 				this.el.onTransitionEnd(removeTransform, this);
-				
+
 				win.movable = true;
 				win.resizable = true;
 				win.enabled = true;
@@ -54,14 +52,14 @@ define(['less!../../../css/fullscreen'], function() {
 		},
 
 		actions: {
-			focus: function(win) {
+			focus: function(/*win*/) {
 			},
 
 			close: function() {
 				this.mode = 'expose';
 			},
 
-			select: function(win, e) {
+			select: function(win/*, e*/) {
 				this.mode = 'default';
 				win.focus();
 			}

@@ -4,8 +4,7 @@
  * https://github.com/rlamana
  */
 define(function(require) {
-	
-	var $ = require('$');
+	'use strict';
 
 	return {
 		WindowManager: require('ventus/wm/windowmanager'),

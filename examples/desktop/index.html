@@ -9,8 +9,6 @@
         <title>Ventus: The CSS3 Window Manager Experiment</title>
         <meta name="viewport" content="width=1224">
 
-        <script type="text/javascript" src="../../vendor/flexie.js"></script>
-
         <link href='css/normalize.css' rel='stylesheet' type='text/css' />
         <link href='css/example.css' rel='stylesheet' type='text/css' />
         <link href='../../build/ventus.css' rel='stylesheet' type='text/css' />
@@ -64,12 +62,15 @@
             <div class="terminal-app"></div>
             <script type="text/javascript" src="terminal/terminus.min.js"></script> 
             <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
+            <script type="text/javascript" src="terminal/commands/vendor/three.js"></script>
+            <script type="text/javascript" src="terminal/commands/vendor/supertags.js"></script>  
+            <script type="text/javascript" src="terminal/commands/shapecommands.js"></script>
             <script type="text/javascript">
                 var terminal = new Terminus('.terminal-app', {
                     welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
                 });
 
-                terminal.shell.include([TestCommands]);
+                terminal.shell.include([TestCommands, ShapeCommands]);
             </script>
             
             <!-- Video Player App -->
@@ -130,5 +131,7 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
         </script>
+
+        <script type="text/javascript" src="../../vendor/flexie.js"></script>
     </body>
 </html>

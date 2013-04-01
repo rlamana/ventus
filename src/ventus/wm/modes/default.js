@@ -4,7 +4,7 @@
  * https://github.com/rlamana
  */
 define(['less!../../../css/windowmanager'], function() {
-	
+
 	var DefaultMode = {
 		register: function() {
 			console.log("Default mode registered.");
