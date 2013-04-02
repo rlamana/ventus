@@ -346,33 +346,49 @@ var requirejs, require, define;
 define("almond", function(){});
 
 /**
- * Basejs
+ * Signal/slots Emitter
+ * (Fork of Basejs Emitter by A. Matías Quezada)
+ *
+ * Copyright © 2013 Ramón Lamana
+ * https://github.com/rlamana
+ * Under MIT license
+ */
+
+/**
  * Copyright © 2009-2012 A. Matías Quezada
  * https://github.com/amatiasq
  */
- 
-/**
+
+ /**
  * interface Emitter {
- *   void on(String signal, Function handler, [Object scope]);
- *   void off(String signal, Function handler, [Object scope]);
+ *   void on(String signal, Function slot, [Object scope]);
+ *   void off(String signal, Function slot, [Object scope]);
+ *   void once(String signal, Function slot, [Object scope]);
  *   void emit(String signal, Object var_args...);
+ *   void connect(Object slots, [Object scope]);
+ *   void disconnect(Object slots, [Object scope]);
  * }
  *
  * Provides a constructor to listen and emit signals.
- *
- * TODO: Add .once() method to listen a signal only once.
  */
 
 (function(root) {
 	
 
-	function equals(handler, scope, expected) {
+	function equals(slot, scope, expected) {
 		return function(item) {
 			return (
-				item.funct === handler &&
+				item.funct === slot &&
 				item.scope === scope
 			) === expected;
 		};
+	}
+
+	function hasListener(listeners, signal, slot, scope) {
+		if (!listeners[signal])
+			return false;
+
+		return listeners[signal].some(equals(slot, scope, true));
 	}
 
 	/**
@@ -400,20 +416,20 @@ define("almond", function(){});
 		 * NOTE: Calling this method with the same arguments will NOT add a new listener.
 		 *
 		 * @param signal <String> The signal to listen.
-		 * @param handler <Function> The callback function.
+		 * @param slot <Function> The callback function.
 		 * @param scope <Object?> The scope for the callback.
 		 */
-		on: function on(signal, handler, scope) {
+		on: function on(signal, slot, scope) {
 			var list = this._listeners;
+
+			if (hasListener(list, signal, slot, scope))
+				return;
 
 			if (!list[signal])
 				list[signal] = [];
 
-			if (list[signal].some(equals(handler, scope, true)))
-				return;
-
 			list[signal].push({
-				funct: handler,
+				funct: slot,
 				scope: scope
 			});
 		},
@@ -422,15 +438,32 @@ define("almond", function(){});
 		 * Removes the listener added with exactly the same arguments.
 		 *
 		 * @param signal <String> The signal from we want to remove the listener.
-		 * @param handler <Function> The callback passed to .on() method.
+		 * @param slot <Function> The callback passed to .on() method.
 		 * @param scope <Object> The scope for the callback.
 		 */
-		off: function off(signal, handler, scope) {
+		off: function off(signal, slot, scope) {
 			var list = this._listeners[signal];
 			if (!list)
 				return;
 
-			this._listeners[signal] = list.filter(equals(handler, scope, false));
+			this._listeners[signal] = list.filter(equals(slot, scope, false));
+		},
+
+		/**
+		 * Adds a listener to be fired only the next time the signal is emitted.
+		 *
+		 * @param signal <String> The signal to listen.
+		 * @param slot <Function> The callback function.
+		 * @param scope <Object?> The scope for the callback.
+		 */
+		once: function once(signal, slot, scope) {
+			if (hasListener(this._listeners, signal, slot, scope))
+				return;
+
+			this.on(signal, function wrapper() {
+				this.off(signal, wrapper, this);
+				slot.apply(scope, arguments);
+			}, this);
 		},
 
 		/**
@@ -440,7 +473,7 @@ define("almond", function(){});
 		 * @param signal <String> The signal of the listeners we want to invoke.
 		 * @param var_args <object...> Any arguments we want the callbacks to recive.
 		 */
-		emit: function emit(signal, var_args) {
+		emit: function emit(signal/*, var_args*/) {
 			var list = this._listeners[signal];
 			if (!list)
 				return;
@@ -452,9 +485,10 @@ define("almond", function(){});
 		},
 
 		/**
-		 * Adds listeners to a group of signals, optionally a scope can be provided
+		 * Connects slots to a group of signals, 
+		 * optionally a scope can be provided.
 		 *
-		 * @param slots <String> Map of signals and listeners.
+		 * @param slots <Object> Map of signals and slots.
 		 * @param scope <Object> The scope for the callback.
 		 */
 		connect: function connect(slots, scope) {
@@ -462,17 +496,16 @@ define("almond", function(){});
 				return;
 
 			for (var signal in slots) {
-		       	if(!slots.hasOwnProperty(signal)) 
-		       		continue;
-		        
-		       	this.on(signal, slots[signal], scope);
-		    }
+				if(slots.hasOwnProperty(signal))
+					this.on(signal, slots[signal], scope);
+			}
 		},
 
 		/**
-		 * Removes listeners to a group of signals, optionally a scope can be provided
+		 * Disconnects slots to a group of signals, 
+		 * optionally a scope can be provided.
 		 *
-		 * @param slots <String> Map of signals and listeners.
+		 * @param slots <Object> Map of signals and slots.
 		 * @param scope <Object> The scope for the callback.
 		 */
 		disconnect: function disconnect(slots, scope) {
@@ -480,24 +513,19 @@ define("almond", function(){});
 				return;
 
 			for (var signal in slots) {
-		       	if(!slots.hasOwnProperty(signal)) 
-		       		continue;
-		        
-		       	this.off(signal, slots[signal], scope);
-		    }
+				if(slots.hasOwnProperty(signal))
+					this.off(signal, slots[signal], scope);
+			}
 		}
 	};
 
-	if (typeof Base === 'function')
-		Emitter = Base.extend(Emitter.prototype);
-
+	/* global module: false */
 	if (typeof module !== 'undefined' && module.exports)
 		module.exports = Emitter;
 	else if (typeof define !== 'undefined' && define.amd)
 		define('ventus/core/emitter',[],function() { return Emitter });
 	else
 		root.Emitter = Emitter;
-
 })(this);
 
 /**
@@ -714,14 +742,15 @@ define('ventus/wm/window',[
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
 	'less!ventus/css/window'
-], 
+],
 function(Emitter, View, WindowTemplate) {
+	
 
 	var Window = function (options) {
 		this.signals = new Emitter();
 
 		options = options || {
-			title: "Untitle Window",
+			title: 'Untitle Window',
 			width: 400,
 			height: 200,
 			x: 0,
@@ -739,7 +768,7 @@ function(Emitter, View, WindowTemplate) {
 			title: options.title,
 			classname: options.classname||''
 		}));
-		this.el.listen(this.events.window, this); 
+		this.el.listen(this.events.window, this);
 
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
@@ -767,7 +796,7 @@ function(Emitter, View, WindowTemplate) {
 		// Properties
 		this.widget = false;
 		this.movable = true;
-		this.resizable = (typeof options.resizable !== 'undefined') ? 
+		this.resizable = (typeof options.resizable !== 'undefined') ?
 			options.resizable :
 			true;
 
@@ -808,36 +837,41 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'.wm-content click': function(e) {
-					this.enabled && this.signals.emit('click', this, e);
+					if(this.enabled)
+						this.signals.emit('click', this, e);
 				},
 
 				'.wm-window-title mousedown': function(e) {
 					this.slots.move.call(this, e);
 				},
 
-				'.wm-window-title dblclick': function(e) {
-					(this.enabled && this.resizable) && this.maximize();
+				'.wm-window-title dblclick': function() {
+					if(this.enabled && this.resizable)
+						this.maximize();
 				},
 
 				'.wm-window-title button.wm-close click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					this.enabled && this.close();
+					if(this.enabled)
+						this.close();
 				},
 
 				'.wm-window-title button.wm-maximize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					(this.enabled && this.resizable) && this.maximize();
+					if(this.enabled && this.resizable)
+						this.maximize();
 				},
 
 				'.wm-window-title button.wm-minimize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					this.enabled && this.minimize();
+					if(this.enabled)
+						this.minimize();
 				},
 
 				'.wm-window-title button mousedown': function(e) {
@@ -861,18 +895,20 @@ function(Emitter, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
-					this._moving && this.move(
-						e.originalEvent.pageX - this._moving.x,
-						e.originalEvent.pageY - this._moving.y
-					);
-					
-					this._resizing && this.resize(
-						e.originalEvent.pageX + this._resizing.width,
-						e.originalEvent.pageY + this._resizing.height 
-					);
+					if (this._moving)
+						this.move(
+							e.originalEvent.pageX - this._moving.x,
+							e.originalEvent.pageY - this._moving.y
+						);
+
+					if(this._resizing)
+						this.resize(
+							e.originalEvent.pageX + this._resizing.width,
+							e.originalEvent.pageY + this._resizing.height
+						);
 				},
 
-				'mouseup': function(e) {
+				'mouseup': function() {
 					if (this._moving) {
 						this.el.removeClass('move');
 						this._moving = null;
@@ -889,14 +925,18 @@ function(Emitter, View, WindowTemplate) {
 
 		set space(el) {
 			if(el && !el.listen) {
-				console.error("The given space element is not a valid View");
+				console.error('The given space element is not a valid View');
 				return;
 			}
 
+			this._space = el;
 			el.append(this.el);
 			el.listen(this.events.space, this);
 		},
 
+		get space() {
+			return this._space;
+		},
 
 		get maximized() {
 			return this._maximized;
@@ -906,10 +946,10 @@ function(Emitter, View, WindowTemplate) {
 			if(value) {
 				this.stamp();
 				this.signals.emit('maximize', this);
-			} 
+			}
 			else {
 				this.signals.emit('restore', this);
-	
+
 			}
 
 			this._maximized = value;
@@ -924,7 +964,7 @@ function(Emitter, View, WindowTemplate) {
 			if(value) {
 				this.stamp();
 				this.signals.emit('minimize', this);
-			} 
+			}
 			else {
 				this.signals.emit('restore', this);
 			}
@@ -937,7 +977,7 @@ function(Emitter, View, WindowTemplate) {
 				this.signals.emit('focus', this);
 				this.el.addClass('active');
 				this.el.removeClass('inactive');
-			} 
+			}
 			else {
 				this.signals.emit('blur', this);
 				this.el.removeClass('active');
@@ -954,7 +994,7 @@ function(Emitter, View, WindowTemplate) {
 		set enabled(value) {
 			if(!value) {
 				this.el.addClass('disabled');
-			} 
+			}
 			else {
 				this.el.removeClass('disabled');
 			}
@@ -977,7 +1017,7 @@ function(Emitter, View, WindowTemplate) {
 		set resizable(value) {
 			if(!value) {
 				this.el.addClass('noresizable');
-			} 
+			}
 			else {
 				this.el.removeClass('noresizable');
 			}
@@ -989,8 +1029,7 @@ function(Emitter, View, WindowTemplate) {
 			return this._resizable;
 		},
 
-		set closed (value) {
-			var self = this;
+		set closed(value) {
 			if(value) {
 				this.signals.emit('close', this);
 
@@ -1012,8 +1051,7 @@ function(Emitter, View, WindowTemplate) {
 			return this._closed;
 		},
 
-		set opened (value) {
-			var self = this;
+		set opened(value) {
 			if(value) {
 				this.signals.emit('open', this);
 
@@ -1042,8 +1080,8 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		set titlebar(value) {
-			if(value) 
-				this.$titlebar.removeClass('hide')
+			if(value)
+				this.$titlebar.removeClass('hide');
 			else
 				this.$titlebar.addClass('hide');
 
@@ -1059,7 +1097,7 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		get width() {
-			return parseInt(this.el.width());
+			return parseInt(this.el.width(), 10);
 		},
 
 		set height(value) {
@@ -1069,9 +1107,9 @@ function(Emitter, View, WindowTemplate) {
 
 			this.el.height(value);
 		},
-		
+
 		get height() {
-			return parseInt(this.el.height());
+			return parseInt(this.el.height(), 10);
 		},
 
 		set x(value) {
@@ -1083,11 +1121,11 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		get x() {
-			return parseInt(this.el.css('left'));
+			return parseInt(this.el.css('left'), 10);
 		},
 
 		get y() {
-			return parseInt(this.el.css('top'));
+			return parseInt(this.el.css('top'), 10);
 		},
 
 		set z(value) {
@@ -1095,7 +1133,7 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		get z() {
-			return parseInt(this.el.css('z-index'));
+			return parseInt(this.el.css('z-index'), 10);
 		},
 
 		open: function() {
@@ -1135,7 +1173,7 @@ function(Emitter, View, WindowTemplate) {
 					this.move(pos.x, pos.y);
 
 					return this;
-				}
+				};
 			}).apply(this);
 		},
 
@@ -1156,7 +1194,7 @@ function(Emitter, View, WindowTemplate) {
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('minimizing');
 			}, this);
-			
+
 			this.minimized = !this.minimized;
 			return this;
 		},
@@ -1193,7 +1231,7 @@ function(Emitter, View, WindowTemplate) {
 		append: function(el) {
 			el.appendTo(this.$content);
 		}
-	}
+	};
 
 	return Window;
 });
@@ -1204,7 +1242,7 @@ function(Emitter, View, WindowTemplate) {
  * https://github.com/rlamana
  */
 define('ventus/wm/modes/default',['less!../../../css/windowmanager'], function() {
-	
+
 	var DefaultMode = {
 		register: function() {
 			console.log("Default mode registered.");
@@ -1242,6 +1280,7 @@ define('ventus/wm/modes/default',['less!../../../css/windowmanager'], function()
  * https://github.com/rlamana
  */
 define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
+	
 
 	var ExposeMode = {
 
@@ -1249,17 +1288,17 @@ define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
 		register: function() {
 			var self = this;
 
-			console.log("Expose mode registered.");
+			console.log('Expose mode registered.');
 
 			this.el.on('contextmenu', function(event) {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
-					self.mode = 'expose';	
+					self.mode = 'expose';
 				} else if(self.mode === 'expose') {
 					self.mode = 'default';
 				}
 
-				return false;		
+				return false;
 			});
 		},
 
@@ -1283,15 +1322,15 @@ define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
 				// Scale factor
 				if(win.height > win.width) {
 					scale = (win.height > maxHeight) ? maxHeight / win.height : 1;
-				} 
+				}
 				else {
 					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
 				}
 
-				scale -= .15; // To add a little padding
+				scale -= 0.15; // To add a little padding
 
 				pos = {
-					x: (i%grid)*maxWidth, 
+					x: (i%grid)*maxWidth,
 					y: ((i<grid)?0:1)*maxHeight
 				};
 
@@ -1323,7 +1362,7 @@ define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
 			var space = this.el;
 			for(var z, win, i=this.windows.length; i--;) {
 				win = this.windows[i];
-				
+
 				win.restore();
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
@@ -1336,7 +1375,7 @@ define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
 				})(win);
 
 				this.el.onTransitionEnd(removeTransform, this);
-				
+
 				win.movable = true;
 				win.enabled = true;
 			}
@@ -1368,14 +1407,13 @@ define('ventus/wm/modes/expose',['less!../../../css/expose'],function() {
  * https://github.com/rlamana
  */
 define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function() {
+	
 
 	var FullscreenMode = {
 
 		// Launch when plugin is registered
 		register: function() {
-			var self = this;
-
-			console.log("Fullscreen mode registered.");
+			console.log('Fullscreen mode registered.');
 		},
 
 		// Lauch when plugin is enabled
@@ -1392,10 +1430,9 @@ define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function()
 
 		// Lauch when plugin is disabled
 		unplug: function() {
-			var space = this.el;
-			for(var z, win, i=this.windows.length; i--;) {
+			for(var win, i=this.windows.length; i--;) {
 				win = this.windows[i];
-				
+
 				win.restore();
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
@@ -1404,11 +1441,11 @@ define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function()
 					return function () {
 						this.el.removeClass('fullscreen');
 						win.el.css('transform', '');
-					}
+					};
 				})(win);
 
 				this.el.onTransitionEnd(removeTransform, this);
-				
+
 				win.movable = true;
 				win.resizable = true;
 				win.enabled = true;
@@ -1418,14 +1455,14 @@ define('ventus/wm/modes/fullscreen',['less!../../../css/fullscreen'], function()
 		},
 
 		actions: {
-			focus: function(win) {
+			focus: function(/*win*/) {
 			},
 
 			close: function() {
 				this.mode = 'expose';
 			},
 
-			select: function(win, e) {
+			select: function(win/*, e*/) {
 				this.mode = 'default';
 				win.focus();
 			}
@@ -1447,10 +1484,12 @@ define('ventus/wm/windowmanager',[
 	'ventus/wm/modes/default',
 	'ventus/wm/modes/expose',
 	'ventus/wm/modes/fullscreen'
-], 
+],
 function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+	
+
 	var WindowManager = function () {
-		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
+		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
@@ -1460,17 +1499,16 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		this.actions.forEach(function(value){
 			this[value] = (function(action) {
 				return function() {
-					this.currentMode.actions[action] && 
-					this.currentMode.actions[action].apply(this, arguments);
-				}
+					if(this.currentMode.actions[action])
+						this.currentMode.actions[action].apply(this, arguments);
+				};
 			}).call(this, value);
 		}, this);
 
 		// Launch register of every mode plugged-in
 		for(var mode in this.modes) {
-			if(this.modes.hasOwnProperty(mode) && 
-			   this.modes[mode].register) {
-					this.modes[mode].register.apply(this);
+			if(this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+				this.modes[mode].register.apply(this);
 			}
 		}
 
@@ -1506,11 +1544,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			if(!mode || this._mode === value) return;
 
 			// Unplug old system
-			if (this._mode)
-				this.currentMode['unplug'] && this.currentMode.unplug.apply(this);
+			if (this._mode && this.currentMode.unplug)
+				this.currentMode.unplug.apply(this);
 
 			// Plug new mode system
-			mode['plug'] && mode.plug.apply(this);
+			if(mode.plug)
+				mode.plug.apply(this);
 
 			this._mode = value;
 		},
@@ -1524,7 +1563,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set overlay(value) {
-			this.$overlay.css('opacity', value ? .8 : 0);
+			this.$overlay.css('opacity', value ? 0.8 : 0);
 			this._overlay = value;
 		},
 
@@ -1560,8 +1599,8 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		 * Internal action always performed besides the mode definition
 		 */
 		_focus: function(win) {
-			var currentZ, 
-				baseZ = 10000, 
+			var currentZ,
+				baseZ = 10000,
 				maxZ = baseZ + 10000,
 				index;
 
@@ -1580,7 +1619,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			index = this.windows.indexOf(win);
 			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
-			
+
 			win.z = currentZ + 1;
 
 			// Refresh z-indexes just every 'maxZ' activations
@@ -1608,7 +1647,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		_close: function(win) {
 			// Remove window from manager
 			var id = this.windows.indexOf(win), len;
-			if(id === -1) { 
+			if(id === -1) {
 				console.log('Trying to close a window that doesn\'t exist in this window manager');
 				return;
 			}
@@ -1619,7 +1658,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 				this.active = (len !== 0) ? this.windows[len-1] : null;
 				if (this.active)
 					this.active.focus();
-			}		
+			}
 		}
 	};
 
@@ -1641,9 +1680,8 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define('ventus',['require','$','ventus/wm/windowmanager','ventus/wm/window'],function(require) {
+define('ventus',['require','ventus/wm/windowmanager','ventus/wm/window'],function(require) {
 	
-	var $ = require('$');
 
 	return {
 		WindowManager: require('ventus/wm/windowmanager'),

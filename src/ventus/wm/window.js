@@ -8,14 +8,15 @@ define([
 	'ventus/core/view',
 	'tpl!ventus/tpl/window',
 	'less!ventus/css/window'
-], 
+],
 function(Emitter, View, WindowTemplate) {
+	'use strict';
 
 	var Window = function (options) {
 		this.signals = new Emitter();
 
 		options = options || {
-			title: "Untitle Window",
+			title: 'Untitle Window',
 			width: 400,
 			height: 200,
 			x: 0,
@@ -33,7 +34,7 @@ function(Emitter, View, WindowTemplate) {
 			title: options.title,
 			classname: options.classname||''
 		}));
-		this.el.listen(this.events.window, this); 
+		this.el.listen(this.events.window, this);
 
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
@@ -61,7 +62,7 @@ function(Emitter, View, WindowTemplate) {
 		// Properties
 		this.widget = false;
 		this.movable = true;
-		this.resizable = (typeof options.resizable !== 'undefined') ? 
+		this.resizable = (typeof options.resizable !== 'undefined') ?
 			options.resizable :
 			true;
 
@@ -102,36 +103,41 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'.wm-content click': function(e) {
-					this.enabled && this.signals.emit('click', this, e);
+					if(this.enabled)
+						this.signals.emit('click', this, e);
 				},
 
 				'.wm-window-title mousedown': function(e) {
 					this.slots.move.call(this, e);
 				},
 
-				'.wm-window-title dblclick': function(e) {
-					(this.enabled && this.resizable) && this.maximize();
+				'.wm-window-title dblclick': function() {
+					if(this.enabled && this.resizable)
+						this.maximize();
 				},
 
 				'.wm-window-title button.wm-close click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					this.enabled && this.close();
+					if(this.enabled)
+						this.close();
 				},
 
 				'.wm-window-title button.wm-maximize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					(this.enabled && this.resizable) && this.maximize();
+					if(this.enabled && this.resizable)
+						this.maximize();
 				},
 
 				'.wm-window-title button.wm-minimize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					this.enabled && this.minimize();
+					if(this.enabled)
+						this.minimize();
 				},
 
 				'.wm-window-title button mousedown': function(e) {
@@ -155,18 +161,20 @@ function(Emitter, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
-					this._moving && this.move(
-						e.originalEvent.pageX - this._moving.x,
-						e.originalEvent.pageY - this._moving.y
-					);
-					
-					this._resizing && this.resize(
-						e.originalEvent.pageX + this._resizing.width,
-						e.originalEvent.pageY + this._resizing.height 
-					);
+					if (this._moving)
+						this.move(
+							e.originalEvent.pageX - this._moving.x,
+							e.originalEvent.pageY - this._moving.y
+						);
+
+					if(this._resizing)
+						this.resize(
+							e.originalEvent.pageX + this._resizing.width,
+							e.originalEvent.pageY + this._resizing.height
+						);
 				},
 
-				'mouseup': function(e) {
+				'mouseup': function() {
 					if (this._moving) {
 						this.el.removeClass('move');
 						this._moving = null;
@@ -183,14 +191,18 @@ function(Emitter, View, WindowTemplate) {
 
 		set space(el) {
 			if(el && !el.listen) {
-				console.error("The given space element is not a valid View");
+				console.error('The given space element is not a valid View');
 				return;
 			}
 
+			this._space = el;
 			el.append(this.el);
 			el.listen(this.events.space, this);
 		},
 
+		get space() {
+			return this._space;
+		},
 
 		get maximized() {
 			return this._maximized;
@@ -200,10 +212,10 @@ function(Emitter, View, WindowTemplate) {
 			if(value) {
 				this.stamp();
 				this.signals.emit('maximize', this);
-			} 
+			}
 			else {
 				this.signals.emit('restore', this);
-	
+
 			}
 
 			this._maximized = value;
@@ -218,7 +230,7 @@ function(Emitter, View, WindowTemplate) {
 			if(value) {
 				this.stamp();
 				this.signals.emit('minimize', this);
-			} 
+			}
 			else {
 				this.signals.emit('restore', this);
 			}
@@ -231,7 +243,7 @@ function(Emitter, View, WindowTemplate) {
 				this.signals.emit('focus', this);
 				this.el.addClass('active');
 				this.el.removeClass('inactive');
-			} 
+			}
 			else {
 				this.signals.emit('blur', this);
 				this.el.removeClass('active');
@@ -248,7 +260,7 @@ function(Emitter, View, WindowTemplate) {
 		set enabled(value) {
 			if(!value) {
 				this.el.addClass('disabled');
-			} 
+			}
 			else {
 				this.el.removeClass('disabled');
 			}
@@ -271,7 +283,7 @@ function(Emitter, View, WindowTemplate) {
 		set resizable(value) {
 			if(!value) {
 				this.el.addClass('noresizable');
-			} 
+			}
 			else {
 				this.el.removeClass('noresizable');
 			}
@@ -283,8 +295,7 @@ function(Emitter, View, WindowTemplate) {
 			return this._resizable;
 		},
 
-		set closed (value) {
-			var self = this;
+		set closed(value) {
 			if(value) {
 				this.signals.emit('close', this);
 
@@ -306,8 +317,7 @@ function(Emitter, View, WindowTemplate) {
 			return this._closed;
 		},
 
-		set opened (value) {
-			var self = this;
+		set opened(value) {
 			if(value) {
 				this.signals.emit('open', this);
 
@@ -336,8 +346,8 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		set titlebar(value) {
-			if(value) 
-				this.$titlebar.removeClass('hide')
+			if(value)
+				this.$titlebar.removeClass('hide');
 			else
 				this.$titlebar.addClass('hide');
 
@@ -353,7 +363,7 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		get width() {
-			return parseInt(this.el.width());
+			return parseInt(this.el.width(), 10);
 		},
 
 		set height(value) {
@@ -363,9 +373,9 @@ function(Emitter, View, WindowTemplate) {
 
 			this.el.height(value);
 		},
-		
+
 		get height() {
-			return parseInt(this.el.height());
+			return parseInt(this.el.height(), 10);
 		},
 
 		set x(value) {
@@ -377,11 +387,11 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		get x() {
-			return parseInt(this.el.css('left'));
+			return parseInt(this.el.css('left'), 10);
 		},
 
 		get y() {
-			return parseInt(this.el.css('top'));
+			return parseInt(this.el.css('top'), 10);
 		},
 
 		set z(value) {
@@ -389,7 +399,7 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		get z() {
-			return parseInt(this.el.css('z-index'));
+			return parseInt(this.el.css('z-index'), 10);
 		},
 
 		open: function() {
@@ -429,7 +439,7 @@ function(Emitter, View, WindowTemplate) {
 					this.move(pos.x, pos.y);
 
 					return this;
-				}
+				};
 			}).apply(this);
 		},
 
@@ -450,7 +460,7 @@ function(Emitter, View, WindowTemplate) {
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('minimizing');
 			}, this);
-			
+
 			this.minimized = !this.minimized;
 			return this;
 		},
@@ -487,7 +497,7 @@ function(Emitter, View, WindowTemplate) {
 		append: function(el) {
 			el.appendTo(this.$content);
 		}
-	}
+	};
 
 	return Window;
 });

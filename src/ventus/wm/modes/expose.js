@@ -4,6 +4,7 @@
  * https://github.com/rlamana
  */
 define(['less!../../../css/expose'],function() {
+	'use strict';
 
 	var ExposeMode = {
 
@@ -11,17 +12,17 @@ define(['less!../../../css/expose'],function() {
 		register: function() {
 			var self = this;
 
-			console.log("Expose mode registered.");
+			console.log('Expose mode registered.');
 
 			this.el.on('contextmenu', function(event) {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
-					self.mode = 'expose';	
+					self.mode = 'expose';
 				} else if(self.mode === 'expose') {
 					self.mode = 'default';
 				}
 
-				return false;		
+				return false;
 			});
 		},
 
@@ -45,15 +46,15 @@ define(['less!../../../css/expose'],function() {
 				// Scale factor
 				if(win.height > win.width) {
 					scale = (win.height > maxHeight) ? maxHeight / win.height : 1;
-				} 
+				}
 				else {
 					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
 				}
 
-				scale -= .15; // To add a little padding
+				scale -= 0.15; // To add a little padding
 
 				pos = {
-					x: (i%grid)*maxWidth, 
+					x: (i%grid)*maxWidth,
 					y: ((i<grid)?0:1)*maxHeight
 				};
 
@@ -85,7 +86,7 @@ define(['less!../../../css/expose'],function() {
 			var space = this.el;
 			for(var z, win, i=this.windows.length; i--;) {
 				win = this.windows[i];
-				
+
 				win.restore();
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
@@ -98,7 +99,7 @@ define(['less!../../../css/expose'],function() {
 				})(win);
 
 				this.el.onTransitionEnd(removeTransform, this);
-				
+
 				win.movable = true;
 				win.enabled = true;
 			}

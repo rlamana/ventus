@@ -10,10 +10,12 @@ define([
 	'ventus/wm/modes/default',
 	'ventus/wm/modes/expose',
 	'ventus/wm/modes/fullscreen'
-], 
+],
 function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+	'use strict';
+
 	var WindowManager = function () {
-		this.el = View("<div class='wm-space'><div class='wm-overlay' /></div>");
+		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
@@ -23,17 +25,16 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		this.actions.forEach(function(value){
 			this[value] = (function(action) {
 				return function() {
-					this.currentMode.actions[action] && 
-					this.currentMode.actions[action].apply(this, arguments);
-				}
+					if(this.currentMode.actions[action])
+						this.currentMode.actions[action].apply(this, arguments);
+				};
 			}).call(this, value);
 		}, this);
 
 		// Launch register of every mode plugged-in
 		for(var mode in this.modes) {
-			if(this.modes.hasOwnProperty(mode) && 
-			   this.modes[mode].register) {
-					this.modes[mode].register.apply(this);
+			if(this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+				this.modes[mode].register.apply(this);
 			}
 		}
 
@@ -69,11 +70,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			if(!mode || this._mode === value) return;
 
 			// Unplug old system
-			if (this._mode)
-				this.currentMode['unplug'] && this.currentMode.unplug.apply(this);
+			if (this._mode && this.currentMode.unplug)
+				this.currentMode.unplug.apply(this);
 
 			// Plug new mode system
-			mode['plug'] && mode.plug.apply(this);
+			if(mode.plug)
+				mode.plug.apply(this);
 
 			this._mode = value;
 		},
@@ -87,7 +89,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set overlay(value) {
-			this.$overlay.css('opacity', value ? .8 : 0);
+			this.$overlay.css('opacity', value ? 0.8 : 0);
 			this._overlay = value;
 		},
 
@@ -123,8 +125,8 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		 * Internal action always performed besides the mode definition
 		 */
 		_focus: function(win) {
-			var currentZ, 
-				baseZ = 10000, 
+			var currentZ,
+				baseZ = 10000,
 				maxZ = baseZ + 10000,
 				index;
 
@@ -143,7 +145,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			index = this.windows.indexOf(win);
 			this.windows.splice(index, 1); // Remove from array
 			this.windows.push(win);
-			
+
 			win.z = currentZ + 1;
 
 			// Refresh z-indexes just every 'maxZ' activations
@@ -171,7 +173,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		_close: function(win) {
 			// Remove window from manager
 			var id = this.windows.indexOf(win), len;
-			if(id === -1) { 
+			if(id === -1) {
 				console.log('Trying to close a window that doesn\'t exist in this window manager');
 				return;
 			}
@@ -182,7 +184,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 				this.active = (len !== 0) ? this.windows[len-1] : null;
 				if (this.active)
 					this.active.focus();
-			}		
+			}
 		}
 	};
 
