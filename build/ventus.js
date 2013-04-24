@@ -1688,13 +1688,15 @@ define('ventus/wm/windowmanager',['require','$','ventus/wm/window','ventus/core/
 
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
 define('ventus',['require','ventus/wm/windowmanager','ventus/wm/window'],function(require) {
 	
 
 	return {
+		version: '0.1',
+
 		WindowManager: require('ventus/wm/windowmanager'),
 		Window: require('ventus/wm/window')
 	};
