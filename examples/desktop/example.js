@@ -67,15 +67,15 @@
                 openWithDelay(terminalWin, 0);
                 openWithDelay(todoWin, 200);
                 openWithDelay(aboutWin, 400);
-                openWithDelay(playerWin, 600);   
+                openWithDelay(playerWin, 600);
             });
         }, 3000);
-        
+
 
         // Exposé test button
-        $(".expose-button").click(function(){
+        $(".expose-button").click(_.throttle(function(){
             wm.mode = 'expose';
             return false;
-        });
+        }, 1000));
     });
 })($, Ventus);
