@@ -760,7 +760,7 @@ function(Emitter, View, WindowTemplate) {
 			movable: true,
 			resizable: true,
 			widget: false,
-			titlebar: true,
+			titlebar: true
 		};
 
 		// View
@@ -769,6 +769,9 @@ function(Emitter, View, WindowTemplate) {
 			classname: options.classname||''
 		}));
 		this.el.listen(this.events.window, this);
+
+		if(options.opacity)
+			this.el.css('opacity', options.opacity);
 
 		// Cache content element
 		this.$content = this.el.find('.wm-content');

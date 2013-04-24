@@ -36,7 +36,8 @@
             height: 300,
             x: 490,
             y: 320,
-            resizable: false
+            resizable: false,
+            opacity: 1 // To fix problems with chrome video on Linux
         });
 
         /*playerWin.titlebar = false;
