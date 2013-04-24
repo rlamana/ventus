@@ -60,7 +60,7 @@
 
         setTimeout(function() {
             loader.addClass('hide');
-            loader.on('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
+            loader.on('webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
                 loader.hide();
 
                 // Open windows
