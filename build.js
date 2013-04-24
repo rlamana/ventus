@@ -1,8 +1,8 @@
 ({
 	debug: false,
-	
+
     baseUrl: 'vendor',
-    
+
     paths: {
         'ventus': '../src/ventus',
 
@@ -10,7 +10,14 @@
         'less': '../src/plugins/less',
         'text': '../src/plugins/text',
 
-        '$': 'jquery'
+        '$': 'jquery',
+        'Underscore': '../vendor/underscore'
+    },
+
+    shim: {
+        'Underscore': {
+            exports: '_'
+        }
     },
 
     optimizeAllPluginResources: true,

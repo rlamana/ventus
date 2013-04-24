@@ -26,8 +26,7 @@
 			<button class="button expose-button">Exposé</button>
 		</div>
 
-		<script type="text/javascript" src="../../vendor/flexie.js"></script> 
-		<script type="text/javascript" src="../../vendor/jquery.js"></script> 
+		<script type="text/javascript" src="../../vendor/jquery.js"></script>
 		<script type="text/javascript" src="../../vendor/handlebars.js"></script>
 		<script type="text/javascript" src="../../build/ventus.js"></script>
 		<script type="text/javascript">
@@ -36,7 +35,7 @@
 
 				var pos = 50;
 				var num = 1;
-				window.wm = wm; // For debugging reasons      
+				window.wm = wm; // For debugging reasons
 
 				$('.create-button').click(function(){
 					wm.createWindow({
@@ -49,14 +48,14 @@
 					.open();
 				});
 
-				$('.expose-button').click(function(){
+				$('.expose-button').click(_.throttle(function(){
 					if(wm.mode === 'expose')
 						wm.mode = 'default';
-					else 
+					else
 						wm.mode = 'expose';
 
 					return false;
-				});
+				}, 1000));
 			});
 		</script>
 

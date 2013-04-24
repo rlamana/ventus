@@ -3,19 +3,18 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define([
-	'$',
-	'ventus/wm/window',
-	'ventus/core/view',
-	'ventus/wm/modes/default',
-	'ventus/wm/modes/expose',
-	'ventus/wm/modes/fullscreen'
-],
-function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+define(function(require) {
 	'use strict';
 
+	var $ = require('$');
+	var Window = require('ventus/wm/window');
+	var view = require('ventus/core/view');
+	var DefaultMode = require('ventus/wm/modes/default');
+	var ExposeMode = require('ventus/wm/modes/expose');
+	var FullscreenMode = require('ventus/wm/modes/fullscreen');
+
 	var WindowManager = function () {
-		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
+		this.el = view('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
@@ -66,6 +65,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set mode(value) {
+
 			var mode = this.modes[value];
 			if(!mode || this._mode === value) return;
 
@@ -189,12 +189,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	};
 
 	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
-		options.content = View(selector);
+		options.content = view(selector);
 		return this.createWindow(options);
 	};
 
 	WindowManager.prototype.createWindow.fromElement = function(element, options) {
-		options.content = View(element);
+		options.content = view(element);
 		return this.createWindow(options);
 	};
 

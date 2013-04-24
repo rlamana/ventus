@@ -60,19 +60,12 @@
             <!-- Terminus App example -->
 
             <div class="terminal-app"></div>
-            <script type="text/javascript" src="terminal/terminus.min.js"></script> 
+            <script type="text/javascript" src="terminal/terminus.min.js"></script>
             <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
             <script type="text/javascript" src="terminal/commands/vendor/three.js"></script>
-            <script type="text/javascript" src="terminal/commands/vendor/supertags.js"></script>  
+            <script type="text/javascript" src="terminal/commands/vendor/supertags.js"></script>
             <script type="text/javascript" src="terminal/commands/shapecommands.js"></script>
-            <script type="text/javascript">
-                var terminal = new Terminus('.terminal-app', {
-                    welcome: "<div class='identity'><img src='terminal/img/logo.png' /><h1>Terminus.js</h1> "+Terminus.version+"</div>Copyright 2012 Ramón Lamana.<br/>Press <span style='color:green'>&lt; tab &gt;</span> to see a list of available commands."
-                });
 
-                terminal.shell.include([TestCommands, ShapeCommands]);
-            </script>
-            
             <!-- Video Player App -->
 
             <div class="player-app">
@@ -84,7 +77,7 @@
             <!-- About App -->
             <div class="about-app">
                 <h1>Ventus</h1>
-                <h2>HTML5 & CSS3 Window Manager Experiment</h2> 
+                <h2>HTML5 & CSS3 Window Manager Experiment</h2>
 
                 <button class="expose-button">Try Exposé</button>
                 <p>or <strong>right-click</strong> to activate it</p>
@@ -113,10 +106,10 @@
         </div>
 
         <!-- Ventus -->
-        <script type="text/javascript" src="../../vendor/jquery.js"></script> 
+        <script type="text/javascript" src="../../vendor/jquery.js"></script>
         <script type="text/javascript" src="../../vendor/handlebars.js"></script>
-        <script type="text/javascript" src="../../build/ventus.js"></script> 
-        <script type="text/javascript" data-main="todo/main.js" src="../../vendor/require.js"></script> 
+        <script type="text/javascript" src="../../build/ventus.js"></script>
+        <script type="text/javascript" data-main="todo/main.js" src="../../vendor/require.js"></script>
 
         <script type="text/javascript" src="example.js"></script>
 

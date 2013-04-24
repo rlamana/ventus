@@ -3,7 +3,7 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['less!../../../css/expose'],function() {
+define(['Underscore', 'less!../../../css/expose'], function(_) {
 	'use strict';
 
 	var ExposeMode = {
@@ -14,7 +14,7 @@ define(['less!../../../css/expose'],function() {
 
 			console.log('Expose mode registered.');
 
-			this.el.on('contextmenu', function(event) {
+			this.el.on('contextmenu', _.throttle(function() {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
 					self.mode = 'expose';
@@ -23,7 +23,7 @@ define(['less!../../../css/expose'],function() {
 				}
 
 				return false;
-			});
+			}, 1000));
 		},
 
 		// Lauch when plugin is enabled
