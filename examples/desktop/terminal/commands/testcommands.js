@@ -7,12 +7,31 @@
 	'use strict';
 
 	var TestCommands = {
-		block: function() {
-			setTimeout.call(this, function(){
-				this.write('Process has finished');
-				this.exit();
-			}, 3000);
+		ls: function() {
+			// Fake 'ls' command for demo purposes
+			this.write('LICENSE\nMakefile\nREADME.md\nbuild/\nbuild.js\nexamples/\nsrc/\nvendor/\n');
+			this.exit();
+		},
 
+		ll: function() {
+			TestCommands.ls.call(this, arguments);
+		},
+
+		help: function() {
+			this.write('Press < tab > to see a list of available commands.');
+			this.exit();
+		},
+
+		pwd: function() {
+			// Fake 'pwd' command for demo purposes
+			this.write('github.com:rlamana/Ventus');
+			this.exit();
+		},
+
+		cd: function() {
+			// Fake 'cd' command for demo purposes
+			this.write('Sorry, access not granted');
+			this.exit();
 		},
 
 		exit: function() {
