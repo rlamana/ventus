@@ -12,6 +12,9 @@
 		<link href='css/normalize.css' rel='stylesheet' type='text/css' />
 		<link href='css/example.css' rel='stylesheet' type='text/css' />
 		<link href='../../build/ventus.css' rel='stylesheet' type='text/css' />
+
+		<link href='css/browseralert.css' rel='stylesheet' type='text/css' />
+
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
 
 		<script type="text/javascript" src="../../vendor/modernizr.js"></script>
@@ -20,6 +23,15 @@
 		<!--[if lt IE 8]>
 			<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
 		<![endif]-->
+
+		<div class="browser-overlay" style="display: block;">
+			<div class="wrapper">
+				<h2>This experiment works in <strong>webkit</strong> based browsers only!</h2>
+				<i class="icon-chrome" style="font-size: 50px; color: white; float: right;"></i>
+				<p>This means we cannot guarantee that everything would be properly displayed on your browser. Sorry.</p>
+				<small><a href="#">Close</a></small>
+			</div>
+		</div>
 
 		<div class="buttonbar">
 			<button class="button create-button">Create Window</button>
