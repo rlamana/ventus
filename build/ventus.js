@@ -878,6 +878,8 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'.wm-window-title button mousedown': function(e) {
+					this.focus();
+
 					e.stopPropagation();
 					e.preventDefault();
 				},
