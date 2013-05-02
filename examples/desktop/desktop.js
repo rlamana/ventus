@@ -77,7 +77,7 @@
 
 		setTimeout(function() {
 			loader.addClass('hide');
-			loader.on('webkitAnimationEnd oAnimationEnd MSAnimationEnd', function() {
+			loader.on(Ventus.browser.animationEventName(), function() {
 				loader.hide();
 
 				// Open windows

@@ -9,6 +9,24 @@ define(function(require) {
 	return {
 		version: '0.1',
 
+		browser: {
+			animationEventName: function(){
+				var style = document.body.style;
+				var event = null;
+
+				if(style.animation === '')
+					event = 'animationend';
+
+				else if(style.MozAnimation === '')
+					event = 'mozAnimationEnd';
+
+				else if(style.webkitAnimation === '')
+					event = 'webkitAnimationEnd';
+
+				return event;
+			}
+		},
+
 		WindowManager: require('ventus/wm/windowmanager'),
 		Window: require('ventus/wm/window')
 	};
