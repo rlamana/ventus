@@ -75,7 +75,7 @@
 			setTimeout(function(){win.open();}, delay);
 		}
 
-		setTimeout(function() {
+		function init() {
 			loader.addClass('hide');
 			loader.on(Ventus.browser.animationEventName(), function() {
 				loader.hide();
@@ -86,6 +86,24 @@
 				openWithDelay(aboutWin, 400);
 				openWithDelay(playerWin, 600);
 			});
+		}
+
+		setTimeout(function() {
+			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+			var $browserAlert = $('.browser-overlay');
+
+			if(!isChrome && !isSafari) {
+				$browserAlert.find('.close-button').click(function() {
+					$browserAlert.hide();
+
+					init();
+				});
+
+				$browserAlert.show();
+			} else {
+				init();
+			}
 		}, 3000);
 
 
