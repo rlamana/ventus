@@ -24,7 +24,7 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 ### Create a new window wrapping a DOM Element
 
 ##### Using a query
-	wm.createWindow.fromQuery('.my-app-content', {
+	wm.createWindow.fromQuery('#element .selector', {
 		title: 'My App',
 		width: 330,
 		height: 400,
