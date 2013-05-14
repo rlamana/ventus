@@ -231,11 +231,11 @@ function(Emitter, View, WindowTemplate) {
 
 		set minimized(value) {
 			if(value) {
-				this.stamp();
-				this.signals.emit('minimize', this);
+				this._restoreMinimized = this.stamp();
+				this.signals.emit('minimize', this, this._restoreMinimized);
 			}
 			else {
-				this.signals.emit('restore', this);
+				this.signals.emit('restore', this, this._restoreMinimized);
 			}
 
 			this._minimized = value;
