@@ -1,5 +1,5 @@
 
-//  Prefix.less 
+//  Prefix.less
 //  Copyright (c) 2012 Ramón Lamana
 //
 //  MIT Licensed:
@@ -17,7 +17,7 @@
 
 .user-select(@value) {
   user-select: @value;
-  
+
   -webkit-user-select: @value;
   -moz-user-select: @value;
   -ms-user-select: @value;
@@ -40,7 +40,7 @@
     @args: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
     -webkit-transition: @args;
     -moz-transition: @args;
-    -ms-transition: @args; 
+    -ms-transition: @args;
     -o-transition: @args;
     transition: @args;
 }
@@ -49,7 +49,7 @@
     @args: ~`'@{arguments}'.replace(/\[|\]/g, '')`;
     -webkit-transition-property: @args;
     -moz-transition-property: @args;
-    -ms-transition-property: @args; 
+    -ms-transition-property: @args;
     -o-transition-property: @args;
     transition-property: @args;
 }
@@ -59,10 +59,10 @@
 
 .transform(@val1, @val2:X, ...) {
     @args: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
-    -webkit-transform: @args; 
-    -moz-transform: @args; 
-    -ms-transform: @args; 
-    -o-transform: @args; 
+    -webkit-transform: @args;
+    -moz-transform: @args;
+    -ms-transform: @args;
+    -o-transform: @args;
     transform: @args;
 }
 
@@ -95,10 +95,10 @@
 // Gradients
 
 .linear-gradient(@value) {
-    -webkit-linear-gradient: @value; 
-    -moz-linear-gradient: @value; 
-    -ms-linear-gradient: @value; 
-    -o-linear-gradient: @value; 
+    -webkit-linear-gradient: @value;
+    -moz-linear-gradient: @value;
+    -ms-linear-gradient: @value;
+    -o-linear-gradient: @value;
     linear-gradient: @value;
 }
 

@@ -949,14 +949,12 @@ function(Emitter, View, WindowTemplate) {
 
 		set maximized(value) {
 			if(value) {
-				this.stamp();
-				this.signals.emit('maximize', this);
+				this._restoreMaximized = this.stamp();
+				this.signals.emit('maximize', this, this._restoreMaximized);
 			}
 			else {
-				this.signals.emit('restore', this);
-
+				this.signals.emit('restore', this, this._restoreMaximized);
 			}
-
 			this._maximized = value;
 		},
 
@@ -1180,6 +1178,8 @@ function(Emitter, View, WindowTemplate) {
 					return this;
 				};
 			}).apply(this);
+
+			return this.restore;
 		},
 
 		restore: function(){},
@@ -1266,8 +1266,8 @@ define('ventus/wm/modes/default',['less!../../../css/windowmanager'], function()
 				win.resize(this.el.width(), this.el.height());
 			},
 
-			restore: function(win) {
-				win.restore();
+			restore: function(win, restore) {
+				restore.call(win);
 			},
 
 			minimize: function(win) {
@@ -1315,7 +1315,7 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 			}, 1000));
 		},
 
-		// Lauch when plugin is enabled
+		// Launch when plugin is enabled
 		plug: function() {
 			var floor = Math.floor, ceil = Math.ceil, self = this;
 

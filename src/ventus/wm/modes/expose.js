@@ -26,7 +26,7 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 			}, 1000));
 		},
 
-		// Lauch when plugin is enabled
+		// Launch when plugin is enabled
 		plug: function() {
 			var floor = Math.floor, ceil = Math.ceil, self = this;
 

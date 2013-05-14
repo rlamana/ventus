@@ -215,14 +215,12 @@ function(Emitter, View, WindowTemplate) {
 
 		set maximized(value) {
 			if(value) {
-				this.stamp();
-				this.signals.emit('maximize', this);
+				this._restoreMaximized = this.stamp();
+				this.signals.emit('maximize', this, this._restoreMaximized);
 			}
 			else {
-				this.signals.emit('restore', this);
-
+				this.signals.emit('restore', this, this._restoreMaximized);
 			}
-
 			this._maximized = value;
 		},
 
@@ -446,6 +444,8 @@ function(Emitter, View, WindowTemplate) {
 					return this;
 				};
 			}).apply(this);
+
+			return this.restore;
 		},
 
 		restore: function(){},
