@@ -88,7 +88,7 @@
 	min-height: @minheight;
 
 	background-color: #fff;
-	//.box-shadow(0 0 12px 1px rgba(0, 0, 0, 0.6));
+	.box-shadow(0 0 12px 1px rgba(0, 0, 0, 0.6));
 
 	.wm-window-overlay {
 		display: none;
@@ -96,7 +96,7 @@
 
 	.wm-window-box {
 		.display(flex);
-		.flex-flow(column);
+		.flex-direction(column);
 
 		height: 100%;
 		min-height: @minheight;
@@ -104,7 +104,7 @@
 
 		header.wm-window-title {
 			.display(flex);
-			.flex-flow(row);
+			.flex-direction(row);
 			.align-items(center);
 			.user-select(none);
 
@@ -123,7 +123,7 @@
 				.flex(1);
 
 				.display(flex); // Firefox hack
-				.flex-flow(row);
+				.flex-direction(row);
 				.align-items(center);
 
 				.user-select(none);
@@ -140,9 +140,8 @@
 
 			.wm-button-group {
 				.display(flex);
-				.flex-flow(row);
+				.flex-direction(row);
 				.align-items(center);
-
 				padding-left: 2px;
 			}
 
