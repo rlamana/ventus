@@ -1,3 +1,5 @@
+html, body{ height: 100% }
+
 body {
 	font-family: "Open Sans", sans-serif;
 	background-color: #fff;
@@ -24,6 +26,9 @@ body {
 /* Loading Screen */
 #loading-screen {
 	position: absolute;
+	top: 0px;
+	left: 0px;
+
 	width: 100%;
 	height: 100%;
 
@@ -41,7 +46,7 @@ body {
 	left: 20%;
 
 	height: 65%;
-	
+
 	margin: 0 auto;
 
 	color: rgba(255,255,255,.9);
@@ -73,7 +78,7 @@ body {
 	color: rgba(255,255,255,.7);
 }
 
-#loading-screen .content p {                
+#loading-screen .content p {
 	font-size: 20px;
 
 	padding: 0;
@@ -182,7 +187,7 @@ body {
 	border: 0;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 	position: relative;
-	
+
 }
 
 

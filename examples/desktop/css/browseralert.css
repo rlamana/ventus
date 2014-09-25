@@ -48,15 +48,14 @@
 
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+
+  margin-top: 20px;
 }
 
 .icon-firefox:before { content: '\e840'; } /* '' */
 .icon-chrome:before { content: '\e841'; } /* '' */
 .icon-opera:before { content: '\e842'; } /* '' */
 .icon-ie:before { content: '\e843'; } /* '' */
-
-
-
 
 
 
@@ -81,9 +80,13 @@
 	-moz-animation: fade 0.4s ease-in-out;
 }
 
- .browser-overlay.up {
+.browser-overlay.up {
 	-webkit-animation: fadeout 0.4s ease-in-out both;
 	-moz-animation: fadeout 0.4s ease-in-out both;
+}
+
+.browser-overlay {
+    z-index: 5000000;
 }
 
 .browser-overlay .wrapper {
@@ -144,6 +147,11 @@
  .browser-overlay h2 strong {
 	font-weight: bold;
 	font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
+}
+
+ .browser-overlay h3 {
+    color: #f7f7e2;
+    font-weight: 100;
 }
 
  .browser-overlay .device-icon {

@@ -1,3 +1,5 @@
+html, body{ height: 100% }
+
 body {
 	background: url(../img/bg.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;

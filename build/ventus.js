@@ -11,7 +11,6 @@
     }
 }(this, function ($, Handlebars) {
 
-
 /**
  * almond 0.1.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -680,13 +679,14 @@ templates['window.tpl'] = template(function (Handlebars,depth0,helpers,partials,
   foundHelper = helpers.classname;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.classname; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "\" >\n	<div class=\"wm-window-box\">\n		<header class=\"wm-window-title\" unselectable=\"on\">\n			<h1 unselectable=\"on\">";
+  buffer += escapeExpression(stack1) + "\" >\n  <div class=\"wm-window-box\">\n     <header class=\"wm-window-title\" unselectable=\"on\">\n            <h1 unselectable=\"on\">";
   foundHelper = helpers.title;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</h1>\n			<div class=\"wm-button-group\">\n				<button class=\"wm-minimize\">&nbsp;</button>\n				<button class=\"wm-maximize\">&nbsp;</button>\n				<button class=\"wm-close\">&nbsp;</button>\n			</div>\n		</header>\n\n		<section class=\"wm-content\"></section>\n\n		<button class=\"wm-resize\">&nbsp;</button>\n	</div>\n	<div class=\"wm-window-overlay\"></div>\n</div>\n";
+  buffer += escapeExpression(stack1) + "</h1>\n         <div class=\"wm-button-group\">\n               <button class=\"wm-minimize\">&nbsp;</button>\n             <button class=\"wm-maximize\">&nbsp;</button>\n             <button class=\"wm-close\">&nbsp;</button>\n            </div>\n        </header>\n\n       <section class=\"wm-content\"></section>\n\n        <button class=\"wm-resize\">&nbsp;</button>\n   </div>\n    <div class=\"wm-window-overlay\"></div>\n</div>\n";
   return buffer;});
 });
+
 
 /**
  * Ventus
@@ -730,6 +730,7 @@ define('less',[],function() {
 
     return plugin;
 });
+
 
 
 /**
@@ -1241,6 +1242,7 @@ function(Emitter, View, WindowTemplate) {
 	return Window;
 });
 
+
 /**
  * Ventus
  * Copyright © 2012 Ramón Lamana
@@ -1286,6 +1288,7 @@ define("Underscore", (function (global) {
         return ret || global._;
     };
 }(this)));
+
 
 /**
  * Ventus
@@ -1413,6 +1416,7 @@ define('ventus/wm/modes/expose',['Underscore', 'less!../../../css/expose'], func
 
 	return ExposeMode;
 });
+
 
 /**
  * Ventus
@@ -1721,6 +1725,7 @@ define('ventus',['require','ventus/wm/windowmanager','ventus/wm/window'],functio
 		Window: require('ventus/wm/window')
 	};
 });
+
     // Register in the values from the outer closure for common dependencies
     // as local almond modules
     define('$', function () {
