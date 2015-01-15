@@ -3,7 +3,7 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['less!../../../css/fullscreen'], function() {
+define(function() {
 	'use strict';
 
 	var FullscreenMode = {

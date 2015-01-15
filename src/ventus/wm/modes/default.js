@@ -3,11 +3,12 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['less!../../../css/windowmanager'], function() {
+define(function() {
+	'use strict';
 
 	var DefaultMode = {
 		register: function() {
-			console.log("Default mode registered.");
+			console.log('Default mode registered.');
 		},
 
 		plug: function() {

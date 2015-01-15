@@ -6,8 +6,7 @@
 define([
 	'ventus/core/emitter',
 	'ventus/core/view',
-	'tpl!ventus/tpl/window',
-	'less!ventus/css/window'
+	'ventus/tpl/window'
 ],
 function(Emitter, View, WindowTemplate) {
 	'use strict';
@@ -36,13 +35,15 @@ function(Emitter, View, WindowTemplate) {
 		}));
 		this.el.listen(this.events.window, this);
 
-		if(options.opacity)
+		if(options.opacity) {
 			this.el.css('opacity', options.opacity);
+		}
 
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
-		if(options.content)
+		if(options.content) {
 			this.$content.append(options.content);
+		}
 
 		// Cache header element
 		this.$titlebar = this.el.find('header');
@@ -79,7 +80,9 @@ function(Emitter, View, WindowTemplate) {
 
 		slots: {
 			move: function(e) {
-				if(!this.enabled || !this.movable) return;
+				if(!this.enabled || !this.movable) {
+					return;
+				}
 
 				this._moving = this.toLocal({
 					x: e.originalEvent.pageX,
@@ -101,13 +104,15 @@ function(Emitter, View, WindowTemplate) {
 				'mousedown': function(e) {
 					this.focus();
 
-					if(this.widget)
+					if(this.widget) {
 						this.slots.move.call(this, e);
+					}
 				},
 
 				'.wm-content click': function(e) {
-					if(this.enabled)
+					if(this.enabled) {
 						this.signals.emit('click', this, e);
+					}
 				},
 
 				'.wm-window-title mousedown': function(e) {
@@ -115,32 +120,36 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'.wm-window-title dblclick': function() {
-					if(this.enabled && this.resizable)
+					if(this.enabled && this.resizable) {
 						this.maximize();
+					}
 				},
 
 				'.wm-window-title button.wm-close click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					if(this.enabled)
+					if(this.enabled) {
 						this.close();
+					}
 				},
 
 				'.wm-window-title button.wm-maximize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					if(this.enabled && this.resizable)
+					if(this.enabled && this.resizable) {
 						this.maximize();
+					}
 				},
 
 				'.wm-window-title button.wm-minimize click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
 
-					if(this.enabled)
+					if(this.enabled) {
 						this.minimize();
+					}
 				},
 
 				'.wm-window-title button mousedown': function(e) {
@@ -151,7 +160,9 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'button.wm-resize mousedown': function(e) {
-					if(!this.enabled || !this.resizable) return;
+					if(!this.enabled || !this.resizable) {
+						return;
+					}
 
 					this._resizing = {
 						width: this.width - e.originalEvent.pageX,
@@ -166,17 +177,19 @@ function(Emitter, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
-					if (this._moving)
+					if (this._moving) {
 						this.move(
 							e.originalEvent.pageX - this._moving.x,
 							e.originalEvent.pageY - this._moving.y
 						);
+					}
 
-					if(this._resizing)
+					if(this._resizing) {
 						this.resize(
 							e.originalEvent.pageX + this._resizing.width,
 							e.originalEvent.pageY + this._resizing.height
 						);
+					}
 				},
 
 				'mouseup': function() {
@@ -349,10 +362,12 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		set titlebar(value) {
-			if(value)
+			if(value) {
 				this.$titlebar.removeClass('hide');
-			else
+			}
+			else {
 				this.$titlebar.addClass('hide');
+			}
 
 			this._titlebar = value;
 		},

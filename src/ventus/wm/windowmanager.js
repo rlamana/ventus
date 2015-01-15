@@ -3,18 +3,19 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(function(require) {
+define([
+	'$',
+	'ventus/wm/window',
+	'ventus/core/view',
+	'ventus/wm/modes/default',
+	'ventus/wm/modes/expose',
+	'ventus/wm/modes/fullscreen'
+],
+function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
-	var $ = require('$');
-	var Window = require('ventus/wm/window');
-	var view = require('ventus/core/view');
-	var DefaultMode = require('ventus/wm/modes/default');
-	var ExposeMode = require('ventus/wm/modes/expose');
-	var FullscreenMode = require('ventus/wm/modes/fullscreen');
-
 	var WindowManager = function () {
-		this.el = view('<div class="wm-space"><div class="wm-overlay" /></div>');
+		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
@@ -24,8 +25,9 @@ define(function(require) {
 		this.actions.forEach(function(value){
 			this[value] = (function(action) {
 				return function() {
-					if(this.currentMode.actions[action])
+					if(this.currentMode.actions[action]) {
 						this.currentMode.actions[action].apply(this, arguments);
+					}
 				};
 			}).call(this, value);
 		}, this);
@@ -67,15 +69,19 @@ define(function(require) {
 		set mode(value) {
 
 			var mode = this.modes[value];
-			if(!mode || this._mode === value) return;
+			if(!mode || this._mode === value) {
+				return;
+			}
 
 			// Unplug old system
-			if (this._mode && this.currentMode.unplug)
+			if (this._mode && this.currentMode.unplug) {
 				this.currentMode.unplug.apply(this);
+			}
 
 			// Plug new mode system
-			if(mode.plug)
+			if(mode.plug) {
 				mode.plug.apply(this);
+			}
 
 			this._mode = value;
 		},
@@ -130,8 +136,9 @@ define(function(require) {
 				maxZ = baseZ + 10000,
 				index;
 
-			if (this.active && this.active === win)
+			if (this.active && this.active === win) {
 				return;
+			}
 
 			if(this.active) {
 				currentZ = this.active.z;
@@ -163,8 +170,9 @@ define(function(require) {
 		 * Internal action always performed besides the mode definition
 		 */
 		_blur: function(win) {
-			if(this.active === win)
+			if(this.active === win) {
 				this.active = null;
+			}
 		},
 
 		/**
@@ -182,19 +190,20 @@ define(function(require) {
 			len = this.windows.length;
 			if(this.active && this.active === win) {
 				this.active = (len !== 0) ? this.windows[len-1] : null;
-				if (this.active)
+				if (this.active) {
 					this.active.focus();
+				}
 			}
 		}
 	};
 
 	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
-		options.content = view(selector);
+		options.content = View(selector);
 		return this.createWindow(options);
 	};
 
 	WindowManager.prototype.createWindow.fromElement = function(element, options) {
-		options.content = view(element);
+		options.content = View(element);
 		return this.createWindow(options);
 	};
 

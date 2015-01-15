@@ -3,11 +3,10 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['Underscore', 'less!../../../css/expose'], function(_) {
+define(['underscore'], function(_) {
 	'use strict';
 
 	var ExposeMode = {
-
 		// Launch when plugin is registered
 		register: function() {
 			var self = this;
@@ -38,7 +37,7 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 
 			this.el.addClass('expose');
 
-			for(var z, win, i=0, len=this.windows.length; i<len; i++) {
+			for(var win, i=0, len=this.windows.length; i<len; i++) {
 				win = this.windows[i];
 
 				win.stamp();
@@ -83,8 +82,7 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 
 		// Lauch when plugin is disabled
 		unplug: function() {
-			var space = this.el;
-			for(var z, win, i=this.windows.length; i--;) {
+			for(var win, i=this.windows.length; i--;) {
 				win = this.windows[i];
 
 				win.restore();
@@ -95,7 +93,7 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 					return function () {
 						this.el.removeClass('expose');
 						win.el.css('transform', '');
-					}
+					};
 				})(win);
 
 				this.el.onTransitionEnd(removeTransform, this);
@@ -108,14 +106,14 @@ define(['Underscore', 'less!../../../css/expose'], function(_) {
 		},
 
 		actions: {
-			focus: function(win) {
+			focus: function() {
 			},
 
 			close: function() {
 				this.mode = 'expose';
 			},
 
-			select: function(win, e) {
+			select: function(win) {
 				this.mode = 'default';
 				win.focus();
 			}

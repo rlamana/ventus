@@ -38,8 +38,9 @@
 	}
 
 	function hasListener(listeners, signal, slot, scope) {
-		if (!listeners[signal])
+		if (!listeners[signal]) {
 			return false;
+		}
 
 		return listeners[signal].some(equals(slot, scope, true));
 	}
@@ -75,11 +76,13 @@
 		on: function on(signal, slot, scope) {
 			var list = this._listeners;
 
-			if (hasListener(list, signal, slot, scope))
+			if (hasListener(list, signal, slot, scope)) {
 				return;
+			}
 
-			if (!list[signal])
+			if (!list[signal]) {
 				list[signal] = [];
+			}
 
 			list[signal].push({
 				funct: slot,
@@ -96,8 +99,9 @@
 		 */
 		off: function off(signal, slot, scope) {
 			var list = this._listeners[signal];
-			if (!list)
+			if (!list) {
 				return;
+			}
 
 			this._listeners[signal] = list.filter(equals(slot, scope, false));
 		},
@@ -110,8 +114,9 @@
 		 * @param scope <Object?> The scope for the callback.
 		 */
 		once: function once(signal, slot, scope) {
-			if (hasListener(this._listeners, signal, slot, scope))
+			if (hasListener(this._listeners, signal, slot, scope)) {
 				return;
+			}
 
 			this.on(signal, function wrapper() {
 				this.off(signal, wrapper, this);
@@ -128,8 +133,9 @@
 		 */
 		emit: function emit(signal/*, var_args*/) {
 			var list = this._listeners[signal];
-			if (!list)
+			if (!list) {
 				return;
+			}
 
 			var data = Array.prototype.slice.call(arguments, 1);
 			list.forEach(function(item) {
@@ -138,45 +144,50 @@
 		},
 
 		/**
-		 * Connects slots to a group of signals, 
+		 * Connects slots to a group of signals,
 		 * optionally a scope can be provided.
 		 *
 		 * @param slots <Object> Map of signals and slots.
 		 * @param scope <Object> The scope for the callback.
 		 */
 		connect: function connect(slots, scope) {
-			if (!slots)
+			if (!slots) {
 				return;
+			}
 
 			for (var signal in slots) {
-				if(slots.hasOwnProperty(signal))
+				if(slots.hasOwnProperty(signal)) {
 					this.on(signal, slots[signal], scope);
+				}
 			}
 		},
 
 		/**
-		 * Disconnects slots to a group of signals, 
+		 * Disconnects slots to a group of signals,
 		 * optionally a scope can be provided.
 		 *
 		 * @param slots <Object> Map of signals and slots.
 		 * @param scope <Object> The scope for the callback.
 		 */
 		disconnect: function disconnect(slots, scope) {
-			if (!slots)
+			if (!slots) {
 				return;
+			}
 
 			for (var signal in slots) {
-				if(slots.hasOwnProperty(signal))
+				if(slots.hasOwnProperty(signal)) {
 					this.off(signal, slots[signal], scope);
+				}
 			}
 		}
 	};
 
 	/* global module: false */
-	if (typeof module !== 'undefined' && module.exports)
+	if (typeof module !== 'undefined' && module.exports) {
 		module.exports = Emitter;
-	else if (typeof define !== 'undefined' && define.amd)
-		define(function() { return Emitter });
-	else
+	} else if (typeof define !== 'undefined' && define.amd) {
+		define(function() { return Emitter; });
+	} else {
 		root.Emitter = Emitter;
+	}
 })(this);

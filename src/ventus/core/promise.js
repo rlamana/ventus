@@ -48,6 +48,7 @@
  */
 
 (function(root) {
+	'use strict';
 
 	var slice = Array.prototype.slice;
 
@@ -116,7 +117,7 @@
 	 * @returns <Future> The future of the done promise.
 	 */
 	Promise.done = function(/*var_args*/) {
-		var a = new Promise;
+		var a = new Promise();
 		a.done.apply(a, arguments);
 		return a.getFuture();
 	};
@@ -129,7 +130,7 @@
 	 * @returns <Future> The future of the failed promise.
 	 */
 	Promise.failed = function(/*var_args*/) {
-		var a = new Promise;
+		var a = new Promise();
 		a.fail.apply(a, arguments);
 		return a.getFuture();
 	};
@@ -158,8 +159,9 @@
 	 * @returns <Future> The new future.
 	 */
 	Promise.all = function(futures) {
-		if (!futures || !futures.length)
+		if (!futures || !futures.length) {
 			return Promise.done();
+		}
 
 		futures = futures.map(function(future) {
 			return future.getFuture ? future.getFuture() : future;
@@ -171,8 +173,9 @@
 		futures.forEach(function(future, index) {
 			future.then(function() {
 				values[index] = slice.call(arguments);
-				if (futures.every(succeed))
+				if (futures.every(succeed)) {
 					promise.done.apply(promise, values);
+				}
 			}, function(error) {
 				promise.fail(new PromiseError('parallel', error, index));
 			});
@@ -193,8 +196,9 @@
 	 * @returns <Future> The created future.
 	 */
 	Promise.serial = function(callbacks, scope) {
-		if (!callbacks || callbacks.length === 0)
+		if (!callbacks || callbacks.length === 0) {
 			return Promise.done();
+		}
 
 		var promise = new Promise();
 
@@ -206,13 +210,15 @@
 	};
 
 	function next(stack, scope, index, promise, value) {
-		index++;
+		index += 1;
 
-		if (index >= stack.length)
+		if (index >= stack.length) {
 			return promise.done(value);
+		}
 
-		if (!(value instanceof Future))
+		if (!(value instanceof Future)) {
 			return next(stack, scope, index, promise, stack[index].call(scope, value));
+		}
 
 		value.then(function() {
 			next(stack, scope, index, promise, stack[index].apply(scope, arguments));
@@ -238,7 +244,7 @@
 
 		_add: function(type, callback, scope) {
 			if (!callback) {
-				console.warn("No callback passed");
+				console.warn('No callback passed');
 			} else if (this._fn[type] === true) {
 				asyncCall(callback, scope, this._args);
 			} else if (this._fn[type]) {
@@ -251,8 +257,9 @@
 		},
 
 		_arrived: function(type, args) {
-			if (this.isCompleted())
+			if (this.isCompleted()) {
 				throw new Error('Future already arrived!');
+			}
 
 			function invoke(i) {
 				i.callback.apply(i.scope, args);
@@ -287,7 +294,7 @@
 		 * @returns <bool>
 		 */
 		hasFailed: function() {
-			return this._fn['failed'] === true
+			return this._fn.failed === true;
 		},
 
 		/**
@@ -296,7 +303,7 @@
 		 * @returns <bool>
 		 */
 		hasSucceed: function() {
-			return this._fn['success'] === true
+			return this._fn.success === true;
 		},
 
 		/**
@@ -341,14 +348,17 @@
 		 * @param fin <Function> Callback to be executed when the promise is completed.
 		 */
 		then: function(success, error, fin) {
-			if (success)
+			if (success) {
 				this.onDone(success);
+			}
 
-			if (error)
+			if (error) {
 				this.onError(error);
+			}
 
-			if (fin)
+			if (fin) {
 				this.onFinally(fin);
+			}
 		},
 
 		/**
@@ -367,8 +377,9 @@
 			this.then(function() {
 				var values = adapter.apply(null, arguments);
 
-				if (!values || values.constructor !== 'array')
+				if (!values || values.constructor !== 'array') {
 					values = [values];
+				}
 
 				promise.done.apply(promise, values);
 			}, function() {
@@ -382,11 +393,11 @@
 	Promise.PromiseError = PromiseError;
 	Promise.Future = Future;
 
-	if (typeof module !== 'undefined' && module.exports)
+	if (typeof module !== 'undefined' && module.exports) {
 		module.exports = Promise;
-	else if (typeof define !== 'undefined' && define.amd)
-		define(function() { return Promise });
-	else
+	} else if (typeof define !== 'undefined' && define.amd) {
+		define(function() { return Promise; });
+	} else {
 		root.Promise = Promise;
-
+	}
 })(this);

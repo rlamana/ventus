@@ -7,21 +7,19 @@ define(function(require) {
 	'use strict';
 
 	return {
-		version: '0.1',
-
+		version: '0.2',
 		browser: {
 			animationEventName: function(){
 				var style = document.body.style;
 				var event = null;
 
-				if(style.animation === '')
+				if(style.animation === '') {
 					event = 'animationend';
-
-				else if(style.MozAnimation === '')
+				} else if(style.MozAnimation === '') {
 					event = 'mozAnimationEnd';
-
-				else if(style.webkitAnimation === '')
+				} else if(style.webkitAnimation === '') {
 					event = 'webkitAnimationEnd';
+				}
 
 				return event;
 			}

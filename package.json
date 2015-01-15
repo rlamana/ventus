@@ -1,0 +1,21 @@
+{
+  "name": "Ventus",
+  "version": "0.2.0",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-uglify": "~1.0.2",
+    "gulp": "~3.8.10",
+    "jshint": "~2.5.11",
+    "gulp-jshint": "~1.9.0",
+    "amd-optimize": "~0.4.3",
+    "gulp-concat": "~2.4.3",
+    "gulp-wrap": "~0.9.0",
+    "gulp-autoprefixer": "~2.1.0",
+    "gulp-less": "~2.0.1",
+    "gulp-declare": "~0.3.0",
+    "gulp-handlebars": "~3.0.1",
+    "gulp-define-module": "~0.1.1",
+    "gulp-clean": "~0.3.1"
+  }
+}

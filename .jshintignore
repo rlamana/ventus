@@ -1,2 +1,1 @@
-src/ventus/core/promise.js
-**/*.tpl.js
+src/ventus/tpl/**/*.js
