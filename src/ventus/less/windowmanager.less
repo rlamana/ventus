@@ -1,8 +1,6 @@
 
-@import "prefix.less";
-
 .wm-space {
-	.user-select(none);
+	user-select: none;
 
 	width: 100%;
 	height: 100%;
@@ -13,7 +11,7 @@
 	cursor: default;
 
 	.wm-overlay {
-		.user-select(none);
+		user-select: none;
 
 		background-color: #000;
 
@@ -27,6 +25,6 @@
 
 		opacity: 0;
 
-		.transition(opacity .5s ease-out)
+		transition: opacity .5s ease-out;
 	}
 }
