@@ -25,7 +25,8 @@ function(Emitter, View, WindowTemplate) {
 			movable: true,
 			resizable: true,
 			widget: false,
-			titlebar: true
+			titlebar: true,
+			softRemove: false,
 		};
 
 		// View
@@ -71,6 +72,7 @@ function(Emitter, View, WindowTemplate) {
 			true;
 
 		this.titlebar = true;
+		this.softRemove = options.softRemove;
 	};
 
 	Window.prototype = {
@@ -322,11 +324,21 @@ function(Emitter, View, WindowTemplate) {
 					this.el.hide();
 
 					// Remove element
-					this.$content.html('');
+					if(!this.softRemove) {
+						this.$content.html('');
+					}
 				}, this);
 			}
 
 			this._closed = value;
+		},
+
+		get softRemove() {
+			return this._softRemove;
+		},
+
+		set softRemove(value) {
+			this._softRemove = value;
 		},
 
 		get closed() {
