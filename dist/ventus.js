@@ -970,7 +970,8 @@ define('ventus/wm/window', [
             movable: true,
             resizable: true,
             widget: false,
-            titlebar: true
+            titlebar: true,
+            softRemove: false
         };
         this.el = View(WindowTemplate({
             title: options.title,
@@ -1000,6 +1001,7 @@ define('ventus/wm/window', [
         this.movable = true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.titlebar = true;
+        this.softRemove = options.softRemove;
     };
     Window.prototype = {
         _restore: null,
@@ -1189,10 +1191,18 @@ define('ventus/wm/window', [
                     this.el.removeClass('closing');
                     this.el.addClass('closed');
                     this.el.hide();
-                    this.$content.html('');
+                    if (!this.softRemove) {
+                        this.$content.html('');
+                    }
                 }, this);
             }
             this._closed = value;
+        },
+        get softRemove() {
+            return this._softRemove;
+        },
+        set softRemove(value) {
+            this._softRemove = value;
         },
         get closed() {
             return this._closed;
@@ -1260,6 +1270,7 @@ define('ventus/wm/window', [
         },
         open: function () {
             this.opened = true;
+            this.closed = false;
             return this;
         },
         resize: function (w, h) {
@@ -1310,6 +1321,7 @@ define('ventus/wm/window', [
         },
         close: function () {
             this.closed = true;
+            this.opened = false;
             return this;
         },
         focus: function () {
