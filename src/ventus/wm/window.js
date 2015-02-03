@@ -422,6 +422,7 @@ function(Emitter, View, WindowTemplate) {
 
 		open: function() {
 			this.opened = true;
+			this.closed = false;
 			return this;
 		},
 
@@ -487,6 +488,7 @@ function(Emitter, View, WindowTemplate) {
 
 		close: function() {
 			this.closed = true;
+			this.opened = false;
 			return this;
 		},
 

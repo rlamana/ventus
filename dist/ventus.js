@@ -1260,6 +1260,7 @@ define('ventus/wm/window', [
         },
         open: function () {
             this.opened = true;
+            this.closed = false;
             return this;
         },
         resize: function (w, h) {
@@ -1310,6 +1311,7 @@ define('ventus/wm/window', [
         },
         close: function () {
             this.closed = true;
+            this.opened = false;
             return this;
         },
         focus: function () {
