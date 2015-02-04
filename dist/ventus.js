@@ -993,7 +993,6 @@ define('ventus/wm/window', [
         this.opened = false;
         this.enabled = true;
         this.active = false;
-        this.closed = false;
         this.maximized = false;
         this.minimized = false;
         this.widget = false;
@@ -1182,6 +1181,7 @@ define('ventus/wm/window', [
             return this._resizable;
         },
         set closed(value) {
+            this.opened = !value;
             if (value) {
                 this.signals.emit('close', this);
                 this.el.addClass('closing');
@@ -1192,10 +1192,9 @@ define('ventus/wm/window', [
                     this.$content.html('');
                 }, this);
             }
-            this._closed = value;
         },
         get closed() {
-            return this._closed;
+            return !this._opened;
         },
         set opened(value) {
             if (value) {
@@ -1260,7 +1259,6 @@ define('ventus/wm/window', [
         },
         open: function () {
             this.opened = true;
-            this.closed = false;
             return this;
         },
         resize: function (w, h) {
@@ -1311,7 +1309,6 @@ define('ventus/wm/window', [
         },
         close: function () {
             this.closed = true;
-            this.opened = false;
             return this;
         },
         focus: function () {
