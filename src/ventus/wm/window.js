@@ -59,7 +59,6 @@ function(Emitter, View, WindowTemplate) {
 		this.opened = false;
 		this.enabled = true;
 		this.active = false;
-		this.closed = false;
 		this.maximized = false;
 		this.minimized = false;
 
@@ -312,9 +311,14 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		set closed(value) {
+
+			// It's just opposite of opened
+			this.opened = !value;
+
 			if(value) {
 				this.signals.emit('close', this);
 
+				// Closing animation
 				this.el.addClass('closing');
 				this.el.onAnimationEnd(function(){
 					this.el.removeClass('closing');
@@ -325,15 +329,14 @@ function(Emitter, View, WindowTemplate) {
 					this.$content.html('');
 				}, this);
 			}
-
-			this._closed = value;
 		},
 
 		get closed() {
-			return this._closed;
+			return !this._opened;
 		},
 
 		set opened(value) {
+
 			if(value) {
 				this.signals.emit('open', this);
 
@@ -345,13 +348,13 @@ function(Emitter, View, WindowTemplate) {
 				}, this);
 			}
 
+			// Update internal state
 			this._opened = value;
 		},
 
 		get opened() {
 			return this._opened;
 		},
-
 
 		set widget(value) {
 			this._widget = value;
