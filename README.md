@@ -40,3 +40,40 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 		x: 0,
 		y: 0
 	});
+
+### Listen to events
+
+#### Define handlers in constructor
+	var window = wm.createWindow({
+		title: 'A new window',
+		events: {
+			open: function() {
+				console.log('The window was open');
+			},
+			
+			closed: function() {
+				console.log('The window was closed');
+			},
+		}
+	});
+
+#### Using the 'signals' property
+	var window = wm.createWindow({
+		title: 'A new window'
+	});
+	
+	window.signals.on('open', function() {
+		console.log('The window was open');
+	});
+	
+### Destroying a window
+When a window is closed the content is not destroyed by default. This way windows can be open again keeping the wrapped DOM element. To completely destroy the window, the method 'destroy' needs to be called:
+
+	var window = wm.createWindow({
+		title: 'A new window',
+		events: {
+			closed: function() {
+				this.destroy();
+			}
+		}
+	});
