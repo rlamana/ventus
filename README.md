@@ -5,11 +5,11 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 
 <a href="http://www.rlamana.es/ventus">Live Demo!</a> (http://www.rlamana.es/ventus) | <a href="https://vimeo.com/62041866">Video Demo</a>
 
-### Create a new window manager
+### Creating a new window manager
 
 	var wm = new Ventus.WindowManager();
 	
-### Create a new empty window
+### Creating a new empty window
 
 	var window = wm.createWindow({
 		title: 'A new window',
@@ -21,7 +21,7 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 	
 	window.open();
 	
-### Create a new window wrapping a DOM Element
+### Creating a new window wrapping a DOM Element
 
 ##### Using a query
 	wm.createWindow.fromQuery('#element .selector', {
@@ -41,9 +41,9 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 		y: 0
 	});
 
-### Listen to events
+### Listening to events
 
-#### Define handlers in constructor
+#### Defining handlers in constructor
 	var window = wm.createWindow({
 		title: 'A new window',
 		events: {
