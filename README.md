@@ -43,7 +43,7 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 
 ### Listening to events
 
-#### Defining handlers in constructor
+##### Defining handlers in constructor
 	var window = wm.createWindow({
 		title: 'A new window',
 		events: {
@@ -57,7 +57,7 @@ A window manager experiment written in Javascript, HTML5 and CSS3.
 		}
 	});
 
-#### Using the 'signals' property
+##### Using the 'signals' property
 	var window = wm.createWindow({
 		title: 'A new window'
 	});
