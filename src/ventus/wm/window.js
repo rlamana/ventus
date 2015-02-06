@@ -5,10 +5,11 @@
  */
 define([
 	'ventus/core/emitter',
+	'ventus/core/promise',
 	'ventus/core/view',
 	'ventus/tpl/window'
 ],
-function(Emitter, View, WindowTemplate) {
+function(Emitter, Promise, View, WindowTemplate) {
 	'use strict';
 
 	var Window = function (options) {
@@ -39,6 +40,15 @@ function(Emitter, View, WindowTemplate) {
 			this.el.css('opacity', options.opacity);
 		}
 
+		// Predefined signal/events handlers
+		if(options.events) {
+			for(var eventName in options.events) {
+				if(options.events.hasOwnProperty(eventName) && typeof options.events[eventName] === 'function') {
+					this.signals.on(eventName, options.events[eventName], this);
+				}
+			}
+		}
+
 		// Cache content element
 		this.$content = this.el.find('.wm-content');
 		if(options.content) {
@@ -56,12 +66,13 @@ function(Emitter, View, WindowTemplate) {
 		this.z = 10000;
 
 		// State
-		this.opened = false;
 		this.enabled = true;
 		this.active = false;
-		this.closed = false;
 		this.maximized = false;
 		this.minimized = false;
+
+		this._closed = false;
+		this._destroyed = false;
 
 		// Properties
 		this.widget = false;
@@ -177,6 +188,12 @@ function(Emitter, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
+					// Fix #20. Mousemove outside browser
+					if (e.which !== 1) {
+						this._moving && this._stopMove();
+						this._resizing && this._stopResize();
+					}
+
 					if (this._moving) {
 						this.move(
 							e.originalEvent.pageX - this._moving.x,
@@ -193,18 +210,21 @@ function(Emitter, View, WindowTemplate) {
 				},
 
 				'mouseup': function() {
-					if (this._moving) {
-						this.el.removeClass('move');
-						this._moving = null;
-					}
-
-					if (this._resizing) {
-						this.el.removeClass('resizing');
-						this._restore = null;
-						this._resizing = null;
-					}
+					this._moving && this._stopMove();
+					this._resizing && this._stopResize();
 				}
 			}
+		},
+
+		_stopMove: function() {
+			this.el.removeClass('move');
+			this._moving = null;
+		},
+
+		_stopResize: function() {
+			this.el.removeClass('resizing');
+			this._restore = null;
+			this._resizing = null;
 		},
 
 		set space(el) {
@@ -311,47 +331,15 @@ function(Emitter, View, WindowTemplate) {
 			return this._resizable;
 		},
 
-		set closed(value) {
-			if(value) {
-				this.signals.emit('close', this);
-
-				this.el.addClass('closing');
-				this.el.onAnimationEnd(function(){
-					this.el.removeClass('closing');
-					this.el.addClass('closed');
-					this.el.hide();
-
-					// Remove element
-					this.$content.html('');
-				}, this);
-			}
-
-			this._closed = value;
-		},
-
+		set closed(value) {}, // jshint ignore:line
 		get closed() {
 			return this._closed;
 		},
 
-		set opened(value) {
-			if(value) {
-				this.signals.emit('open', this);
-
-				// Open animation
-				this.el.show();
-				this.el.addClass('opening');
-				this.el.onAnimationEnd(function(){
-					this.el.removeClass('opening');
-				}, this);
-			}
-
-			this._opened = value;
+		set destroyed(value) {}, // jshint ignore:line
+		get destroyed() {
+			return this._destroyed;
 		},
-
-		get opened() {
-			return this._opened;
-		},
-
 
 		set widget(value) {
 			this._widget = value;
@@ -421,8 +409,59 @@ function(Emitter, View, WindowTemplate) {
 		},
 
 		open: function() {
-			this.opened = true;
-			return this;
+			var promise = new Promise();
+			this.signals.emit('open', this);
+
+			// Open animation
+			this.el.show();
+			this.el.addClass('opening');
+			this.el.onAnimationEnd(function(){
+				this.el.removeClass('opening');
+				promise.done();
+			}, this);
+
+			this.closed = false;
+			return promise;
+		},
+
+		close: function() {
+			var promise = new Promise();
+			this.signals.emit('close', this);
+
+			this.el.addClass('closing');
+			this.el.onAnimationEnd(function(){
+				this.el.removeClass('closing');
+				this.el.addClass('closed');
+				this.el.hide();
+
+				this.signals.emit('closed', this);
+				promise.done();
+			}, this);
+
+			this.closed = true;
+			return promise;
+		},
+
+		destroy: function() {
+			var destroy = function() {
+				// Remove element
+				this.$content.html('');
+				this.signals.emit('destroyed', this);
+
+				this._destroyed = true;
+			}
+			.bind(this);
+
+			this.signals.emit('destroy', this);
+
+			if(!this.closed) {
+				this.close().then(function() {
+					destroy();
+				});
+			}
+			else {
+				destroy();
+			}
 		},
 
 		resize: function(w, h) {
@@ -482,11 +521,6 @@ function(Emitter, View, WindowTemplate) {
 			}, this);
 
 			this.minimized = !this.minimized;
-			return this;
-		},
-
-		close: function() {
-			this.closed = true;
 			return this;
 		},
 

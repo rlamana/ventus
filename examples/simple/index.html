@@ -64,7 +64,13 @@
 						x: (pos += 60),
 						y: pos,
 						width: 400,
-						height: 250
+						height: 250,
+
+						events: {
+							closed: function() {
+								this.destroy();
+							}
+						}
 					})
 					.open();
 				});

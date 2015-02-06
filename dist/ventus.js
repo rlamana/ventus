@@ -849,6 +849,194 @@ define('almond', [], function () {
         root.Emitter = Emitter;
     }
 }(this));
+(function (root) {
+    'use strict';
+    var slice = Array.prototype.slice;
+    function asyncCall(funct, scope, args) {
+        setTimeout(function () {
+            funct.apply(scope, args);
+        });
+    }
+    function PromiseError(type, originalError, index) {
+        var message = 'Error on ' + type + ' promise execution at index [' + index + ']';
+        Error.call(this, message);
+        this.child = originalError;
+        this.index = index;
+        this.message = message;
+    }
+    function Promise() {
+        this._future = new Future();
+    }
+    Promise.prototype = {
+        constructor: Promise,
+        done: function () {
+            var args = slice.call(arguments);
+            this.getFuture()._arrived('success', args);
+        },
+        fail: function () {
+            var args = slice.call(arguments);
+            this.getFuture()._arrived('failed', args);
+        },
+        getFuture: function () {
+            return this._future;
+        }
+    };
+    Promise.done = function () {
+        var a = new Promise();
+        a.done.apply(a, arguments);
+        return a.getFuture();
+    };
+    Promise.failed = function () {
+        var a = new Promise();
+        a.fail.apply(a, arguments);
+        return a.getFuture();
+    };
+    function succeed(item) {
+        return item.hasSucceed();
+    }
+    Promise.parallel = function () {
+        return Promise.all(slice.call(arguments));
+    };
+    Promise.all = function (futures) {
+        if (!futures || !futures.length) {
+            return Promise.done();
+        }
+        futures = futures.map(function (future) {
+            return future.getFuture ? future.getFuture() : future;
+        });
+        var promise = new Promise();
+        var values = [];
+        futures.forEach(function (future, index) {
+            future.then(function () {
+                values[index] = slice.call(arguments);
+                if (futures.every(succeed)) {
+                    promise.done.apply(promise, values);
+                }
+            }, function (error) {
+                promise.fail(new PromiseError('parallel', error, index));
+            });
+        });
+        return promise.getFuture();
+    };
+    Promise.serial = function (callbacks, scope) {
+        if (!callbacks || callbacks.length === 0) {
+            return Promise.done();
+        }
+        var promise = new Promise();
+        setTimeout(function () {
+            next(callbacks, scope, 0, promise, callbacks[0].call(scope));
+        });
+        return promise.getFuture();
+    };
+    function next(stack, scope, index, promise, value) {
+        index += 1;
+        if (index >= stack.length) {
+            return promise.done(value);
+        }
+        if (!(value instanceof Future)) {
+            return next(stack, scope, index, promise, stack[index].call(scope, value));
+        }
+        value.then(function () {
+            next(stack, scope, index, promise, stack[index].apply(scope, arguments));
+        }, function (error) {
+            promise.fail(new PromiseError(' serial ', error, index));
+        });
+    }
+    function Future() {
+        this._args = null;
+        this._fn = {
+            'success': [],
+            'failed': [],
+            'finally': []
+        };
+    }
+    Future.prototype = {
+        constructor: Future,
+        _add: function (type, callback, scope) {
+            if (!callback) {
+                console.warn('No callback passed');
+            } else if (this._fn[type] === true) {
+                asyncCall(callback, scope, this._args);
+            } else if (this._fn[type]) {
+                this._fn[type].push({
+                    callback: callback,
+                    scope: scope
+                });
+            }
+            return this;
+        },
+        _arrived: function (type, args) {
+            if (this.isCompleted()) {
+                throw new Error('Future already arrived!');
+            }
+            function invoke(i) {
+                i.callback.apply(i.scope, args);
+            }
+            var callbacks = this._fn[type].concat(this._fn['finally']);
+            this._fn = {
+                'success': false,
+                'failed': false,
+                'finally': true
+            };
+            this._args = args;
+            this._fn[type] = true;
+            callbacks.forEach(invoke);
+        },
+        isCompleted: function () {
+            return this._fn['finally'] === true;
+        },
+        hasFailed: function () {
+            return this._fn.failed === true;
+        },
+        hasSucceed: function () {
+            return this._fn.success === true;
+        },
+        onDone: function (callback, scope) {
+            return this._add('success', callback, scope);
+        },
+        onError: function (callback, scope) {
+            return this._add('failed', callback, scope);
+        },
+        onFinally: function (callback, scope) {
+            return this._add('finally', callback, scope);
+        },
+        then: function (success, error, fin) {
+            if (success) {
+                this.onDone(success);
+            }
+            if (error) {
+                this.onError(error);
+            }
+            if (fin) {
+                this.onFinally(fin);
+            }
+        },
+        transform: function (adapter) {
+            var promise = new Promise();
+            this.then(function () {
+                var values = adapter.apply(null, arguments);
+                if (!values || values.constructor !== 'array') {
+                    values = [values];
+                }
+                promise.done.apply(promise, values);
+            }, function () {
+                promise.fail.apply(promise, arguments);
+            });
+            return promise.getFuture();
+        }
+    };
+    Promise.PromiseError = PromiseError;
+    Promise.Future = Future;
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = Promise;
+    } else if (typeof define !== 'undefined' && define.amd) {
+        define('ventus/core/promise', [], function () {
+            return Promise;
+        });
+    } else {
+        root.Promise = Promise;
+    }
+}(this));
 define('ventus/core/view', ['$'], function ($) {
     'use strict';
     var splitter = /^(?:(.*)\s)?(\w+)$/;
@@ -954,9 +1142,10 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
 });
 define('ventus/wm/window', [
     'ventus/core/emitter',
+    'ventus/core/promise',
     'ventus/core/view',
     'ventus/tpl/window'
-], function (Emitter, View, WindowTemplate) {
+], function (Emitter, Promise, View, WindowTemplate) {
     'use strict';
     var Window = function (options) {
         this.signals = new Emitter();
@@ -980,6 +1169,13 @@ define('ventus/wm/window', [
         if (options.opacity) {
             this.el.css('opacity', options.opacity);
         }
+        if (options.events) {
+            for (var eventName in options.events) {
+                if (options.events.hasOwnProperty(eventName) && typeof options.events[eventName] === 'function') {
+                    this.signals.on(eventName, options.events[eventName], this);
+                }
+            }
+        }
         this.$content = this.el.find('.wm-content');
         if (options.content) {
             this.$content.append(options.content);
@@ -990,12 +1186,12 @@ define('ventus/wm/window', [
         this.x = options.x || 0;
         this.y = options.y || 0;
         this.z = 10000;
-        this.opened = false;
         this.enabled = true;
         this.active = false;
-        this.closed = false;
         this.maximized = false;
         this.minimized = false;
+        this._closed = false;
+        this._destroyed = false;
         this.widget = false;
         this.movable = true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
@@ -1082,6 +1278,10 @@ define('ventus/wm/window', [
             },
             space: {
                 'mousemove': function (e) {
+                    if (e.which !== 1) {
+                        this._moving && this._stopMove();
+                        this._resizing && this._stopResize();
+                    }
                     if (this._moving) {
                         this.move(e.originalEvent.pageX - this._moving.x, e.originalEvent.pageY - this._moving.y);
                     }
@@ -1090,17 +1290,19 @@ define('ventus/wm/window', [
                     }
                 },
                 'mouseup': function () {
-                    if (this._moving) {
-                        this.el.removeClass('move');
-                        this._moving = null;
-                    }
-                    if (this._resizing) {
-                        this.el.removeClass('resizing');
-                        this._restore = null;
-                        this._resizing = null;
-                    }
+                    this._moving && this._stopMove();
+                    this._resizing && this._stopResize();
                 }
             }
+        },
+        _stopMove: function () {
+            this.el.removeClass('move');
+            this._moving = null;
+        },
+        _stopResize: function () {
+            this.el.removeClass('resizing');
+            this._restore = null;
+            this._resizing = null;
         },
         set space(el) {
             if (el && !el.listen) {
@@ -1182,34 +1384,14 @@ define('ventus/wm/window', [
             return this._resizable;
         },
         set closed(value) {
-            if (value) {
-                this.signals.emit('close', this);
-                this.el.addClass('closing');
-                this.el.onAnimationEnd(function () {
-                    this.el.removeClass('closing');
-                    this.el.addClass('closed');
-                    this.el.hide();
-                    this.$content.html('');
-                }, this);
-            }
-            this._closed = value;
         },
         get closed() {
             return this._closed;
         },
-        set opened(value) {
-            if (value) {
-                this.signals.emit('open', this);
-                this.el.show();
-                this.el.addClass('opening');
-                this.el.onAnimationEnd(function () {
-                    this.el.removeClass('opening');
-                }, this);
-            }
-            this._opened = value;
+        set destroyed(value) {
         },
-        get opened() {
-            return this._opened;
+        get destroyed() {
+            return this._destroyed;
         },
         set widget(value) {
             this._widget = value;
@@ -1259,8 +1441,45 @@ define('ventus/wm/window', [
             return parseInt(this.el.css('z-index'), 10);
         },
         open: function () {
-            this.opened = true;
-            return this;
+            var promise = new Promise();
+            this.signals.emit('open', this);
+            this.el.show();
+            this.el.addClass('opening');
+            this.el.onAnimationEnd(function () {
+                this.el.removeClass('opening');
+                promise.done();
+            }, this);
+            this.closed = false;
+            return promise;
+        },
+        close: function () {
+            var promise = new Promise();
+            this.signals.emit('close', this);
+            this.el.addClass('closing');
+            this.el.onAnimationEnd(function () {
+                this.el.removeClass('closing');
+                this.el.addClass('closed');
+                this.el.hide();
+                this.signals.emit('closed', this);
+                promise.done();
+            }, this);
+            this.closed = true;
+            return promise;
+        },
+        destroy: function () {
+            var destroy = function () {
+                this.$content.html('');
+                this.signals.emit('destroyed', this);
+                this._destroyed = true;
+            }.bind(this);
+            this.signals.emit('destroy', this);
+            if (!this.closed) {
+                this.close().then(function () {
+                    destroy();
+                });
+            } else {
+                destroy();
+            }
         },
         resize: function (w, h) {
             this.width = w;
@@ -1306,10 +1525,6 @@ define('ventus/wm/window', [
                 this.el.removeClass('minimizing');
             }, this);
             this.minimized = !this.minimized;
-            return this;
-        },
-        close: function () {
-            this.closed = true;
             return this;
         },
         focus: function () {
