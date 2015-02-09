@@ -43,7 +43,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 		// Predefined signal/events handlers
 		if(options.events) {
 			for(var eventName in options.events) {
-				if(options.events.hasOwnProperty(eventName) && typeof options.events[eventName] === 'function') {
+				if(options.events.hasOwnProperty(eventName) &&
+				   typeof options.events[eventName] === 'function') {
 					this.signals.on(eventName, options.events[eventName], this);
 				}
 			}
@@ -91,13 +92,19 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		slots: {
 			move: function(e) {
+				/* global TouchEvent */
+				var isTouchEvent = (e.originalEvent instanceof TouchEvent),
+					event = isTouchEvent ?
+						e.originalEvent.changedTouches[0] :
+						e.originalEvent;
+
 				if(!this.enabled || !this.movable) {
 					return;
 				}
 
 				this._moving = this.toLocal({
-					x: e.originalEvent.pageX,
-					y: e.originalEvent.pageY
+					x: event.pageX,
+					y: event.pageY
 				});
 
 				this.el.addClass('move');
@@ -171,13 +178,19 @@ function(Emitter, Promise, View, WindowTemplate) {
 				},
 
 				'button.wm-resize mousedown': function(e) {
+					/* global TouchEvent */
+					var isTouchEvent = (e.originalEvent instanceof TouchEvent),
+						event = isTouchEvent ?
+							e.originalEvent.changedTouches[0] :
+							e.originalEvent;
+
 					if(!this.enabled || !this.resizable) {
 						return;
 					}
 
 					this._resizing = {
-						width: this.width - e.originalEvent.pageX,
-						height: this.height - e.originalEvent.pageY
+						width: this.width - event.pageX,
+						height: this.height - event.pageY
 					};
 
 					this.el.addClass('resizing');
@@ -188,23 +201,29 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
+					/* global TouchEvent */
+					var isTouchEvent = (e.originalEvent instanceof TouchEvent),
+						event = isTouchEvent ?
+							e.originalEvent.changedTouches[0] :
+							e.originalEvent;
+
 					// Fix #20. Mousemove outside browser
-					if (e.which !== 1) {
+					if (!isTouchEvent && e.which !== 1) {
 						this._moving && this._stopMove();
 						this._resizing && this._stopResize();
 					}
 
 					if (this._moving) {
 						this.move(
-							e.originalEvent.pageX - this._moving.x,
-							e.originalEvent.pageY - this._moving.y
+							event.pageX - this._moving.x,
+							event.pageY - this._moving.y
 						);
 					}
 
 					if(this._resizing) {
 						this.resize(
-							e.originalEvent.pageX + this._resizing.width,
-							e.originalEvent.pageY + this._resizing.height
+							event.pageX + this._resizing.width,
+							event.pageY + this._resizing.height
 						);
 					}
 				},
