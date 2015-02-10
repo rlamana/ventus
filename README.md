@@ -1,4 +1,4 @@
-Ventus WM
+Ventus WM [![Build Status](https://travis-ci.org/rlamana/Ventus.svg?branch=master)](https://travis-ci.org/rlamana/Ventus)
 ===========================
 
 A window manager experiment written in Javascript, HTML5 and CSS3.
