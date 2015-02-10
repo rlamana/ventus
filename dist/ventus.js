@@ -1131,11 +1131,11 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
                 'name': 'classname',
                 'hash': {},
                 'data': data
-            }) : helper)) + '">\n\t<div class="wm-window-box">\n\t\t<header class="wm-window-title" unselectable="on">\n\t\t\t<h1 unselectable="on">' + escapeExpression((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helperMissing, typeof helper === functionType ? helper.call(depth0, {
+            }) : helper)) + '">\r\n\t<div class="wm-window-box">\r\n\t\t<header class="wm-window-title" unselectable="on">\r\n\t\t\t<h1 unselectable="on">' + escapeExpression((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helperMissing, typeof helper === functionType ? helper.call(depth0, {
                 'name': 'title',
                 'hash': {},
                 'data': data
-            }) : helper)) + '</h1>\n\t\t\t<div class="wm-button-group">\n\t\t\t\t<button class="wm-minimize">&nbsp;</button>\n\t\t\t\t<button class="wm-maximize">&nbsp;</button>\n\t\t\t\t<button class="wm-close">&nbsp;</button>\n\t\t\t</div>\n\t\t</header>\n\n\t\t<section class="wm-content"></section>\n\n\t\t<button class="wm-resize">&nbsp;</button>\n\t</div>\n\t<div class="wm-window-overlay"></div>\n</div>\n';
+            }) : helper)) + '</h1>\r\n\t\t\t<div class="wm-button-group">\r\n\t\t\t\t<button class="wm-minimize">&nbsp;</button>\r\n\t\t\t\t<button class="wm-maximize">&nbsp;</button>\r\n\t\t\t\t<button class="wm-close">&nbsp;</button>\r\n\t\t\t</div>\r\n\t\t</header>\r\n\r\n\t\t<section class="wm-content"></section>\r\n\r\n\t\t<button class="wm-resize">&nbsp;</button>\r\n\t</div>\r\n\t<div class="wm-window-overlay"></div>\r\n</div>\r\n';
         },
         'useData': true
     });
@@ -1190,7 +1190,7 @@ define('ventus/wm/window', [
         this.active = false;
         this.maximized = false;
         this.minimized = false;
-        this._closed = false;
+        this._closed = true;
         this._destroyed = false;
         this.widget = false;
         this.movable = true;
@@ -1452,7 +1452,7 @@ define('ventus/wm/window', [
                 this.el.removeClass('opening');
                 promise.done();
             }, this);
-            this.closed = false;
+            this._closed = false;
             return promise;
         },
         close: function () {
@@ -1466,7 +1466,7 @@ define('ventus/wm/window', [
                 this.signals.emit('closed', this);
                 promise.done();
             }, this);
-            this.closed = true;
+            this._closed = true;
             return promise;
         },
         destroy: function () {
@@ -2520,3 +2520,4 @@ define('src/main', [
 
     return require('ventus');
 }));
+
