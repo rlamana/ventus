@@ -72,7 +72,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		this.maximized = false;
 		this.minimized = false;
 
-		this._closed = false;
+		this._closed = true;
 		this._destroyed = false;
 
 		// Properties
@@ -439,7 +439,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				promise.done();
 			}, this);
 
-			this.closed = false;
+			this._closed = false;
 			return promise;
 		},
 
@@ -457,7 +457,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				promise.done();
 			}, this);
 
-			this.closed = true;
+			this._closed = true;
 			return promise;
 		},
 
