@@ -12,6 +12,14 @@ define([
 function(Emitter, Promise, View, WindowTemplate) {
 	'use strict';
 
+	function isTouchEvent(e) {
+		return !!window.TouchEvent && (e.originalEvent instanceof window.TouchEvent);
+	}
+
+	function convertMoveEvent(e) {
+		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
+	}
+
 	var Window = function (options) {
 		this.signals = new Emitter();
 
@@ -92,11 +100,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		slots: {
 			move: function(e) {
-				/* global TouchEvent */
-				var isTouchEvent = (e.originalEvent instanceof TouchEvent),
-					event = isTouchEvent ?
-						e.originalEvent.changedTouches[0] :
-						e.originalEvent;
+				var event = convertMoveEvent(e);
 
 				if(!this.enabled || !this.movable) {
 					return;
@@ -178,11 +182,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				},
 
 				'button.wm-resize mousedown': function(e) {
-					/* global TouchEvent */
-					var isTouchEvent = (e.originalEvent instanceof TouchEvent),
-						event = isTouchEvent ?
-							e.originalEvent.changedTouches[0] :
-							e.originalEvent;
+					var event = convertMoveEvent(e);
 
 					if(!this.enabled || !this.resizable) {
 						return;
@@ -201,14 +201,10 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 			space: {
 				'mousemove': function(e) {
-					/* global TouchEvent */
-					var isTouchEvent = (e.originalEvent instanceof TouchEvent),
-						event = isTouchEvent ?
-							e.originalEvent.changedTouches[0] :
-							e.originalEvent;
+					var event = convertMoveEvent(e);
 
 					// Fix #20. Mousemove outside browser
-					if (!isTouchEvent && e.which !== 1) {
+					if (!isTouchEvent(e) && e.which !== 1) {
 						this._moving && this._stopMove();
 						this._resizing && this._stopResize();
 					}
