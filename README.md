@@ -1,7 +1,5 @@
-Ventus WM [![Build Status](https://travis-ci.org/rlamana/Ventus.svg?branch=master)](https://travis-ci.org/rlamana/Ventus)
+Ventus WM [![Build Status](https://travis-ci.org/rlamana/Ventus.svg?branch=master)](https://travis-ci.org/rlamana/Ventus) [![Join the chat at https://gitter.im/rlamana/Ventus](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rlamana/Ventus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ===========================
-
-[![Join the chat at https://gitter.im/rlamana/Ventus](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rlamana/Ventus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A window manager written in Javascript, HTML5 and CSS3.
 
