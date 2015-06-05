@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     handlebars = require('gulp-handlebars'),
     declare = require('gulp-declare'),
     defineModule = require('gulp-define-module'),
-    clean = require('gulp-clean'),
+    del = require('del'),
     mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 var paths = {
@@ -85,8 +85,7 @@ gulp.task('watch', ['default'], function() {
 
 
 gulp.task('clean', function () {
-    gulp.src(paths.build, { read: false })
-        .pipe(clean());
+    del([paths.build]);
 });
 
 gulp.task('test', ['compile'], function() {

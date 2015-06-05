@@ -9,14 +9,14 @@
     } else { // Browser globals
         root.Ventus = factory(root.$);
     }
-}(this, function ($) {
+}(this, function (jQuery) {
 
     <%= contents %>
 
     // Register in the values from the outer closure for common dependencies
     // as local almond modules
     define('$', function () {
-        return $;
+        return jQuery;
     });
 
     define('underscore', function () {

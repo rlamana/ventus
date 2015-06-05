@@ -5,19 +5,20 @@
   "dependencies": {},
   "devDependencies": {
     "amd-optimize": "~0.4.3",
+    "del": "^1.2.0",
     "gulp": "~3.8.10",
-    "gulp-autoprefixer": "~2.1.0",
-    "gulp-clean": "~0.3.1",
+    "gulp-autoprefixer": "^2.3.1",
     "gulp-concat": "~2.4.3",
     "gulp-declare": "~0.3.0",
     "gulp-define-module": "~0.1.1",
     "gulp-handlebars": "~3.0.1",
     "gulp-jshint": "~1.9.0",
-    "gulp-less": "~2.0.1",
+    "gulp-less": "^3.0.3",
     "gulp-mocha-phantomjs": "^0.5.3",
     "gulp-uglify": "~1.0.2",
     "gulp-wrap": "~0.9.0",
-    "jshint": "~2.5.11"
+    "jshint": "~2.5.11",
+    "stream-browserify": "^1.0.0"
   },
   "scripts": {
     "test": "gulp test"
