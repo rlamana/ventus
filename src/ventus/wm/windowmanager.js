@@ -4,22 +4,23 @@
  * https://github.com/rlamana
  */
 define([
-	'$',
 	'ventus/wm/window',
 	'ventus/core/view',
 	'ventus/wm/modes/default',
 	'ventus/wm/modes/expose',
 	'ventus/wm/modes/fullscreen'
 ],
-function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
 	var WindowManager = function () {
+		var body = View(document.body);
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$(document.body).prepend(this.el);
 
-		this.$overlay = this.el.find('.wm-overlay');
-		this.$overlay.css('z-index', this._baseZ-1);
+		body.prepend(this.el);
+
+		this.overlayView = this.el.find('.wm-overlay');
+		this.overlayView.css('zIndex', this._baseZ - 1);
 
 		// Generate mode plugin actions wrapper
 		this.actions.forEach(function(value){
@@ -67,7 +68,6 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set mode(value) {
-
 			var mode = this.modes[value];
 			if(!mode || this._mode === value) {
 				return;
@@ -95,7 +95,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set overlay(value) {
-			this.$overlay.css('opacity', value ? 0.8 : 0);
+			this.overlayView.css('opacity', value ? 0.8 : 0);
 			this._overlay = value;
 		},
 

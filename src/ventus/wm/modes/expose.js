@@ -67,15 +67,15 @@ define(['underscore'], function(_) {
 				win.el.addClass('exposing');
 				win.el.css('transform-origin', '0 0');
 				win.el.css('transform', 'scale(' + scale + ')');
-				win.el.css('top', top);
-				win.el.css('left', left);
-				win.el.onTransitionEnd(function(){
+				win.el.css('top', top + 'px');
+				win.el.css('left', left + 'px');
+				win.el.on('transitionend', function(){
 					win.el.removeClass('exposing');
 				}, this);
 			}
 
 			this.overlay = true;
-			this.el.one('click', function() {
+			this.el.once('click', function() {
 				self.mode = 'default';
 			});
 		},
@@ -96,7 +96,7 @@ define(['underscore'], function(_) {
 					};
 				})(win);
 
-				this.el.onTransitionEnd(removeTransform, this);
+				this.el.on('transitionend', removeTransform, this);
 
 				win.movable = true;
 				win.enabled = true;

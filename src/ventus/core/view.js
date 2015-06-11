@@ -3,34 +3,113 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['$'], function($) {
+define([], function() {
 	'use strict';
 
 	var splitter = /^(?:(.*)\s)?(\w+)$/;
 
-	var transitionEventNames = 'transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd';
-	var animationEventNames = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
+	var transitionPrefixes = 'webkitTransitionEnd oTransitionEnd MSTransitionEnd';
+	var animationPrefixes = 'webkitAnimationEnd oAnimationEnd MSAnimationEnd';
 
-	// CSS3 transform, transition, animation hooks, prefixless
-	var hooks = ['transform', 'transition', 'animation', 'transform-origin'];
-	for(var i = hooks.length;i--;) {
-		(function(property) {
-			$.cssHooks[property] = {
-				get: function() {
-					return null;
-				},
-				set: function(elem, value) {
-					elem.style['-webkit-'+property] = value;
-					elem.style['-moz-'+property] = value;
-					elem.style['-ms-'+property] = value;
-					elem.style['-o-'+property] = value;
-					elem.style[property] = value;
-				}
-			};
-		})(hooks[i]);
+	function View(element) {
+		this._el = element;
 	}
 
-	$.fn.extend({
+	View.parse = function(template) {
+		var element = document.createElement('div');
+		element.innerHTML = template;
+		return element.firstChild;
+	};
+
+	View.prototype = {
+		find: function(selector) {
+			var element = this._el.querySelector(selector);
+			return element ? new View(element) : undefined;
+		},
+
+		css: function(property, value) {
+			if(this._el) {
+				this._el.style[property] = value;
+			}
+
+			return this;
+		},
+
+		width: function() {
+			return this._el.offsetWidth;
+		},
+
+		height: function() {
+			return this._el.offsetHeight;
+		},
+
+		appendTo: function(element) {
+			element.appendChild(this._el);
+			return this;
+		},
+
+		append: function(view) {
+			this._el.appendChild(view._el);
+			return this;
+		},
+
+		prepend: function(view) {
+			this._el.insertBefore(view._el, this._el.firstChild);
+			return this;
+		},
+
+		addClass: function(className) {
+			this._el.classList.add(className);
+		},
+
+		removeClass: function(className) {
+			this._el.classList.remove(className);
+		},
+
+		show: function() {
+			this.css('display', 'block');
+		},
+
+		hide: function() {
+			this.css('display', 'none');
+		},
+
+		html: function(content) {
+			this._el.innerHTML = content;
+		},
+
+		on: function(events, callback, scope) {
+			var self = this,
+				eventList = events.split(/\s+/),
+				listener = function (e) {
+					callback.call(scope, e);
+				};
+
+			eventList.forEach(function(eventName) {
+				if(eventName === 'animationend') {
+					self.on(animationPrefixes, callback, scope);
+				} else if(eventName === 'transitionend') {
+					self.on(transitionPrefixes, callback, scope);
+				}
+
+				self._el.addEventListener(eventName, listener, false);
+			});
+
+			// Returns a function to turn event listeners off
+			return function() {
+				eventList.forEach(function(eventName) {
+					self._el.removeEventListener(eventName, listener, false);
+				});
+			};
+		},
+
+		once: function(events, callback, scope) {
+			var off = this.on(events, function (e) {
+				callback.call(scope, e);
+				off();
+			}, false);
+		},
+
 		listen: function (map, scope) {
 			var handler, data, selector, event;
 			for(var key in map) {
@@ -66,7 +145,7 @@ define(['$'], function($) {
 				}
 
 				if (selector) {
-					this.on(event, selector, handler.bind(scope));
+					this.find(selector).on(event, handler.bind(scope));
 				}
 				else {
 					this.on(event, handler.bind(scope));
@@ -74,31 +153,19 @@ define(['$'], function($) {
 			}
 
 			return this;
-		},
-
-		onTransitionEnd: function (callback, scope) {
-			this.one(transitionEventNames, function() {
-				callback.apply(scope||this);
-			});
-		},
-
-		onAnimationEnd: function (callback, scope) {
-			this.one(animationEventNames, function() {
-				callback.apply(scope||this);
-			});
 		}
-	});
+	};
 
 	return function(root) {
 		if(typeof root === 'function') {
 			// It's a template
 			return function(options) {
-				return $(root(options || {}));
+				return new View(root(options || {}));
 			};
 		}
 		else {
-			// It's a selector
-			return $(root);
+			// It's a template string or a DOM element
+			return new View(typeof root === 'object' ? root : View.parse(root));
 		}
 	};
 });

@@ -41,7 +41,7 @@ define(function() {
 					};
 				})(win);
 
-				this.el.onTransitionEnd(removeTransform, this);
+				this.el.on('transitionend', removeTransform, this);
 
 				win.movable = true;
 				win.resizable = true;

@@ -13,11 +13,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 	'use strict';
 
 	function isTouchEvent(e) {
-		return !!window.TouchEvent && (e.originalEvent instanceof window.TouchEvent);
+		return !!window.TouchEvent && (e instanceof window.TouchEvent);
 	}
 
 	function convertMoveEvent(e) {
-		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
+		return isTouchEvent(e) ? e.changedTouches[0] : e;
 	}
 
 	var Window = function (options) {
@@ -59,13 +59,13 @@ function(Emitter, Promise, View, WindowTemplate) {
 		}
 
 		// Cache content element
-		this.$content = this.el.find('.wm-content');
+		this.contentView = this.el.find('.wm-content');
 		if(options.content) {
-			this.$content.append(options.content);
+			this.contentView.append(options.content);
 		}
 
 		// Cache header element
-		this.$titlebar = this.el.find('header');
+		this.titlebarView = this.el.find('header');
 
 		this.width = options.width || 400;
 		this.height = options.height || 200;
@@ -366,10 +366,10 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set titlebar(value) {
 			if(value) {
-				this.$titlebar.removeClass('hide');
+				this.titlebarView.removeClass('hide');
 			}
 			else {
-				this.$titlebar.addClass('hide');
+				this.titlebarView.addClass('hide');
 			}
 
 			this._titlebar = value;
@@ -390,37 +390,37 @@ function(Emitter, Promise, View, WindowTemplate) {
 		set height(value) {
 			// This shouldn't be done if flexible box model
 			// worked properly with overflow-y: auto
-			//this.$content.height(value - this.$header.outerHeight());
+			//this.contentView.height(value - this.$header.outerHeight());
 
 			this.el.height(value);
 		},
 
 		get height() {
-			return parseInt(this.el.height(), 10);
+			return parseInt(this.el.height(), '10px');
 		},
 
 		set x(value) {
-			this.el.css('left', value);
+			this.el.css('left', value + 'px');
 		},
 
 		set y(value) {
-			this.el.css('top', value);
+			this.el.css('top', value + 'px');
 		},
 
 		get x() {
-			return parseInt(this.el.css('left'), 10);
+			return parseInt(this.el.css('left'), '10px');
 		},
 
 		get y() {
-			return parseInt(this.el.css('top'), 10);
+			return parseInt(this.el.css('top'), '10px');
 		},
 
 		set z(value) {
-			this.el.css('z-index', value);
+			this.el.css('zIndex', value);
 		},
 
 		get z() {
-			return parseInt(this.el.css('z-index'), 10);
+			return parseInt(this.el.css('zIndex'), '10px');
 		},
 
 		open: function() {
@@ -430,7 +430,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			// Open animation
 			this.el.show();
 			this.el.addClass('opening');
-			this.el.onAnimationEnd(function(){
+			this.el.on('animationend', function(){
 				this.el.removeClass('opening');
 				promise.done();
 			}, this);
@@ -444,7 +444,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			this.signals.emit('close', this);
 
 			this.el.addClass('closing');
-			this.el.onAnimationEnd(function(){
+			this.el.on('animationend', function(){
 				this.el.removeClass('closing');
 				this.el.addClass('closed');
 				this.el.hide();
@@ -460,7 +460,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		destroy: function() {
 			var destroy = function() {
 				// Remove element
-				this.$content.html('');
+				this.contentView.html('');
 				this.signals.emit('destroyed', this);
 
 				this._destroyed = true;
@@ -521,7 +521,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		maximize: function() {
 			this.el.addClass('maximazing');
-			this.el.onTransitionEnd(function(){
+			this.el.on('transitionend', function(){
 				this.el.removeClass('maximazing');
 			}, this);
 
@@ -531,7 +531,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		minimize: function() {
 			this.el.addClass('minimizing');
-			this.el.onTransitionEnd(function(){
+			this.el.on('transitionend', function(){
 				this.el.removeClass('minimizing');
 			}, this);
 
@@ -564,7 +564,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		append: function(el) {
-			el.appendTo(this.$content);
+			el.appendTo(this.contentView);
 		}
 	};
 
