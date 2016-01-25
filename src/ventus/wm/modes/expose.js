@@ -16,7 +16,9 @@ define(['underscore'], function(_) {
 			this.el.on('contextmenu', _.throttle(function() {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
-					self.mode = 'expose';
+					if(self.windows.length > 0) {
+ +						self.mode = 'expose';
+ +					}
 				} else if(self.mode === 'expose') {
 					self.mode = 'default';
 				}
