@@ -40,6 +40,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		}
 
 		this.windows = [];
+		this._margin = {
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0
+		};
 		this.active = null;
 
 		this.mode = 'default';
@@ -102,9 +108,21 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		get overlay() {
 			return this._overlay;
 		},
+		
+		set margin(marginObj) {
+			if (typeof marginObj !== 'object') {
+				return;
+			}
+			this._margin = marginObj;
+			return this;
+		},
+		
+		get margin() {
+			return this._margin;
+		},
 
 		createWindow: function(options) {
-			var win = new Window(options);
+			var win = new Window(this, options);
 
 			// Show 'default' mode
 			this.mode = 'default';
@@ -199,12 +217,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 
 	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
 		options.content = View(selector);
-		return this.createWindow(options);
+		return this.createWindow(this, options);
 	};
 
 	WindowManager.prototype.createWindow.fromElement = function(element, options) {
 		options.content = View(element);
-		return this.createWindow(options);
+		return this.createWindow(this, options);
 	};
 
 	return WindowManager;
