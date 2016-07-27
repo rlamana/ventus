@@ -113,7 +113,15 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			if (typeof marginObj !== 'object') {
 				return;
 			}
-			this._margin = marginObj;
+			
+			if (marginObj.left)
+				this._margin.left = marginObj.left;
+			if (marginObj.top)
+				this._margin.top = marginObj.top;
+			if (marginObj.bottom)
+				this._margin.bottom = marginObj.bottom;
+			if (marginObj.right)
+				this._margin.right = marginObj.right;
 			return this;
 		},
 		
@@ -122,7 +130,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		createWindow: function(options) {
-			var win = new Window(this, options);
+			var win = new Window(this._margin, options);
 
 			// Show 'default' mode
 			this.mode = 'default';
@@ -217,12 +225,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 
 	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
 		options.content = View(selector);
-		return this.createWindow(this, options);
+		return this.createWindow(options);
 	};
 
 	WindowManager.prototype.createWindow.fromElement = function(element, options) {
 		options.content = View(element);
-		return this.createWindow(this, options);
+		return this.createWindow(options);
 	};
 
 	return WindowManager;

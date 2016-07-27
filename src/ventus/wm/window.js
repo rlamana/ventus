@@ -20,7 +20,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
 	}
 
-	var Window = function (wm, options) {
+	var Window = function (margin, options) {
 		this.signals = new Emitter();
 
 		options = options || {
@@ -65,7 +65,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		}
 		
 		//This is a reference to the windowManager 
-		this._wm = wm;
+		this._margin = margin;
 		
 		// Cache header element
 		this.$titlebar = this.el.find('header');
@@ -489,20 +489,20 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		move: function(x, y) {
-			var max_x = window.innerWidth - this._wm.margin.right;
-			var max_y = window.innerHeight - this._wm.margin.bottom;
-			if (x < this._wm.margin.left) {
-				this.x = this._wm.margin.left;
-			} else if (max_x < x) {
-				this.x = max_x;
+			var maxX = window.innerWidth - this._margin.right;
+			var maxY = window.innerHeight - this._margin.bottom;
+			if (x < this._margin.left) {
+				this.x = this._margin.left;
+			} else if (maxX < x) {
+				this.x = maxX;
 			} else {
 				this.x = x;
 			}
 			
-			if (y < this._wm.margin.top) {
-				this.y = this._wm.margin.top;
-			} else if (max_y < y) {
-				this.y = max_y;
+			if (y < this._margin.top) {
+				this.y = this._margin.top;
+			} else if (maxY < y) {
+				this.y = maxY;
 			} else {
 				this.y = y;
 			}
