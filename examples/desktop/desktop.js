@@ -3,7 +3,7 @@
  * Copyright © 2012 Ramón Lamana
  */
 (function($, Ventus) {
-	$(document).ready(function() {
+	document.addEventListener('DOMContentLoaded', function() {
 		var wm = new Ventus.WindowManager();
 
 		window.wm = wm; // For debugging reasons

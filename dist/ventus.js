@@ -758,7 +758,7 @@ define('almond', [], function () {
     }(__module1__, __module3__, __module4__, __module2__, __module5__);
     return __module0__;
 }));
-(function (root) {
+define('ventus/core/emitter', [], function () {
     'use strict';
     function equals(slot, scope, expected) {
         return function (item) {
@@ -839,17 +839,9 @@ define('almond', [], function () {
             }
         }
     };
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = Emitter;
-    } else if (typeof define !== 'undefined' && define.amd) {
-        define('ventus/core/emitter', [], function () {
-            return Emitter;
-        });
-    } else {
-        root.Emitter = Emitter;
-    }
-}(this));
-(function (root) {
+    return Emitter;
+});
+define('ventus/core/promise', [], function () {
     'use strict';
     var slice = Array.prototype.slice;
     function asyncCall(funct, scope, args) {
@@ -1027,16 +1019,8 @@ define('almond', [], function () {
     };
     Promise.PromiseError = PromiseError;
     Promise.Future = Future;
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = Promise;
-    } else if (typeof define !== 'undefined' && define.amd) {
-        define('ventus/core/promise', [], function () {
-            return Promise;
-        });
-    } else {
-        root.Promise = Promise;
-    }
-}(this));
+    return Promise;
+});
 define('ventus/core/view', ['$'], function ($) {
     'use strict';
     var splitter = /^(?:(.*)\s)?(\w+)$/;

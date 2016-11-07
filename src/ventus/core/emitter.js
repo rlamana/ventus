@@ -25,7 +25,7 @@
  * Provides a constructor to listen and emit signals.
  */
 
-(function(root) {
+define(function() {
 	'use strict';
 
 	function equals(slot, scope, expected) {
@@ -181,13 +181,6 @@
 			}
 		}
 	};
-
-	/* global module: false */
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = Emitter;
-	} else if (typeof define !== 'undefined' && define.amd) {
-		define(function() { return Emitter; });
-	} else {
-		root.Emitter = Emitter;
-	}
-})(this);
+	
+	return Emitter;
+});
