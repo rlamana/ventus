@@ -4,12 +4,11 @@
  * https://github.com/rlamana
  */
 define([
+	'ventus/core/events',
 	'ventus/core/emitter',
-	'ventus/core/promise',
-	'ventus/core/view',
 	'ventus/tpl/window'
 ],
-function(Emitter, Promise, View, WindowTemplate) {
+function(Events, Emitter, WindowTemplate) {
 	'use strict';
 
 	function isTouchEvent(e) {
@@ -36,16 +35,19 @@ function(Emitter, Promise, View, WindowTemplate) {
 			widget: false,
 			titlebar: true
 		};
-
-		// View
-		this.el = View(WindowTemplate({
+		
+		var template = document.createElement('template');
+		template.innerHTML = WindowTemplate({
 			title: options.title,
 			classname: options.classname||''
-		}));
-		this.el.listen(this.events.window, this);
+		});
+		this.$el = template.content.children[0];
+
+		// Register events
+		Events.register(this.$el, this.events.window, this);
 
 		if(options.opacity) {
-			this.el.css('opacity', options.opacity);
+			this.$el.opacity = options.opacity;
 		}
 
 		// Predefined signal/events handlers
@@ -59,13 +61,13 @@ function(Emitter, Promise, View, WindowTemplate) {
 		}
 
 		// Cache content element
-		this.$content = this.el.find('.wm-content');
+		this.$content = this.$el.querySelector('.wm-content');
 		if(options.content) {
-			this.$content.append(options.content);
+			this.$content.appendChild(options.content);
 		}
 
 		// Cache header element
-		this.$titlebar = this.el.find('header');
+		this.$titlebar = this.$el.querySelector('header');
 
 		this.width = options.width || 400;
 		this.height = options.height || 200;
@@ -111,8 +113,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 					y: event.pageY
 				});
 
-				this.el.addClass('move');
-
+				this.$el.classList.add('move');
 				e.preventDefault();
 			}
 		},
@@ -193,7 +194,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 						height: this.height - event.pageY
 					};
 
-					this.el.addClass('resizing');
+					this.$el.classList.add('resizing');
 
 					e.preventDefault();
 				}
@@ -232,12 +233,12 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		_stopMove: function() {
-			this.el.removeClass('move');
+			this.$el.classList.remove('move');
 			this._moving = null;
 		},
 
 		_stopResize: function() {
-			this.el.removeClass('resizing');
+			this.$el.classList.remove('resizing');
 			this._restore = null;
 			this._resizing = null;
 		},
@@ -248,13 +249,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 				return;
 			}
 
-			this._space = el;
-			el.append(this.el);
-			el.listen(this.events.space, this);
 		},
 
 		get space() {
-			return this._space;
 		},
 
 		get maximized() {
@@ -292,13 +289,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 		set active(value) {
 			if(value) {
 				this.signals.emit('focus', this);
-				this.el.addClass('active');
-				this.el.removeClass('inactive');
 			}
 			else {
 				this.signals.emit('blur', this);
-				this.el.removeClass('active');
-				this.el.addClass('inactive');
 			}
 
 			this._active = value;
@@ -310,10 +303,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set enabled(value) {
 			if(!value) {
-				this.el.addClass('disabled');
 			}
 			else {
-				this.el.removeClass('disabled');
 			}
 
 			this._enabled = value;
@@ -333,10 +324,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set resizable(value) {
 			if(!value) {
-				this.el.addClass('noresizable');
 			}
 			else {
-				this.el.removeClass('noresizable');
 			}
 
 			this._resizable = !!value;
@@ -366,10 +355,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set titlebar(value) {
 			if(value) {
-				this.$titlebar.removeClass('hide');
 			}
 			else {
-				this.$titlebar.addClass('hide');
 			}
 
 			this._titlebar = value;
@@ -380,11 +367,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		set width(value) {
-			this.el.width(value);
 		},
 
 		get width() {
-			return parseInt(this.el.width(), 10);
 		},
 
 		set height(value) {
@@ -392,75 +377,42 @@ function(Emitter, Promise, View, WindowTemplate) {
 			// worked properly with overflow-y: auto
 			//this.$content.height(value - this.$header.outerHeight());
 
-			this.el.height(value);
 		},
 
 		get height() {
-			return parseInt(this.el.height(), 10);
 		},
 
 		set x(value) {
-			this.el.css('left', value);
 		},
 
 		set y(value) {
-			this.el.css('top', value);
 		},
 
 		get x() {
-			return parseInt(this.el.css('left'), 10);
 		},
 
 		get y() {
-			return parseInt(this.el.css('top'), 10);
 		},
 
 		set z(value) {
-			this.el.css('z-index', value);
 		},
 
 		get z() {
-			return parseInt(this.el.css('z-index'), 10);
 		},
 
 		open: function() {
-			var promise = new Promise();
-			this.signals.emit('open', this);
 
-			// Open animation
-			this.el.show();
-			this.el.addClass('opening');
-			this.el.onAnimationEnd(function(){
-				this.el.removeClass('opening');
-				promise.done();
-			}, this);
-
-			this._closed = false;
-			return promise;
 		},
 
 		close: function() {
-			var promise = new Promise();
-			this.signals.emit('close', this);
 
-			this.el.addClass('closing');
-			this.el.onAnimationEnd(function(){
-				this.el.removeClass('closing');
-				this.el.addClass('closed');
-				this.el.hide();
 
-				this.signals.emit('closed', this);
-				promise.done();
-			}, this);
 
-			this._closed = true;
-			return promise;
 		},
 
 		destroy: function() {
 			var destroy = function() {
 				// Remove element
-				this.$content.html('');
 				this.signals.emit('destroyed', this);
 
 				this._destroyed = true;
@@ -520,9 +472,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 		restore: function(){},
 
 		maximize: function() {
-			this.el.addClass('maximazing');
-			this.el.onTransitionEnd(function(){
-				this.el.removeClass('maximazing');
 			}, this);
 
 			this.maximized = !this.maximized;
@@ -530,9 +479,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		minimize: function() {
-			this.el.addClass('minimizing');
-			this.el.onTransitionEnd(function(){
-				this.el.removeClass('minimizing');
 			}, this);
 
 			this.minimized = !this.minimized;
@@ -564,7 +510,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		append: function(el) {
-			el.appendTo(this.$content);
 		}
 	};
 

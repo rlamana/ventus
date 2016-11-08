@@ -3,7 +3,10 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['underscore'], function(_) {
+define([
+	'underscore',
+	'ventus/core/events'
+], function(_, Events) {
 	'use strict';
 
 	var ExposeMode = {
@@ -13,7 +16,7 @@ define(['underscore'], function(_) {
 
 			console.log('Expose mode registered.');
 
-			this.el.on('contextmenu', _.throttle(function() {
+			this.$el.addEventListener('contextmenu', _.throttle(function() {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
 					if(self.windows.length > 0) {
@@ -32,12 +35,12 @@ define(['underscore'], function(_) {
 			var floor = Math.floor, ceil = Math.ceil, self = this;
 
 			var grid = ceil(this.windows.length / 2);
-			var maxWidth = floor(this.el.width() / grid);
-			var maxHeight = floor(this.el.height() / 2);
+			var maxWidth = floor(this.width / grid);
+			var maxHeight = floor(this.height / 2);
 
 			var scale, left, top, pos;
 
-			this.el.addClass('expose');
+			this.$el.classList.add('expose');
 
 			for(var win, i=0, len=this.windows.length; i<len; i++) {
 				win = this.windows[i];
@@ -66,20 +69,23 @@ define(['underscore'], function(_) {
 				win.enabled = false;
 				win.movable = false;
 
-				win.el.addClass('exposing');
-				win.el.css('transform-origin', '0 0');
-				win.el.css('transform', 'scale(' + scale + ')');
-				win.el.css('top', top);
-				win.el.css('left', left);
-				win.el.onTransitionEnd(function(){
-					win.el.removeClass('exposing');
+				win.$el.classList.add('exposing');
+				win.$el.style.transformOrigin = '0 0';
+				win.$el.style.transform = 'scale(' + scale + ')';
+				win.$el.style.top = top + 'px';
+				win.$el.style.left = left + 'px';
+				Events.onTransitionEnd(win.$el, function() {
+					win.$el.classList.remove('exposing');
 				}, this);
 			}
 
 			this.overlay = true;
-			this.el.one('click', function() {
+
+			var onClick = function() {
+				self.$el.removeEventListener('click', onClick);
 				self.mode = 'default';
-			});
+			};
+			this.$el.addEventListener('click', onClick);
 		},
 
 		// Lauch when plugin is disabled
@@ -88,17 +94,17 @@ define(['underscore'], function(_) {
 				win = this.windows[i];
 
 				win.restore();
-				win.el.css('transform', 'scale(1)');
-				win.el.css('transform-origin', '50% 50%');
+				win.$el.style.transform = 'scale(1)';
+				win.$el.style.transformOrigin = '50% 50%';
 
 				var removeTransform = (function(win){
 					return function () {
-						this.el.removeClass('expose');
-						win.el.css('transform', '');
+						this.$el.classList.remove('expose');
+						win.$el.style.transform = '';
 					};
 				})(win);
 
-				this.el.onTransitionEnd(removeTransform, this);
+				Events.onTransitionEnd(this.$el, removeTransform, this);
 
 				win.movable = true;
 				win.enabled = true;

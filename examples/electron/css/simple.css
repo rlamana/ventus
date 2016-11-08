@@ -1,0 +1,76 @@
+html, body{ height: 100% }
+
+body {
+	background: url(../img/bg.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
+	font-family: "Open Sans", sans-serif;
+	background-color: #fff;
+
+	height: 100%;
+	overflow: hidden;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.wm-space {
+	user-select: none;
+}
+
+.buttonbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	z-index: 0;
+	padding: 0 20px;
+}
+
+.button:hover {
+	-webkit-box-shadow: 0 0 6px #2DAEBF;
+	-mox-box-shadow: 0 0 6px #2DAEBF;
+	box-shadow: 0 0 6px #2DAEBF;
+}
+
+.button {
+	display: inline-block;
+	cursor: pointer;
+	width: auto;
+
+	margin: 15px 0 4px 0;
+	padding: 5px 15px 6px;
+
+	background-color: #2DAEBF;
+	color: white !important;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 1;
+	text-decoration: none;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+
+	border: 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+	position: relative;
+
+}
+
+
+
+
+
+

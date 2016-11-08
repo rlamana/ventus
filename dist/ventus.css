@@ -336,7 +336,7 @@
   display: none;
 }
 .wm-window.minimizing,
-.wm-window.maximazing {
+.wm-window.maximizing {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
   -webkit-transition: all 0.5s ease-out;

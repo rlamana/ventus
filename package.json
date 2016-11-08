@@ -6,6 +6,7 @@
   "devDependencies": {
     "amd-optimize": "~0.4.3",
     "del": "^1.2.0",
+    "electron-prebuilt": "^1.4.5",
     "gulp": "~3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-concat": "~2.4.3",
@@ -21,6 +22,7 @@
     "stream-browserify": "^1.0.0"
   },
   "scripts": {
+    "start": "./node_modules/.bin/electron examples/electron",
     "test": "gulp test"
   }
 }

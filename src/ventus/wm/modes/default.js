@@ -19,9 +19,11 @@ define(function() {
 
 		actions: {
 			maximize: function(win) {
-				win.move(0,0);
-				win.el.css('-webkit-transform', 'translate3d(0, 0, 0);');
-				win.resize(this.el.width(), this.el.height());
+				win.move(0, 0);
+				win.$el.style.transform = 'translate3d(0, 0, 0);';
+				setTimeout(function() {
+					win.resize(this.$el.offsetWidth, this.$el.offsetHeight);
+				}.bind(this), 0);
 			},
 
 			restore: function(win, restore) {

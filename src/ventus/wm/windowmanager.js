@@ -6,20 +6,23 @@
 define([
 	'$',
 	'ventus/wm/window',
-	'ventus/core/view',
 	'ventus/wm/modes/default',
 	'ventus/wm/modes/expose',
 	'ventus/wm/modes/fullscreen'
 ],
-function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+function($, Window, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
 	var WindowManager = function () {
-		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$(document.body).prepend(this.el);
+		this.$el = document.createElement('div');
+		this.$el.classList.add('wm-space');
+		this.$el.innerHTML = '<div class="wm-overlay" />';
 
-		this.$overlay = this.el.find('.wm-overlay');
-		this.$overlay.css('z-index', this._baseZ-1);
+		// Prepend element
+		document.body.insertAdjacentElement('afterBegin', this.$el);
+
+		this.$overlay = this.$el.querySelector('.wm-overlay');
+		this.$overlay.style.zIndex = this._baseZ - 1;
 
 		// Generate mode plugin actions wrapper
 		this.actions.forEach(function(value){
@@ -95,12 +98,20 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set overlay(value) {
-			this.$overlay.css('opacity', value ? 0.8 : 0);
+			this.$overlay.style.opacity = value ? 0.8 : 0;
 			this._overlay = value;
 		},
 
 		get overlay() {
 			return this._overlay;
+		},
+
+		get width() {
+			return this.$el.offsetWidth;
+		},
+
+		get height() {
+			return this.$el.offsetHeight;
 		},
 
 		createWindow: function(options) {
@@ -121,7 +132,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 
 			this.windows.push(win);
 
-			win.space = this.el;
+			win.manager = this;
 
 			win.focus();
 			return win;
@@ -198,12 +209,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	};
 
 	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
-		options.content = View(selector);
+		options.content = document.querySelector(selector);
 		return this.createWindow(options);
 	};
 
 	WindowManager.prototype.createWindow.fromElement = function(element, options) {
-		options.content = View(element);
+		options.content = element;
 		return this.createWindow(options);
 	};
 

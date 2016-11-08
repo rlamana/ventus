@@ -758,6 +758,53 @@ define('almond', [], function () {
     }(__module1__, __module3__, __module4__, __module2__, __module5__);
     return __module0__;
 }));
+define('ventus/core/events', [], function () {
+    'use strict';
+    var splitter = /^(?:(.*)\s)?(\w+)$/;
+    var Events = {
+        register: function ($root, map, scope) {
+            var handler, data, selector, event;
+            for (var key in map) {
+                if (!map.hasOwnProperty(key)) {
+                    continue;
+                }
+                handler = map[key];
+                data = key.match(splitter);
+                selector = data[1];
+                event = data[2];
+                if (typeof handler === 'string') {
+                    handler = scope[handler];
+                }
+                if (!handler) {
+                    throw new Error('Handler not found');
+                }
+                if (selector) {
+                    $root.querySelectorAll(selector).forEach(function (element) {
+                        element.addEventListener(event, handler.bind(scope));
+                    });
+                } else {
+                    $root.addEventListener(event, handler.bind(scope));
+                }
+            }
+            return $root;
+        },
+        onTransitionEnd: function ($root, callback, scope) {
+            var listener = function () {
+                $root.removeEventListener('transitionend', listener);
+                callback.apply(scope);
+            }.bind(scope);
+            $root.addEventListener('transitionend', listener);
+        },
+        onAnimationEnd: function ($root, callback, scope) {
+            var listener = function () {
+                $root.removeEventListener('animationend', listener);
+                callback.apply(scope);
+            }.bind(scope);
+            $root.addEventListener('animationend', listener);
+        }
+    };
+    return Events;
+});
 define('ventus/core/emitter', [], function () {
     'use strict';
     function equals(slot, scope, expected) {
@@ -841,268 +888,6 @@ define('ventus/core/emitter', [], function () {
     };
     return Emitter;
 });
-define('ventus/core/promise', [], function () {
-    'use strict';
-    var slice = Array.prototype.slice;
-    function asyncCall(funct, scope, args) {
-        setTimeout(function () {
-            funct.apply(scope, args);
-        });
-    }
-    function PromiseError(type, originalError, index) {
-        var message = 'Error on ' + type + ' promise execution at index [' + index + ']';
-        Error.call(this, message);
-        this.child = originalError;
-        this.index = index;
-        this.message = message;
-    }
-    function Promise() {
-        this._future = new Future();
-    }
-    Promise.prototype = {
-        constructor: Promise,
-        done: function () {
-            var args = slice.call(arguments);
-            this.getFuture()._arrived('success', args);
-        },
-        fail: function () {
-            var args = slice.call(arguments);
-            this.getFuture()._arrived('failed', args);
-        },
-        getFuture: function () {
-            return this._future;
-        }
-    };
-    Promise.done = function () {
-        var a = new Promise();
-        a.done.apply(a, arguments);
-        return a.getFuture();
-    };
-    Promise.failed = function () {
-        var a = new Promise();
-        a.fail.apply(a, arguments);
-        return a.getFuture();
-    };
-    function succeed(item) {
-        return item.hasSucceed();
-    }
-    Promise.parallel = function () {
-        return Promise.all(slice.call(arguments));
-    };
-    Promise.all = function (futures) {
-        if (!futures || !futures.length) {
-            return Promise.done();
-        }
-        futures = futures.map(function (future) {
-            return future.getFuture ? future.getFuture() : future;
-        });
-        var promise = new Promise();
-        var values = [];
-        futures.forEach(function (future, index) {
-            future.then(function () {
-                values[index] = slice.call(arguments);
-                if (futures.every(succeed)) {
-                    promise.done.apply(promise, values);
-                }
-            }, function (error) {
-                promise.fail(new PromiseError('parallel', error, index));
-            });
-        });
-        return promise.getFuture();
-    };
-    Promise.serial = function (callbacks, scope) {
-        if (!callbacks || callbacks.length === 0) {
-            return Promise.done();
-        }
-        var promise = new Promise();
-        setTimeout(function () {
-            next(callbacks, scope, 0, promise, callbacks[0].call(scope));
-        });
-        return promise.getFuture();
-    };
-    function next(stack, scope, index, promise, value) {
-        index += 1;
-        if (index >= stack.length) {
-            return promise.done(value);
-        }
-        if (!(value instanceof Future)) {
-            return next(stack, scope, index, promise, stack[index].call(scope, value));
-        }
-        value.then(function () {
-            next(stack, scope, index, promise, stack[index].apply(scope, arguments));
-        }, function (error) {
-            promise.fail(new PromiseError(' serial ', error, index));
-        });
-    }
-    function Future() {
-        this._args = null;
-        this._fn = {
-            'success': [],
-            'failed': [],
-            'finally': []
-        };
-    }
-    Future.prototype = {
-        constructor: Future,
-        _add: function (type, callback, scope) {
-            if (!callback) {
-                console.warn('No callback passed');
-            } else if (this._fn[type] === true) {
-                asyncCall(callback, scope, this._args);
-            } else if (this._fn[type]) {
-                this._fn[type].push({
-                    callback: callback,
-                    scope: scope
-                });
-            }
-            return this;
-        },
-        _arrived: function (type, args) {
-            if (this.isCompleted()) {
-                throw new Error('Future already arrived!');
-            }
-            function invoke(i) {
-                i.callback.apply(i.scope, args);
-            }
-            var callbacks = this._fn[type].concat(this._fn['finally']);
-            this._fn = {
-                'success': false,
-                'failed': false,
-                'finally': true
-            };
-            this._args = args;
-            this._fn[type] = true;
-            callbacks.forEach(invoke);
-        },
-        isCompleted: function () {
-            return this._fn['finally'] === true;
-        },
-        hasFailed: function () {
-            return this._fn.failed === true;
-        },
-        hasSucceed: function () {
-            return this._fn.success === true;
-        },
-        onDone: function (callback, scope) {
-            return this._add('success', callback, scope);
-        },
-        onError: function (callback, scope) {
-            return this._add('failed', callback, scope);
-        },
-        onFinally: function (callback, scope) {
-            return this._add('finally', callback, scope);
-        },
-        then: function (success, error, fin) {
-            if (success) {
-                this.onDone(success);
-            }
-            if (error) {
-                this.onError(error);
-            }
-            if (fin) {
-                this.onFinally(fin);
-            }
-        },
-        transform: function (adapter) {
-            var promise = new Promise();
-            this.then(function () {
-                var values = adapter.apply(null, arguments);
-                if (!values || values.constructor !== 'array') {
-                    values = [values];
-                }
-                promise.done.apply(promise, values);
-            }, function () {
-                promise.fail.apply(promise, arguments);
-            });
-            return promise.getFuture();
-        }
-    };
-    Promise.PromiseError = PromiseError;
-    Promise.Future = Future;
-    return Promise;
-});
-define('ventus/core/view', ['$'], function ($) {
-    'use strict';
-    var splitter = /^(?:(.*)\s)?(\w+)$/;
-    var transitionEventNames = 'transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd';
-    var animationEventNames = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
-    var hooks = [
-        'transform',
-        'transition',
-        'animation',
-        'transform-origin'
-    ];
-    for (var i = hooks.length; i--;) {
-        (function (property) {
-            $.cssHooks[property] = {
-                get: function () {
-                    return null;
-                },
-                set: function (elem, value) {
-                    elem.style['-webkit-' + property] = value;
-                    elem.style['-moz-' + property] = value;
-                    elem.style['-ms-' + property] = value;
-                    elem.style['-o-' + property] = value;
-                    elem.style[property] = value;
-                }
-            };
-        }(hooks[i]));
-    }
-    $.fn.extend({
-        listen: function (map, scope) {
-            var handler, data, selector, event;
-            for (var key in map) {
-                if (!map.hasOwnProperty(key)) {
-                    continue;
-                }
-                handler = map[key];
-                data = key.match(splitter);
-                selector = data[1];
-                event = data[2];
-                if (event === 'mousedown') {
-                    event += ' touchstart';
-                } else if (event === 'mousemove') {
-                    event += ' touchmove';
-                } else if (event === 'mouseup') {
-                    event += ' touchend';
-                } else if (event === 'click') {
-                    event += ' touchend';
-                }
-                if (typeof handler === 'string') {
-                    handler = scope[handler];
-                }
-                if (!handler) {
-                    throw new Error('Handler not found');
-                }
-                if (selector) {
-                    this.on(event, selector, handler.bind(scope));
-                } else {
-                    this.on(event, handler.bind(scope));
-                }
-            }
-            return this;
-        },
-        onTransitionEnd: function (callback, scope) {
-            this.one(transitionEventNames, function () {
-                callback.apply(scope || this);
-            });
-        },
-        onAnimationEnd: function (callback, scope) {
-            this.one(animationEventNames, function () {
-                callback.apply(scope || this);
-            });
-        }
-    });
-    return function (root) {
-        if (typeof root === 'function') {
-            return function (options) {
-                return $(root(options || {}));
-            };
-        } else {
-            return $(root);
-        }
-    };
-});
 define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
     return Handlebars.template({
         'compiler': [
@@ -1125,17 +910,16 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
     });
 });
 define('ventus/wm/window', [
+    'ventus/core/events',
     'ventus/core/emitter',
-    'ventus/core/promise',
-    'ventus/core/view',
     'ventus/tpl/window'
-], function (Emitter, Promise, View, WindowTemplate) {
+], function (Events, Emitter, WindowTemplate) {
     'use strict';
     function isTouchEvent(e) {
         return !!window.TouchEvent && e.originalEvent instanceof window.TouchEvent;
     }
     function convertMoveEvent(e) {
-        return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
+        return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e;
     }
     var Window = function (options) {
         this.signals = new Emitter();
@@ -1151,13 +935,15 @@ define('ventus/wm/window', [
             widget: false,
             titlebar: true
         };
-        this.el = View(WindowTemplate({
+        var template = document.createElement('template');
+        template.innerHTML = WindowTemplate({
             title: options.title,
             classname: options.classname || ''
-        }));
-        this.el.listen(this.events.window, this);
+        });
+        this.$el = template.content.children[0];
+        Events.register(this.$el, this.events.window, this);
         if (options.opacity) {
-            this.el.css('opacity', options.opacity);
+            this.$el.opacity = options.opacity;
         }
         if (options.events) {
             for (var eventName in options.events) {
@@ -1166,11 +952,11 @@ define('ventus/wm/window', [
                 }
             }
         }
-        this.$content = this.el.find('.wm-content');
+        this.$content = this.$el.querySelector('.wm-content');
         if (options.content) {
-            this.$content.append(options.content);
+            this.$content.appendChild(options.content);
         }
-        this.$titlebar = this.el.find('header');
+        this.$titlebar = this.$el.querySelector('header');
         this.width = options.width || 400;
         this.height = options.height || 200;
         this.x = options.x || 0;
@@ -1201,7 +987,7 @@ define('ventus/wm/window', [
                     x: event.pageX,
                     y: event.pageY
                 });
-                this.el.addClass('move');
+                this.$el.classList.add('move');
                 e.preventDefault();
             }
         },
@@ -1264,7 +1050,7 @@ define('ventus/wm/window', [
                         width: this.width - event.pageX,
                         height: this.height - event.pageY
                     };
-                    this.el.addClass('resizing');
+                    this.$el.classList.add('resizing');
                     e.preventDefault();
                 }
             },
@@ -1289,25 +1075,26 @@ define('ventus/wm/window', [
             }
         },
         _stopMove: function () {
-            this.el.removeClass('move');
+            this.$el.classList.remove('move');
             this._moving = null;
         },
         _stopResize: function () {
-            this.el.removeClass('resizing');
+            this.$el.classList.remove('resizing');
             this._restore = null;
             this._resizing = null;
         },
-        set space(el) {
-            if (el && !el.listen) {
-                console.error('The given space element is not a valid View');
+        set manager(windowManager) {
+            if (!windowManager.createWindow) {
+                console.error('The given space element is not a valid WindowManager');
                 return;
             }
-            this._space = el;
-            el.append(this.el);
-            el.listen(this.events.space, this);
+            this._windowManager = windowManager;
+            this.$space = windowManager.$el;
+            windowManager.$el.appendChild(this.$el);
+            Events.register(windowManager.$el, this.events.space, this);
         },
-        get space() {
-            return this._space;
+        get manager() {
+            return this._windowManager;
         },
         get maximized() {
             return this._maximized;
@@ -1336,12 +1123,12 @@ define('ventus/wm/window', [
         set active(value) {
             if (value) {
                 this.signals.emit('focus', this);
-                this.el.addClass('active');
-                this.el.removeClass('inactive');
+                this.$el.classList.add('active');
+                this.$el.classList.remove('inactive');
             } else {
                 this.signals.emit('blur', this);
-                this.el.removeClass('active');
-                this.el.addClass('inactive');
+                this.$el.classList.remove('active');
+                this.$el.classList.add('inactive');
             }
             this._active = value;
         },
@@ -1350,9 +1137,9 @@ define('ventus/wm/window', [
         },
         set enabled(value) {
             if (!value) {
-                this.el.addClass('disabled');
+                this.$el.classList.add('disabled');
             } else {
-                this.el.removeClass('disabled');
+                this.$el.classList.remove('disabled');
             }
             this._enabled = value;
         },
@@ -1367,9 +1154,9 @@ define('ventus/wm/window', [
         },
         set resizable(value) {
             if (!value) {
-                this.el.addClass('noresizable');
+                this.$el.classList.add('noresizable');
             } else {
-                this.el.removeClass('noresizable');
+                this.$el.classList.remove('noresizable');
             }
             this._resizable = !!value;
         },
@@ -1394,9 +1181,9 @@ define('ventus/wm/window', [
         },
         set titlebar(value) {
             if (value) {
-                this.$titlebar.removeClass('hide');
+                this.$titlebar.classList.remove('hide');
             } else {
-                this.$titlebar.addClass('hide');
+                this.$titlebar.classList.add('hide');
             }
             this._titlebar = value;
         },
@@ -1404,64 +1191,64 @@ define('ventus/wm/window', [
             return this._titlebar;
         },
         set width(value) {
-            this.el.width(value);
+            this.$el.style.width = value + 'px';
         },
         get width() {
-            return parseInt(this.el.width(), 10);
+            return parseInt(this.$el.style.width || 0, 10);
         },
         set height(value) {
-            this.el.height(value);
+            this.$el.style.height = value + 'px';
         },
         get height() {
-            return parseInt(this.el.height(), 10);
+            return parseInt(this.$el.style.height || 0, 10);
         },
         set x(value) {
-            this.el.css('left', value);
+            this.$el.style.left = value + 'px';
         },
         set y(value) {
-            this.el.css('top', value);
+            this.$el.style.top = value + 'px';
         },
         get x() {
-            return parseInt(this.el.css('left'), 10);
+            return parseInt(this.$el.style.left || 0, 10);
         },
         get y() {
-            return parseInt(this.el.css('top'), 10);
+            return parseInt(this.$el.style.top || 0, 10);
         },
         set z(value) {
-            this.el.css('z-index', value);
+            this.$el.style.zIndex = value;
         },
         get z() {
-            return parseInt(this.el.css('z-index'), 10);
+            return parseInt(this.$el.style.zIndex || 0, 10);
         },
         open: function () {
-            var promise = new Promise();
-            this.signals.emit('open', this);
-            this.el.show();
-            this.el.addClass('opening');
-            this.el.onAnimationEnd(function () {
-                this.el.removeClass('opening');
-                promise.done();
-            }, this);
-            this._closed = false;
-            return promise;
+            return new Promise(function (resolve) {
+                this.signals.emit('open', this);
+                this.$el.style.display = 'block';
+                this.$el.classList.add('opening');
+                Events.onAnimationEnd(this.$el, function () {
+                    this.$el.classList.remove('opening');
+                    resolve();
+                }, this);
+                this._closed = false;
+            }.bind(this));
         },
         close: function () {
-            var promise = new Promise();
-            this.signals.emit('close', this);
-            this.el.addClass('closing');
-            this.el.onAnimationEnd(function () {
-                this.el.removeClass('closing');
-                this.el.addClass('closed');
-                this.el.hide();
-                this.signals.emit('closed', this);
-                promise.done();
-            }, this);
-            this._closed = true;
-            return promise;
+            return new Promise(function (resolve) {
+                this.signals.emit('close', this);
+                this.$el.classList.add('closing');
+                Events.onAnimationEnd(this.$el, function () {
+                    this.$el.classList.remove('closing');
+                    this.$el.classList.add('closed');
+                    this.$el.style.display = 'none';
+                    this.signals.emit('closed', this);
+                    resolve();
+                }, this);
+                this._closed = true;
+            }.bind(this));
         },
         destroy: function () {
             var destroy = function () {
-                this.$content.html('');
+                this.$content.innerHTML = '';
                 this.signals.emit('destroyed', this);
                 this._destroyed = true;
             }.bind(this);
@@ -1505,17 +1292,17 @@ define('ventus/wm/window', [
         restore: function () {
         },
         maximize: function () {
-            this.el.addClass('maximazing');
-            this.el.onTransitionEnd(function () {
-                this.el.removeClass('maximazing');
+            this.$el.classList.add('maximizing');
+            Events.onTransitionEnd(this.$el, function () {
+                this.$el.classList.remove('maximizing');
             }, this);
             this.maximized = !this.maximized;
             return this;
         },
         minimize: function () {
-            this.el.addClass('minimizing');
-            this.el.onTransitionEnd(function () {
-                this.el.removeClass('minimizing');
+            this.$el.classList.add('minimizing');
+            Events.onTransitionEnd(this.$el, function () {
+                this.$el.classList.remove('minimizing');
             }, this);
             this.minimized = !this.minimized;
             return this;
@@ -1541,7 +1328,7 @@ define('ventus/wm/window', [
             };
         },
         append: function (el) {
-            el.appendTo(this.$content);
+            el.appendChild(this.$content);
         }
     };
     return Window;
@@ -1559,8 +1346,10 @@ define('ventus/wm/modes/default', [], function () {
         actions: {
             maximize: function (win) {
                 win.move(0, 0);
-                win.el.css('-webkit-transform', 'translate3d(0, 0, 0);');
-                win.resize(this.el.width(), this.el.height());
+                win.$el.style.transform = 'translate3d(0, 0, 0);';
+                setTimeout(function () {
+                    win.resize(this.$el.offsetWidth, this.$el.offsetHeight);
+                }.bind(this), 0);
             },
             restore: function (win, restore) {
                 restore.call(win);
@@ -2187,13 +1976,16 @@ define('ventus/wm/modes/default', [], function () {
 define('underscore', [], function () {
     return;
 });
-define('ventus/wm/modes/expose', ['underscore'], function (_) {
+define('ventus/wm/modes/expose', [
+    'underscore',
+    'ventus/core/events'
+], function (_, Events) {
     'use strict';
     var ExposeMode = {
         register: function () {
             var self = this;
             console.log('Expose mode registered.');
-            this.el.on('contextmenu', _.throttle(function () {
+            this.$el.addEventListener('contextmenu', _.throttle(function () {
                 if (self.mode !== 'expose') {
                     if (self.windows.length > 0) {
                         self.mode = 'expose';
@@ -2207,10 +1999,10 @@ define('ventus/wm/modes/expose', ['underscore'], function (_) {
         plug: function () {
             var floor = Math.floor, ceil = Math.ceil, self = this;
             var grid = ceil(this.windows.length / 2);
-            var maxWidth = floor(this.el.width() / grid);
-            var maxHeight = floor(this.el.height() / 2);
+            var maxWidth = floor(this.width / grid);
+            var maxHeight = floor(this.height / 2);
             var scale, left, top, pos;
-            this.el.addClass('expose');
+            this.$el.classList.add('expose');
             for (var win, i = 0, len = this.windows.length; i < len; i++) {
                 win = this.windows[i];
                 win.stamp();
@@ -2228,33 +2020,35 @@ define('ventus/wm/modes/expose', ['underscore'], function (_) {
                 top = pos.y + floor((maxHeight - scale * win.height) / 2);
                 win.enabled = false;
                 win.movable = false;
-                win.el.addClass('exposing');
-                win.el.css('transform-origin', '0 0');
-                win.el.css('transform', 'scale(' + scale + ')');
-                win.el.css('top', top);
-                win.el.css('left', left);
-                win.el.onTransitionEnd(function () {
-                    win.el.removeClass('exposing');
+                win.$el.classList.add('exposing');
+                win.$el.style.transformOrigin = '0 0';
+                win.$el.style.transform = 'scale(' + scale + ')';
+                win.$el.style.top = top + 'px';
+                win.$el.style.left = left + 'px';
+                Events.onTransitionEnd(win.$el, function () {
+                    win.$el.classList.remove('exposing');
                 }, this);
             }
             this.overlay = true;
-            this.el.one('click', function () {
+            var onClick = function () {
+                self.$el.removeEventListener('click', onClick);
                 self.mode = 'default';
-            });
+            };
+            this.$el.addEventListener('click', onClick);
         },
         unplug: function () {
             for (var win, i = this.windows.length; i--;) {
                 win = this.windows[i];
                 win.restore();
-                win.el.css('transform', 'scale(1)');
-                win.el.css('transform-origin', '50% 50%');
+                win.$el.style.transform = 'scale(1)';
+                win.$el.style.transformOrigin = '50% 50%';
                 var removeTransform = function (win) {
                     return function () {
-                        this.el.removeClass('expose');
-                        win.el.css('transform', '');
+                        this.$el.classList.remove('expose');
+                        win.$el.style.transform = '';
                     };
                 }(win);
-                this.el.onTransitionEnd(removeTransform, this);
+                Events.onTransitionEnd(this.$el, removeTransform, this);
                 win.movable = true;
                 win.enabled = true;
             }
@@ -2325,17 +2119,18 @@ define('ventus/wm/modes/fullscreen', [], function () {
 define('ventus/wm/windowmanager', [
     '$',
     'ventus/wm/window',
-    'ventus/core/view',
     'ventus/wm/modes/default',
     'ventus/wm/modes/expose',
     'ventus/wm/modes/fullscreen'
-], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+], function ($, Window, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
     var WindowManager = function () {
-        this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
-        $(document.body).prepend(this.el);
-        this.$overlay = this.el.find('.wm-overlay');
-        this.$overlay.css('z-index', this._baseZ - 1);
+        this.$el = document.createElement('div');
+        this.$el.classList.add('wm-space');
+        this.$el.innerHTML = '<div class="wm-overlay" />';
+        document.body.insertAdjacentElement('afterBegin', this.$el);
+        this.$overlay = this.$el.querySelector('.wm-overlay');
+        this.$overlay.style.zIndex = this._baseZ - 1;
         this.actions.forEach(function (value) {
             this[value] = function (action) {
                 return function () {
@@ -2391,11 +2186,17 @@ define('ventus/wm/windowmanager', [
             return this.modes[this._mode];
         },
         set overlay(value) {
-            this.$overlay.css('opacity', value ? 0.8 : 0);
+            this.$overlay.style.opacity = value ? 0.8 : 0;
             this._overlay = value;
         },
         get overlay() {
             return this._overlay;
+        },
+        get width() {
+            return this.$el.offsetWidth;
+        },
+        get height() {
+            return this.$el.offsetHeight;
         },
         createWindow: function (options) {
             var win = new Window(options);
@@ -2407,7 +2208,7 @@ define('ventus/wm/windowmanager', [
                 win.signals.on(action, this[action], this);
             }, this);
             this.windows.push(win);
-            win.space = this.el;
+            win.manager = this;
             win.focus();
             return win;
         },
@@ -2456,11 +2257,11 @@ define('ventus/wm/windowmanager', [
         }
     };
     WindowManager.prototype.createWindow.fromQuery = function (selector, options) {
-        options.content = View(selector);
+        options.content = document.querySelector(selector);
         return this.createWindow(options);
     };
     WindowManager.prototype.createWindow.fromElement = function (element, options) {
-        options.content = View(element);
+        options.content = element;
         return this.createWindow(options);
     };
     return WindowManager;
