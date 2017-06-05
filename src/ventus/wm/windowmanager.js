@@ -40,6 +40,12 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		}
 
 		this.windows = [];
+		this._margin = {
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0
+		};
 		this.active = null;
 
 		this.mode = 'default';
@@ -102,9 +108,29 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		get overlay() {
 			return this._overlay;
 		},
+		
+		set margin(marginObj) {
+			if (typeof marginObj !== 'object') {
+				return;
+			}
+			
+			if (marginObj.left)
+				this._margin.left = marginObj.left;
+			if (marginObj.top)
+				this._margin.top = marginObj.top;
+			if (marginObj.bottom)
+				this._margin.bottom = marginObj.bottom;
+			if (marginObj.right)
+				this._margin.right = marginObj.right;
+			return this;
+		},
+		
+		get margin() {
+			return this._margin;
+		},
 
 		createWindow: function(options) {
-			var win = new Window(options);
+			var win = new Window(this._margin, options);
 
 			// Show 'default' mode
 			this.mode = 'default';
