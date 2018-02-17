@@ -26,7 +26,7 @@ This project started as an experiment and even though it was stable enough **it 
 ### Creating a new window wrapping a DOM Element
 
 ##### Using a query
-	wm.createWindowFromQuery('#element .selector', {
+	wm.createWindow.fromQuery('#element .selector', {
 		title: 'My App',
 		width: 330,
 		height: 400,
@@ -35,7 +35,7 @@ This project started as an experiment and even though it was stable enough **it 
 	});
 	
 ##### Using a reference
-	wm.createWindowFromElement(domElement, {
+	wm.createWindow.fromElement(domElement, {
 		title: 'My App',
 		width: 500,
 		height: 500,
