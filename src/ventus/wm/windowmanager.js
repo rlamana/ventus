@@ -15,6 +15,8 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
 	var WindowManager = function () {
+		var createWindow;
+
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
@@ -44,9 +46,13 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 
 		this.mode = 'default';
 
-		// Binding sub-functions to this object
-		this.createWindow.fromQuery = this.createWindow.fromQuery.bind(this);
-		this.createWindow.fromElement = this.createWindow.fromElement.bind(this);
+		// Replace createWindow function on prototype with instance-specific copy
+		// (avoids pollution of prototype during the next step)
+		createWindow = this.createWindow;
+		this.createWindow = createWindow.bind(this);
+		// Bind this to sub-functions of createWindow function
+		this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
+		this.createWindow.fromElement = createWindow.fromElement.bind(this);
 	};
 
 	WindowManager.prototype = {

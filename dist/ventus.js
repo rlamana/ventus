@@ -2332,6 +2332,7 @@ define('ventus/wm/windowmanager', [
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
     var WindowManager = function () {
+        var createWindow;
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
         this.$overlay = this.el.find('.wm-overlay');
@@ -2353,8 +2354,10 @@ define('ventus/wm/windowmanager', [
         this.windows = [];
         this.active = null;
         this.mode = 'default';
-        this.createWindow.fromQuery = this.createWindow.fromQuery.bind(this);
-        this.createWindow.fromElement = this.createWindow.fromElement.bind(this);
+        createWindow = this.createWindow;
+        this.createWindow = createWindow.bind(this);
+        this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
+        this.createWindow.fromElement = createWindow.fromElement.bind(this);
     };
     WindowManager.prototype = {
         actions: [
