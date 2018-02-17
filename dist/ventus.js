@@ -2411,14 +2411,6 @@ define('ventus/wm/windowmanager', [
             win.focus();
             return win;
         },
-        createWindowFromQuery: function (selector, options) {
-            options.content = View(selector);
-            return this.createWindow(options);
-        },
-        createWindowFromElement: function (element, options) {
-            options.content = View(element);
-            return this.createWindow(options);
-        },
         _focus: function (win) {
             var currentZ, baseZ = 10000, maxZ = baseZ + 10000, index;
             if (this.active && this.active === win) {
@@ -2464,12 +2456,12 @@ define('ventus/wm/windowmanager', [
         }
     };
     WindowManager.prototype.createWindow.fromQuery = function (selector, options) {
-        console.warn('Deprecated Method: WindowManager.createWindow.fromQuery() is deprecated.' + 'Use WindowManager.createWindowFromQuery() instead.');
-        return this.createWindowFromQuery(selector, options);
+        options.content = View(selector);
+        return this.createWindow(options);
     };
     WindowManager.prototype.createWindow.fromElement = function (element, options) {
-        console.warn('Deprecated Method: WindowManager.createWindow.fromElement() is deprecated.' + 'Use WindowManager.createWindowFromElement() instead.');
-        return this.createWindowFromElement(element, options);
+        options.content = View(element);
+        return this.createWindow(options);
     };
     return WindowManager;
 });

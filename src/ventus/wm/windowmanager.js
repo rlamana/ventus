@@ -127,16 +127,6 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			return win;
 		},
 
-		createWindowFromQuery: function (selector, options) {
-			options.content = View(selector);
-			return this.createWindow(options);
-		},
-
-		createWindowFromElement: function (element, options) {
-			options.content = View(element);
-			return this.createWindow(options);
-		},
-
 		/**
 		 * Internal action always performed besides the mode definition
 		 */
@@ -206,19 +196,15 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 			}
 		}
 	};
-	WindowManager.prototype.createWindow.fromQuery = function (selector, options) {
-		console.warn(
-			'Deprecated Method: WindowManager.createWindow.fromQuery() is deprecated.' +
-			'Use WindowManager.createWindowFromQuery() instead.'
-		);
-		return this.createWindowFromQuery(selector, options);
+
+	WindowManager.prototype.createWindow.fromQuery = function(selector, options) {
+		options.content = View(selector);
+		return this.createWindow(options);
 	};
-	WindowManager.prototype.createWindow.fromElement = function (element, options) {
-		console.warn(
-			'Deprecated Method: WindowManager.createWindow.fromElement() is deprecated.' +
-			'Use WindowManager.createWindowFromElement() instead.'
-		);
-		return this.createWindowFromElement(element, options);
+
+	WindowManager.prototype.createWindow.fromElement = function(element, options) {
+		options.content = View(element);
+		return this.createWindow(options);
 	};
 
 	return WindowManager;
