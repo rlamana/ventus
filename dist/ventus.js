@@ -1467,7 +1467,7 @@ define('ventus/wm/window', [
             }.bind(this);
             this.signals.emit('destroy', this);
             if (!this.closed) {
-                this.close().then(function () {
+                this.close().getFuture().then(function () {
                     destroy();
                 });
             } else {

@@ -470,7 +470,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			this.signals.emit('destroy', this);
 
 			if(!this.closed) {
-				this.close().then(function() {
+				this.close().getFuture().then(function() {
 					destroy();
 				});
 			}
