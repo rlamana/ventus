@@ -85,7 +85,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		// Properties
 		this.widget = false;
-		this.movable = true;
+		this.movable = !!options.movable;
 		this.resizable = (typeof options.resizable !== 'undefined') ?
 			options.resizable :
 			true;
