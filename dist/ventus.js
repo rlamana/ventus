@@ -1149,7 +1149,8 @@ define('ventus/wm/window', [
             movable: true,
             resizable: true,
             widget: false,
-            titlebar: true
+            titlebar: true,
+            animations: true
         };
         this.el = View(WindowTemplate({
             title: options.title,
@@ -1183,8 +1184,9 @@ define('ventus/wm/window', [
         this._closed = true;
         this._destroyed = false;
         this.widget = false;
-        this.movable = true;
+        this.movable = typeof options.movable !== 'undefined' ? options.movable : true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
+        this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
         this.titlebar = true;
     };
     Window.prototype = {
@@ -1201,7 +1203,9 @@ define('ventus/wm/window', [
                     x: event.pageX,
                     y: event.pageY
                 });
-                this.el.addClass('move');
+                if (this.animations) {
+                    this.el.addClass('move');
+                }
                 e.preventDefault();
             }
         },
@@ -1437,25 +1441,31 @@ define('ventus/wm/window', [
             var promise = new Promise();
             this.signals.emit('open', this);
             this.el.show();
-            this.el.addClass('opening');
-            this.el.onAnimationEnd(function () {
-                this.el.removeClass('opening');
-                promise.done();
-            }, this);
+            if (this.animations) {
+                this.el.addClass('opening');
+                this.el.onAnimationEnd(function () {
+                    this.el.removeClass('opening');
+                }, this);
+            }
+            promise.done();
             this._closed = false;
             return promise;
         },
         close: function () {
             var promise = new Promise();
             this.signals.emit('close', this);
-            this.el.addClass('closing');
-            this.el.onAnimationEnd(function () {
-                this.el.removeClass('closing');
-                this.el.addClass('closed');
+            if (this.animations) {
+                this.el.addClass('closing');
+                this.el.onAnimationEnd(function () {
+                    this.el.removeClass('closing');
+                    this.el.addClass('closed');
+                    this.el.hide();
+                    this.signals.emit('closed', this);
+                }, this);
+            } else {
                 this.el.hide();
-                this.signals.emit('closed', this);
-                promise.done();
-            }, this);
+            }
+            promise.done();
             this._closed = true;
             return promise;
         },
