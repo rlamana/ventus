@@ -34,7 +34,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 			movable: true,
 			resizable: true,
 			widget: false,
-			titlebar: true
+			titlebar: true,
+			animations: true,
 		};
 
 		// View
@@ -91,6 +92,13 @@ function(Emitter, Promise, View, WindowTemplate) {
 		this.resizable = (typeof options.resizable !== 'undefined') ?
 			options.resizable :
 			true;
+		this.animations = (typeof options.animations !== 'undefined') ?
+			options.animations:
+			true;
+
+		if (this.animations) {
+			this.el.addClass('animated');
+		}
 
 		this.titlebar = true;
 	};
@@ -381,6 +389,20 @@ function(Emitter, Promise, View, WindowTemplate) {
 			return this._titlebar;
 		},
 
+		set animations(value) {
+			if (value) {
+				this.el.addClass('animated');
+			} else {
+				this.el.removeClass('animated');
+			}
+
+			this._animations = value;
+		},
+
+		get animations() {
+			return this._animations;
+		},
+
 		set width(value) {
 			this.el.width(value);
 		},
@@ -432,7 +454,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			// Open animation
 			this.el.show();
 			this.el.addClass('opening');
-			this.el.onAnimationEnd(function(){
+			this.el.onAnimationEnd(function () {
 				this.el.removeClass('opening');
 				promise.done();
 			}, this);
@@ -446,7 +468,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			this.signals.emit('close', this);
 
 			this.el.addClass('closing');
-			this.el.onAnimationEnd(function(){
+			this.el.onAnimationEnd(function () {
 				this.el.removeClass('closing');
 				this.el.addClass('closed');
 				this.el.hide();

@@ -1149,7 +1149,8 @@ define('ventus/wm/window', [
             movable: true,
             resizable: true,
             widget: false,
-            titlebar: true
+            titlebar: true,
+            animations: true
         };
         this.el = View(WindowTemplate({
             title: options.title,
@@ -1185,6 +1186,10 @@ define('ventus/wm/window', [
         this.widget = false;
         this.movable = true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
+        this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
+        if (this.animations) {
+            this.el.addClass('animated');
+        }
         this.titlebar = true;
     };
     Window.prototype = {
