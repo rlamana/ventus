@@ -95,7 +95,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 		this.animations = (typeof options.animations !== 'undefined') ?
 			options.animations:
 			true;
-			
+
+		if (this.animations) {
+			this.el.addClass('animated');
+		}
+
 		this.titlebar = true;
 	};
 
@@ -118,10 +122,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 				});
 
 				this.el.addClass('move');
-				
-				if (this.animations) {
-					this.el.addClass('animated');
-				}
 
 				e.preventDefault();
 			}
@@ -389,6 +389,20 @@ function(Emitter, Promise, View, WindowTemplate) {
 			return this._titlebar;
 		},
 
+		set animations(value) {
+			if (value) {
+				this.el.addClass('animated');
+			} else {
+				this.el.removeClass('animated');
+			}
+
+			this._animations = value;
+		},
+
+		get animations() {
+			return this._animations;
+		},
+
 		set width(value) {
 			this.el.width(value);
 		},
@@ -440,9 +454,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 			// Open animation
 			this.el.show();
 			this.el.addClass('opening');
-			if (this.animations) {
-				this.el.addClass('animated');
-			}
 			this.el.onAnimationEnd(function () {
 				this.el.removeClass('opening');
 				promise.done();
@@ -533,9 +544,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 		restore: function(){},
 
 		maximize: function() {
-			if (this.animations) {
-				this.el.addClass('animated');
-			}
 			this.el.addClass('maximazing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('maximazing');
@@ -546,9 +554,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		minimize: function() {
-			if (this.animations) {
-				this.el.addClass('animated');
-			}
 			this.el.addClass('minimizing');
 			this.el.onTransitionEnd(function(){
 				this.el.removeClass('minimizing');
