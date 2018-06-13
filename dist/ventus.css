@@ -2,7 +2,7 @@
   box-shadow: 0px 0px 40px #000088;
 }
 .wm-space.expose .wm-window.active,
-.wm-space.expose .wm-window {
+.wm-space.expose .wm-window.animated {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
   -webkit-transition: top 0.5s ease-out, left 0.5s ease-out;
@@ -16,7 +16,7 @@
           user-select: none;
 }
 
-.wm-space.fullscreen .wm-window {
+.wm-space.fullscreen .wm-window.animated {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
   -webkit-transition: all 0.5s ease-out;
@@ -335,26 +335,35 @@
 .wm-window.noresizable .wm-window-box button.wm-resize {
   display: none;
 }
-.wm-window.minimizing,
-.wm-window.maximazing {
+.wm-window.minimizing.animated,
+.wm-window.maximazing.animated {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
   -webkit-transition: all 0.5s ease-out;
           transition: all 0.5s ease-out;
 }
-.wm-window.closing {
+.wm-window.animated.closing {
   -webkit-animation: close 0.3s 1 ease-in forwards;
           animation: close 0.3s 1 ease-in forwards;
 }
-.wm-window.opening {
+.wm-window.animated.opening {
   -webkit-animation: appear 0.4s 1 ease-out forwards;
           animation: appear 0.4s 1 ease-out forwards;
+}
+.wm-window.closing {
+  -webkit-animation: close;
+  animation: close;
+}
+
+.wm-window.opening {
+  -webkit-animation: appear;
+  animation: appear;
 }
 .wm-window.resizing {
   -webkit-transition: none;
           transition: none;
 }
-.wm-window.move {
+.wm-window.animated.move {
   -webkit-animation: wobbly 0.5s 0.2s infinite;
           animation: wobbly 0.5s 0.2s infinite;
 }

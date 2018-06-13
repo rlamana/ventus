@@ -1203,8 +1203,9 @@ define('ventus/wm/window', [
                     x: event.pageX,
                     y: event.pageY
                 });
+                this.el.addClass('move');
                 if (this.animations) {
-                    this.el.addClass('move');
+                    this.el.addClass('animated');
                 }
                 e.preventDefault();
             }
@@ -1441,31 +1442,28 @@ define('ventus/wm/window', [
             var promise = new Promise();
             this.signals.emit('open', this);
             this.el.show();
+            this.el.addClass('opening');
             if (this.animations) {
-                this.el.addClass('opening');
-                this.el.onAnimationEnd(function () {
-                    this.el.removeClass('opening');
-                }, this);
+                this.el.addClass('animated');
             }
-            promise.done();
+            this.el.onAnimationEnd(function () {
+                this.el.removeClass('opening');
+                promise.done();
+            }, this);
             this._closed = false;
             return promise;
         },
         close: function () {
             var promise = new Promise();
             this.signals.emit('close', this);
-            if (this.animations) {
-                this.el.addClass('closing');
-                this.el.onAnimationEnd(function () {
-                    this.el.removeClass('closing');
-                    this.el.addClass('closed');
-                    this.el.hide();
-                    this.signals.emit('closed', this);
-                }, this);
-            } else {
+            this.el.addClass('closing');
+            this.el.onAnimationEnd(function () {
+                this.el.removeClass('closing');
+                this.el.addClass('closed');
                 this.el.hide();
-            }
-            promise.done();
+                this.signals.emit('closed', this);
+                promise.done();
+            }, this);
             this._closed = true;
             return promise;
         },
