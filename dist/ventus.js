@@ -1184,7 +1184,7 @@ define('ventus/wm/window', [
         this._closed = true;
         this._destroyed = false;
         this.widget = false;
-        this.movable = true;
+        this.movable = typeof options.movable !== 'undefined' ? options.movable : true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
         this.titlebar = true;
