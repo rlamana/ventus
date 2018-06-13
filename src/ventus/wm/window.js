@@ -34,7 +34,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 			movable: true,
 			resizable: true,
 			widget: false,
-			titlebar: true
+			titlebar: true,
+			animations: true,
 		};
 
 		// View
@@ -91,7 +92,10 @@ function(Emitter, Promise, View, WindowTemplate) {
 		this.resizable = (typeof options.resizable !== 'undefined') ?
 			options.resizable :
 			true;
-
+		this.animations = (typeof options.animations !== 'undefined') ?
+			options.animations:
+			true;
+			
 		this.titlebar = true;
 	};
 
@@ -113,7 +117,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 					y: event.pageY
 				});
 
-				this.el.addClass('move');
+				if (this.animations) {
+					this.el.addClass('move');
+				}
 
 				e.preventDefault();
 			}
@@ -431,11 +437,13 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 			// Open animation
 			this.el.show();
-			this.el.addClass('opening');
-			this.el.onAnimationEnd(function(){
-				this.el.removeClass('opening');
-				promise.done();
-			}, this);
+			if (this.animations) {
+				this.el.addClass('opening');
+				this.el.onAnimationEnd(function(){
+					this.el.removeClass('opening');
+				}, this);
+			}
+			promise.done();
 
 			this._closed = false;
 			return promise;
@@ -445,16 +453,19 @@ function(Emitter, Promise, View, WindowTemplate) {
 			var promise = new Promise();
 			this.signals.emit('close', this);
 
-			this.el.addClass('closing');
-			this.el.onAnimationEnd(function(){
-				this.el.removeClass('closing');
-				this.el.addClass('closed');
+			if (this.animations) {
+				this.el.addClass('closing');
+				this.el.onAnimationEnd(function(){
+					this.el.removeClass('closing');
+					this.el.addClass('closed');
+					this.el.hide();
+					this.signals.emit('closed', this);
+				}, this);
+			} else {
 				this.el.hide();
-
-				this.signals.emit('closed', this);
-				promise.done();
-			}, this);
-
+			}
+			promise.done();
+			
 			this._closed = true;
 			return promise;
 		},
