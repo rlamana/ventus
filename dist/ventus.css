@@ -2,9 +2,11 @@
   box-shadow: 0px 0px 40px #000088;
 }
 .wm-space.expose .wm-window.active,
-.wm-space.expose .wm-window {
-  transform: translate3d(0, 0, 0);
-  transition: top 0.5s ease-out, left 0.5s ease-out;
+.wm-space.expose .wm-window.animated {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-transition: top 0.5s ease-out, left 0.5s ease-out;
+          transition: top 0.5s ease-out, left 0.5s ease-out;
 }
 .wm-space.expose .wm-window.active section.wm-content,
 .wm-space.expose .wm-window section.wm-content {
@@ -14,9 +16,11 @@
           user-select: none;
 }
 
-.wm-space.fullscreen .wm-window {
-  transform: translate3d(0, 0, 0);
-  transition: all 0.5s ease-out;
+.wm-space.fullscreen .wm-window.animated {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-transition: all 0.5s ease-out;
+          transition: all 0.5s ease-out;
 }
 .wm-space.fullscreen header.wm-window-title {
   transition: all 0.5s ease-out;
@@ -260,22 +264,36 @@
 .wm-window.noresizable .wm-window-box button.wm-resize {
   display: none;
 }
-.wm-window.minimizing,
-.wm-window.maximazing {
-  transform: translate3d(0, 0, 0);
-  transition: all 0.5s ease-out;
+.wm-window.minimizing.animated,
+.wm-window.maximazing.animated {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-transition: all 0.5s ease-out;
+          transition: all 0.5s ease-out;
+}
+.wm-window.animated.closing {
+  -webkit-animation: close 0.3s 1 ease-in forwards;
+          animation: close 0.3s 1 ease-in forwards;
+}
+.wm-window.animated.opening {
+  -webkit-animation: appear 0.4s 1 ease-out forwards;
+          animation: appear 0.4s 1 ease-out forwards;
 }
 .wm-window.closing {
-  animation: close 0.3s 1 ease-in forwards;
+  -webkit-animation: close;
+  animation: close;
 }
+
 .wm-window.opening {
-  animation: appear 0.4s 1 ease-out forwards;
+  -webkit-animation: appear;
+  animation: appear;
 }
 .wm-window.resizing {
   transition: none;
 }
-.wm-window.move {
-  animation: wobbly 0.5s 0.2s infinite;
+.wm-window.animated.move {
+  -webkit-animation: wobbly 0.5s 0.2s infinite;
+          animation: wobbly 0.5s 0.2s infinite;
 }
 .wm-window.move * {
   -webkit-user-select: none;

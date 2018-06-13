@@ -95,7 +95,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 		this.animations = (typeof options.animations !== 'undefined') ?
 			options.animations:
 			true;
-			
+
+		if (this.animations) {
+			this.el.addClass('animated');
+		}
+
 		this.titlebar = true;
 	};
 
@@ -117,9 +121,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 					y: event.pageY
 				});
 
-				if (this.animations) {
-					this.el.addClass('move');
-				}
+				this.el.addClass('move');
 
 				e.preventDefault();
 			}
@@ -387,6 +389,20 @@ function(Emitter, Promise, View, WindowTemplate) {
 			return this._titlebar;
 		},
 
+		set animations(value) {
+			if (value) {
+				this.el.addClass('animated');
+			} else {
+				this.el.removeClass('animated');
+			}
+
+			this._animations = value;
+		},
+
+		get animations() {
+			return this._animations;
+		},
+
 		set width(value) {
 			this.el.width(value);
 		},
@@ -437,13 +453,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 			// Open animation
 			this.el.show();
-			if (this.animations) {
-				this.el.addClass('opening');
-				this.el.onAnimationEnd(function(){
-					this.el.removeClass('opening');
-				}, this);
-			}
-			promise.done();
+			this.el.addClass('opening');
+			this.el.onAnimationEnd(function () {
+				this.el.removeClass('opening');
+				promise.done();
+			}, this);
 
 			this._closed = false;
 			return promise;
@@ -453,19 +467,16 @@ function(Emitter, Promise, View, WindowTemplate) {
 			var promise = new Promise();
 			this.signals.emit('close', this);
 
-			if (this.animations) {
-				this.el.addClass('closing');
-				this.el.onAnimationEnd(function(){
-					this.el.removeClass('closing');
-					this.el.addClass('closed');
-					this.el.hide();
-					this.signals.emit('closed', this);
-				}, this);
-			} else {
+			this.el.addClass('closing');
+			this.el.onAnimationEnd(function () {
+				this.el.removeClass('closing');
+				this.el.addClass('closed');
 				this.el.hide();
-			}
-			promise.done();
-			
+
+				this.signals.emit('closed', this);
+				promise.done();
+			}, this);
+
 			this._closed = true;
 			return promise;
 		},
