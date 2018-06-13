@@ -1,5 +1,5 @@
 /*!
- * Ventus 0.2.1
+ * Ventus 0.3
  * Copyright © 2015 Ramón Lamana
  * http://www.rlamana.com
  */
@@ -1150,11 +1150,15 @@ define('ventus/wm/window', [
             resizable: true,
             widget: false,
             titlebar: true,
-            animations: true
+            animations: true,
+            classname: ''
         };
+        if (options.animations) {
+            options.classname + ' animated';
+        }
         this.el = View(WindowTemplate({
             title: options.title,
-            classname: options.classname || ''
+            classname: options.classname
         }));
         this.el.listen(this.events.window, this);
         if (options.opacity) {
@@ -1184,12 +1188,9 @@ define('ventus/wm/window', [
         this._closed = true;
         this._destroyed = false;
         this.widget = false;
-        this.movable = true;
+        this.movable = typeof options.movable !== 'undefined' ? options.movable : true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
-        if (this.animations) {
-            this.el.addClass('animated');
-        }
         this.titlebar = true;
     };
     Window.prototype = {
@@ -1408,6 +1409,17 @@ define('ventus/wm/window', [
         get titlebar() {
             return this._titlebar;
         },
+        set animations(value) {
+            if (value) {
+                this.el.addClass('animated');
+            } else {
+                this.el.removeClass('animated');
+            }
+            this._animations = value;
+        },
+        get animations() {
+            return this._animations;
+        },
         set width(value) {
             this.el.width(value);
         },
@@ -1511,17 +1523,27 @@ define('ventus/wm/window', [
         },
         maximize: function () {
             this.el.addClass('maximazing');
-            this.el.onTransitionEnd(function () {
+            var endMaximize = function () {
                 this.el.removeClass('maximazing');
-            }, this);
+            };
+            if (this.animations) {
+                this.el.onTransitionEnd(endMaximize, this);
+            } else {
+                endMaximize.call(this);
+            }
             this.maximized = !this.maximized;
             return this;
         },
         minimize: function () {
             this.el.addClass('minimizing');
-            this.el.onTransitionEnd(function () {
+            var endMinimize = function () {
                 this.el.removeClass('minimizing');
-            }, this);
+            };
+            if (this.animations) {
+                this.el.onTransitionEnd(endMinimize, this);
+            } else {
+                endMinimize.call(this);
+            }
             this.minimized = !this.minimized;
             return this;
         },
@@ -2192,7 +2214,10 @@ define('ventus/wm/modes/default', [], function () {
 define('underscore', [], function () {
     return;
 });
-define('ventus/wm/modes/expose', ['underscore'], function (_) {
+define('ventus/wm/modes/expose', [
+    'underscore',
+    'ventus/core/promise'
+], function (_, Promise) {
     'use strict';
     var ExposeMode = {
         register: function () {
@@ -2238,9 +2263,14 @@ define('ventus/wm/modes/expose', ['underscore'], function (_) {
                 win.el.css('transform', 'scale(' + scale + ')');
                 win.el.css('top', top);
                 win.el.css('left', left);
-                win.el.onTransitionEnd(function () {
+                var endExposing = function () {
                     win.el.removeClass('exposing');
-                }, this);
+                };
+                if (win.animations) {
+                    win.el.onTransitionEnd(endExposing, this);
+                } else {
+                    endExposing.call(this);
+                }
             }
             this.overlay = true;
             this.el.one('click', function () {
@@ -2248,18 +2278,31 @@ define('ventus/wm/modes/expose', ['underscore'], function (_) {
             });
         },
         unplug: function () {
+            var promise = new Promise();
+            promise.getFuture().then(function () {
+                this.el.removeClass('expose');
+            }.bind(this));
+            if (this.windows.length === 0) {
+                promise.done();
+            }
             for (var win, i = this.windows.length; i--;) {
                 win = this.windows[i];
                 win.restore();
                 win.el.css('transform', 'scale(1)');
                 win.el.css('transform-origin', '50% 50%');
-                var removeTransform = function (win) {
+                var removeTransform = function (win, windowIndex) {
                     return function () {
-                        this.el.removeClass('expose');
+                        if (windowIndex === 0) {
+                            promise.done();
+                        }
                         win.el.css('transform', '');
                     };
-                }(win);
-                this.el.onTransitionEnd(removeTransform, this);
+                }(win, i);
+                if (win.animations) {
+                    this.el.onTransitionEnd(removeTransform, this);
+                } else {
+                    removeTransform.call(this);
+                }
                 win.movable = true;
                 win.enabled = true;
             }
