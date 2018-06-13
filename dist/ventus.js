@@ -1187,6 +1187,9 @@ define('ventus/wm/window', [
         this.movable = true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
+        if (this.animations) {
+            this.el.addClass('animated');
+        }
         this.titlebar = true;
     };
     Window.prototype = {
@@ -1204,9 +1207,6 @@ define('ventus/wm/window', [
                     y: event.pageY
                 });
                 this.el.addClass('move');
-                if (this.animations) {
-                    this.el.addClass('animated');
-                }
                 e.preventDefault();
             }
         },
@@ -1443,9 +1443,6 @@ define('ventus/wm/window', [
             this.signals.emit('open', this);
             this.el.show();
             this.el.addClass('opening');
-            if (this.animations) {
-                this.el.addClass('animated');
-            }
             this.el.onAnimationEnd(function () {
                 this.el.removeClass('opening');
                 promise.done();
