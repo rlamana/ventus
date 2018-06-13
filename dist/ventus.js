@@ -1183,7 +1183,7 @@ define('ventus/wm/window', [
         this._closed = true;
         this._destroyed = false;
         this.widget = false;
-        this.movable = true;
+        this.movable = typeof options.movable !== 'undefined' ? options.movable : true;
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.titlebar = true;
     };
@@ -2189,20 +2189,26 @@ define('underscore', [], function () {
 });
 define('ventus/wm/modes/expose', ['underscore'], function (_) {
     'use strict';
+    var rightClick = true;
     var ExposeMode = {
+        setRightClick: function (value) {
+            rightClick = value;
+        },
         register: function () {
             var self = this;
             console.log('Expose mode registered.');
-            this.el.on('contextmenu', _.throttle(function () {
-                if (self.mode !== 'expose') {
-                    if (self.windows.length > 0) {
-                        self.mode = 'expose';
+            if (rightClick !== true) {
+                this.el.on('contextmenu', _.throttle(function () {
+                    if (self.mode !== 'expose') {
+                        if (self.windows.length > 0) {
+                            self.mode = 'expose';
+                        }
+                    } else if (self.mode === 'expose') {
+                        self.mode = 'default';
                     }
-                } else if (self.mode === 'expose') {
-                    self.mode = 'default';
-                }
-                return false;
-            }, 1000));
+                    return false;
+                }, 1000));
+            }
         },
         plug: function () {
             var floor = Math.floor, ceil = Math.ceil, self = this;
@@ -2331,7 +2337,11 @@ define('ventus/wm/windowmanager', [
     'ventus/wm/modes/fullscreen'
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
-    var WindowManager = function () {
+    var WindowManager = function (wmOptions) {
+        if (typeof wmOptions === 'undefined') {
+            wmOptions = {};
+        }
+        var options = { rightClick: typeof wmOptions.rightClick !== 'undefined' ? wmOptions.rightClick : false };
         var createWindow;
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
@@ -2348,6 +2358,9 @@ define('ventus/wm/windowmanager', [
         }, this);
         for (var mode in this.modes) {
             if (this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+                if (mode === 'expose') {
+                    this.modes[mode].setRightClick(options.rightClick);
+                }
                 this.modes[mode].register.apply(this);
             }
         }

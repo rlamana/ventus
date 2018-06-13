@@ -14,7 +14,16 @@ define([
 function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
-	var WindowManager = function () {
+	var WindowManager = function (wmOptions) {
+
+		if (typeof wmOptions === 'undefined') {
+			wmOptions = {};
+		}
+
+		var options = {
+			rightClick: typeof wmOptions.rightClick !== 'undefined' ? wmOptions.rightClick : false,
+		};
+
 		var createWindow;
 
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
@@ -37,6 +46,9 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		// Launch register of every mode plugged-in
 		for(var mode in this.modes) {
 			if(this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+				if (mode === 'expose') {
+					this.modes[mode].setRightClick(options.rightClick);
+				}
 				this.modes[mode].register.apply(this);
 			}
 		}
