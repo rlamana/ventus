@@ -73,7 +73,6 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		},
 
 		set mode(value) {
-
 			var mode = this.modes[value];
 			if(!mode || this._mode === value) {
 				return;

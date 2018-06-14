@@ -35,13 +35,18 @@ function(Emitter, Promise, View, WindowTemplate) {
 			resizable: true,
 			widget: false,
 			titlebar: true,
-			animations: true,
-		};
+      animations: true,
+      classname: ''
+    };
+    
+    if (options.animations) {
+      options.classname + ' animated';
+    }
 
 		// View
 		this.el = View(WindowTemplate({
 			title: options.title,
-			classname: options.classname||''
+			classname: options.classname
 		}));
 		this.el.listen(this.events.window, this);
 
@@ -95,11 +100,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 		this.animations = (typeof options.animations !== 'undefined') ?
 			options.animations:
 			true;
-
-		if (this.animations) {
-			this.el.addClass('animated');
-		}
-
 		this.titlebar = true;
 	};
 
@@ -544,20 +544,34 @@ function(Emitter, Promise, View, WindowTemplate) {
 		restore: function(){},
 
 		maximize: function() {
-			this.el.addClass('maximazing');
-			this.el.onTransitionEnd(function(){
+      this.el.addClass('maximazing');
+      
+      var endMaximize = function(){
 				this.el.removeClass('maximazing');
-			}, this);
+			};
+
+      if (this.animations) {
+        this.el.onTransitionEnd(endMaximize, this);
+      } else {
+        endMaximize.call(this);
+      }
 
 			this.maximized = !this.maximized;
 			return this;
 		},
 
 		minimize: function() {
-			this.el.addClass('minimizing');
-			this.el.onTransitionEnd(function(){
+      this.el.addClass('minimizing');
+
+      var endMinimize = function() {
 				this.el.removeClass('minimizing');
-			}, this);
+			};
+      
+      if (this.animations) {
+        this.el.onTransitionEnd(endMinimize, this);
+      } else {
+        endMinimize.call(this);
+      }
 
 			this.minimized = !this.minimized;
 			return this;
