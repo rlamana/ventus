@@ -2,32 +2,38 @@
 .wm-space.fullscreen {
 	.wm-window {
 		transform: translate3d(0, 0, 0);
-		transition: all .5s ease-out;
+
+		&.animated {
+			transition: all .5s ease-out;
+	
+			.wm-window-title,
+			.wm-window-title h1 {
+				transition: all .5s ease-out;
+			}
+		}
 	}
-
-	header.wm-window-title {
-		transition: all .5s ease-out;
-
-		height: 50px;
-		font-size: 40px;
-
-		padding: 40px 50px;
-
+	
+	.wm-window-title {
 		background: transparent;
+		font-size: 40px;
+		height: 50px;
+		padding: 40px 50px;
 
 		.wm-button-group {
 			display: none;
 		}
 
 		h1 {
-			transition: all .5s ease-out;
 			font-size: 40px;
 		}
 	}
 
-	section.wm-content {
-		transition: all .5s ease-out;
+	.wm-content {
 		padding: 0 40px;
+
+		&.animated {
+			transition: all .5s ease-out;
+		}
 	}
 
 	.wm-resize {

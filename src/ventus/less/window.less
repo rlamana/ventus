@@ -52,6 +52,8 @@
 	background-color: #fff;
 	box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);
 
+	transform: translate3d(0, 0, 0);
+
 	.wm-window-overlay {
 		display: none;
 	}
@@ -64,7 +66,7 @@
 		min-height: @minheight;
 		width: 100%;
 
-		header.wm-window-title {
+		.wm-window-title {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
@@ -230,10 +232,6 @@
 	.wm-content * {
 		user-select: text;
 	}
-
-	header.wm-window-title  {
-
-	}
 }
 
 .wm-window.noresizable {
@@ -255,25 +253,33 @@
 	}
 }
 
-.wm-window.minimizing,
-.wm-window.maximazing {
+.wm-window.animated.minimizing,
+.wm-window.animated.maximazing {
 	transform: translate3d(0, 0, 0);
 	transition: all .5s ease-out;
 }
 
-.wm-window.closing {
+.wm-window.animated.closing {
 	animation: close 0.3s 1 ease-in forwards;
 }
 
-.wm-window.opening {
+.wm-window.closing {
+	animation: close;
+}
+
+.wm-window.animated.opening {
 	animation: appear 0.4s 1 ease-out forwards;
 }
 
-.wm-window.resizing {
+.wm-window.opening {
+	animation: appear;
+}
+
+.wm-window.animated.resizing {
 	transition: none;
 }
 
-.wm-window.move {
+.wm-window.animated.move {
 	animation: wobbly 0.5s 0.2s infinite;
 
 	* {
