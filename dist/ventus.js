@@ -1151,7 +1151,8 @@ define('ventus/wm/window', [
             widget: false,
             titlebar: true,
             animations: true,
-            classname: ''
+            classname: '',
+            stayinspace: false
         };
         if (options.animations) {
             options.classname + ' animated';
@@ -1192,6 +1193,7 @@ define('ventus/wm/window', [
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
         this.titlebar = true;
+        this.stayinspace = typeof options.stayinspace !== 'undefined' ? options.stayinspace : true;
     };
     Window.prototype = {
         _restore: null,
@@ -1282,7 +1284,21 @@ define('ventus/wm/window', [
                         this._resizing && this._stopResize();
                     }
                     if (this._moving) {
-                        this.move(event.pageX - this._moving.x, event.pageY - this._moving.y);
+                        if (this.stayinspace) {
+                            var movingX = Math.max(0, event.pageX - this._moving.x);
+                            var minusX = 0;
+                            var movingY = Math.max(0, event.pageY - this._moving.y);
+                            var minusY = 0;
+                            if (movingX + this.el[0].clientWidth > this.space[0].clientWidth) {
+                                minusX = movingX + this.el[0].clientWidth - this.space[0].clientWidth;
+                            }
+                            if (movingY + this.el[0].clientHeight > this.space[0].clientHeight) {
+                                minusY = movingY + this.el[0].clientHeight - this.space[0].clientHeight;
+                            }
+                            this.move(movingX - minusX, movingY - minusY);
+                        } else {
+                            this.move(event.pageX - this._moving.x, event.pageY - this._moving.y);
+                        }
                     }
                     if (this._resizing) {
                         this.resize(event.pageX + this._resizing.width, event.pageY + this._resizing.height);
@@ -2219,20 +2235,26 @@ define('ventus/wm/modes/expose', [
     'ventus/core/promise'
 ], function (_, Promise) {
     'use strict';
+    var rightClick = true;
     var ExposeMode = {
+        setRightClick: function (value) {
+            rightClick = value;
+        },
         register: function () {
             var self = this;
             console.log('Expose mode registered.');
-            this.el.on('contextmenu', _.throttle(function () {
-                if (self.mode !== 'expose') {
-                    if (self.windows.length > 0) {
-                        self.mode = 'expose';
+            if (rightClick !== true) {
+                this.el.on('contextmenu', _.throttle(function () {
+                    if (self.mode !== 'expose') {
+                        if (self.windows.length > 0) {
+                            self.mode = 'expose';
+                        }
+                    } else if (self.mode === 'expose') {
+                        self.mode = 'default';
                     }
-                } else if (self.mode === 'expose') {
-                    self.mode = 'default';
-                }
-                return false;
-            }, 1000));
+                    return false;
+                }, 1000));
+            }
         },
         plug: function () {
             var floor = Math.floor, ceil = Math.ceil, self = this;
@@ -2379,7 +2401,11 @@ define('ventus/wm/windowmanager', [
     'ventus/wm/modes/fullscreen'
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
-    var WindowManager = function () {
+    var WindowManager = function (wmOptions) {
+        if (typeof wmOptions === 'undefined') {
+            wmOptions = {};
+        }
+        var options = { rightClick: typeof wmOptions.rightClick !== 'undefined' ? wmOptions.rightClick : false };
         var createWindow;
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
@@ -2396,6 +2422,9 @@ define('ventus/wm/windowmanager', [
         }, this);
         for (var mode in this.modes) {
             if (this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+                if (mode === 'expose') {
+                    this.modes[mode].setRightClick(options.rightClick);
+                }
                 this.modes[mode].register.apply(this);
             }
         }

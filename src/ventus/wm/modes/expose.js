@@ -9,25 +9,33 @@ define([
 ], function(_, Promise) {
 	'use strict';
 
+	var rightClick = true;
+
 	var ExposeMode = {
+		// Enables/disables expose on right-click (true=disable / false=enable)
+		setRightClick: function (value) {
+			rightClick = value;
+		},
 		// Launch when plugin is registered
 		register: function() {
 			var self = this;
 
 			console.log('Expose mode registered.');
 
-			this.el.on('contextmenu', _.throttle(function() {
-				// Right click sets expose mode
-				if (self.mode !== 'expose') {
-					if(self.windows.length > 0) {
-						self.mode = 'expose';
+			if (rightClick !== true) {
+				this.el.on('contextmenu', _.throttle(function() {
+					// Right click sets expose mode
+					if (self.mode !== 'expose') {
+						if(self.windows.length > 0) {
+							self.mode = 'expose';
+						}
+					} else if(self.mode === 'expose') {
+						self.mode = 'default';
 					}
-				} else if(self.mode === 'expose') {
-					self.mode = 'default';
-				}
 
-				return false;
-			}, 1000));
+					return false;
+				}, 1000));
+			}
 		},
 
 		// Launch when plugin is enabled

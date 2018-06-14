@@ -52,7 +52,9 @@
 					$browserAlert.show();
 				}
 
-				var wm = new Ventus.WindowManager();
+				var wm = new Ventus.WindowManager({
+				  rightClick: true, // false = enable expose on right click (default = false)
+				});
 
 				var pos = 50;
 				var num = 1;
