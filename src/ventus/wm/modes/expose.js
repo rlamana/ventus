@@ -22,8 +22,8 @@ define([
 
 			console.log('Expose mode registered.');
 
-			if (rightClick !== true) {
-				this.el.on('contextmenu', _.throttle(function() {
+      if (rightClick !== true) {
+        this.el.on('contextmenu', _.throttle(function() {
           // Right click sets expose mode
           if (self.mode !== 'expose') {
             if(self.windows.length > 0) {
@@ -36,7 +36,7 @@ define([
           return false;
         }, 1000));
       }
-		},
+    },
 
 		// Launch when plugin is enabled
 		plug: function() {
