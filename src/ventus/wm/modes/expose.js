@@ -3,7 +3,10 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['underscore'], function(_) {
+define([
+	'underscore',
+	'ventus/core/promise'
+], function(_, Promise) {
 	'use strict';
 
 	var ExposeMode = {
@@ -71,9 +74,16 @@ define(['underscore'], function(_) {
 				win.el.css('transform', 'scale(' + scale + ')');
 				win.el.css('top', top);
 				win.el.css('left', left);
-				win.el.onTransitionEnd(function(){
+
+				var endExposing = function() {
 					win.el.removeClass('exposing');
-				}, this);
+				};
+
+				if (win.animations) {
+					win.el.onTransitionEnd(endExposing, this);
+				} else {
+					endExposing.call(this);
+				}
 			}
 
 			this.overlay = true;
@@ -84,6 +94,15 @@ define(['underscore'], function(_) {
 
 		// Lauch when plugin is disabled
 		unplug: function() {
+			var promise = new Promise();
+			promise.getFuture().then(function() {
+				this.el.removeClass('expose');
+			}.bind(this));
+
+			if (this.windows.length === 0) {
+				promise.done();
+			}
+
 			for(var win, i=this.windows.length; i--;) {
 				win = this.windows[i];
 
@@ -91,14 +110,20 @@ define(['underscore'], function(_) {
 				win.el.css('transform', 'scale(1)');
 				win.el.css('transform-origin', '50% 50%');
 
-				var removeTransform = (function(win){
+				var removeTransform = (function(win, windowIndex){
 					return function () {
-						this.el.removeClass('expose');
+						if (windowIndex === 0) {
+							promise.done();
+						}
 						win.el.css('transform', '');
 					};
-				})(win);
+				})(win, i);
 
-				this.el.onTransitionEnd(removeTransform, this);
+				if (win.animations) {
+					this.el.onTransitionEnd(removeTransform, this);
+				} else {
+					removeTransform.call(this);
+				}
 
 				win.movable = true;
 				win.enabled = true;
