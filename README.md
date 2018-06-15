@@ -12,8 +12,8 @@ This project started as an experiment and even though it was stable enough **it 
 	var wm = new Ventus.WindowManager();
 	
 ### Creating a new window manager and disable expose on right-click
-Set rightClick on true to disable expose on right click.
-Default is false (right click shows expose).
+Set exposeOnRightClick on false to disable expose on right click.
+Default is true (right click shows expose).
 
 	var wm = new Ventus.WindowManager({
 		exposeOnRightClick: true
