@@ -30,6 +30,21 @@ Default is true (right click shows expose).
 	});
 	
 	window.open();
+
+### Creating a new empty window without animations and staying inside of the space
+
+	var window = wm.createWindow({
+		title: 'A new window',
+		x: 50,
+		y: 50,
+		width: 400,
+		height: 250
+
+		animations: false,
+		stayinspace: true,
+	});
+	
+	window.open();
 	
 ### Creating a new window wrapping a DOM Element
 
