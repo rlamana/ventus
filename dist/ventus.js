@@ -1215,10 +1215,10 @@ define('ventus/wm/window', [
         },
         events: {
             window: {
-                click: function (e) {
+                'click': function (e) {
                     this.signals.emit('select', this, e);
                 },
-                mousedown: function (e) {
+                'mousedown': function (e) {
                     this.focus();
                     if (this.widget) {
                         this.slots.move.call(this, e);
@@ -1277,7 +1277,7 @@ define('ventus/wm/window', [
                 }
             },
             space: {
-                mousemove: function (e) {
+                'mousemove': function (e) {
                     var event = convertMoveEvent(e);
                     if (!isTouchEvent(e) && e.which !== 1) {
                         this._moving && this._stopMove();
@@ -1304,7 +1304,7 @@ define('ventus/wm/window', [
                         this.resize(event.pageX + this._resizing.width, event.pageY + this._resizing.height);
                     }
                 },
-                mouseup: function () {
+                'mouseup': function () {
                     this._moving && this._stopMove();
                     this._resizing && this._stopResize();
                 }
