@@ -49,12 +49,13 @@ function($, Emitter, Promise, View, WindowTemplate) {
 			titlebar: true,
 			animations: true,
 			classname: '',
+			stayinspace: false,
 			reload: false,
     };
     
-		if (options.animations) {
-			options.classname + ' animated';
-		}
+    if (options.animations) {
+      options.classname + ' animated';
+    }
 
 		if (typeof options.xhr !== 'undefined') {
 			var xhrOptions = options.xhr;
@@ -120,6 +121,9 @@ function($, Emitter, Promise, View, WindowTemplate) {
 			options.animations:
 			true;
 		this.titlebar = true;
+		this.stayinspace = (typeof options.stayinspace !== 'undefined') ?
+			options.stayinspace:
+			false;
 	};
 
 	Window.prototype = {
@@ -254,10 +258,27 @@ function($, Emitter, Promise, View, WindowTemplate) {
 					}
 
 					if (this._moving) {
-						this.move(
-							event.pageX - this._moving.x,
-							event.pageY - this._moving.y
-						);
+						if (this.stayinspace) {
+							var movingX = Math.max(0, event.pageX - this._moving.x);
+							var minusX = 0;
+							var movingY = Math.max(0, event.pageY - this._moving.y);
+							var minusY = 0;
+							if (movingX + this.el[0].clientWidth > this.space[0].clientWidth) {
+								minusX = movingX + this.el[0].clientWidth - this.space[0].clientWidth;
+							}
+							if (movingY + this.el[0].clientHeight > this.space[0].clientHeight) {
+								minusY = movingY + this.el[0].clientHeight - this.space[0].clientHeight;
+							}
+							this.move(
+								(movingX - minusX),
+								(movingY - minusY)
+							);
+						} else {
+							this.move(
+								event.pageX - this._moving.x,
+								event.pageY - this._moving.y
+							);
+						}
 					}
 
 					if(this._resizing) {

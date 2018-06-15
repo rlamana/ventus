@@ -1115,11 +1115,7 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
                 'name': 'classname',
                 'hash': {},
                 'data': data
-            }) : helper)) + '">\n\t<div class="wm-window-box">\n\t\t<header class="wm-window-title" unselectable="on">\n\t\t\t<div class="wm-button-group">\n\t\t\t\t<button class="wm-refresh ' + escapeExpression((helper = (helper = helpers.showRefresh || (depth0 != null ? depth0.showRefresh : depth0)) != null ? helper : helperMissing, typeof helper === functionType ? helper.call(depth0, {
-                'name': 'showRefresh',
-                'hash': {},
-                'data': data
-            }) : helper)) + '">&nbsp;</button>\n\t\t\t</div>\n\t\t\t<h1 unselectable="on">' + escapeExpression((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helperMissing, typeof helper === functionType ? helper.call(depth0, {
+            }) : helper)) + '">\n\t<div class="wm-window-box">\n\t\t<header class="wm-window-title" unselectable="on">\n\t\t\t<h1 unselectable="on">' + escapeExpression((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helperMissing, typeof helper === functionType ? helper.call(depth0, {
                 'name': 'title',
                 'hash': {},
                 'data': data
@@ -1129,28 +1125,17 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
     });
 });
 define('ventus/wm/window', [
-    '$',
     'ventus/core/emitter',
     'ventus/core/promise',
     'ventus/core/view',
     'ventus/tpl/window'
-], function ($, Emitter, Promise, View, WindowTemplate) {
+], function (Emitter, Promise, View, WindowTemplate) {
     'use strict';
     function isTouchEvent(e) {
         return !!window.TouchEvent && e.originalEvent instanceof window.TouchEvent;
     }
     function convertMoveEvent(e) {
         return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
-    }
-    function setXhrResponse(url, $element, content) {
-        $.ajax({
-            url: url,
-            method: 'GET'
-        }).success(function (response) {
-            content = response;
-        }).always(function () {
-            $element.html(content);
-        });
     }
     var Window = function (options) {
         this.signals = new Emitter();
@@ -1167,19 +1152,14 @@ define('ventus/wm/window', [
             titlebar: true,
             animations: true,
             classname: '',
-            reload: false
+            stayinspace: false
         };
         if (options.animations) {
             options.classname + ' animated';
         }
-        if (typeof options.xhr !== 'undefined') {
-            var xhrOptions = options.xhr;
-            setXhrResponse(xhrOptions.url, xhrOptions.element, xhrOptions.fallbackContent);
-        }
         this.el = View(WindowTemplate({
             title: options.title,
-            classname: options.classname,
-            showRefresh: options.reload ? '' : 'hidden'
+            classname: options.classname
         }));
         this.el.listen(this.events.window, this);
         if (options.opacity) {
@@ -1213,6 +1193,7 @@ define('ventus/wm/window', [
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
         this.titlebar = true;
+        this.stayinspace = typeof options.stayinspace !== 'undefined' ? options.stayinspace : false;
     };
     Window.prototype = {
         _restore: null,
@@ -1254,18 +1235,6 @@ define('ventus/wm/window', [
                 '.wm-window-title dblclick': function () {
                     if (this.enabled && this.resizable) {
                         this.maximize();
-                    }
-                },
-                '.wm-window-title button.wm-refresh click': function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var $windowContent = this.$content.find('.windowContent');
-                    var url = $windowContent.data('url');
-                    var data = '<h1>Oops, could not refresh content with given url: "' + url + '".</h1>';
-                    if ($windowContent.is('div')) {
-                        setXhrResponse(url, $windowContent, data);
-                    } else if ($windowContent.is('iframe')) {
-                        $windowContent.attr('src', url);
                     }
                 },
                 '.wm-window-title button.wm-close click': function (e) {
@@ -1315,7 +1284,21 @@ define('ventus/wm/window', [
                         this._resizing && this._stopResize();
                     }
                     if (this._moving) {
-                        this.move(event.pageX - this._moving.x, event.pageY - this._moving.y);
+                        if (this.stayinspace) {
+                            var movingX = Math.max(0, event.pageX - this._moving.x);
+                            var minusX = 0;
+                            var movingY = Math.max(0, event.pageY - this._moving.y);
+                            var minusY = 0;
+                            if (movingX + this.el[0].clientWidth > this.space[0].clientWidth) {
+                                minusX = movingX + this.el[0].clientWidth - this.space[0].clientWidth;
+                            }
+                            if (movingY + this.el[0].clientHeight > this.space[0].clientHeight) {
+                                minusY = movingY + this.el[0].clientHeight - this.space[0].clientHeight;
+                            }
+                            this.move(movingX - minusX, movingY - minusY);
+                        } else {
+                            this.move(event.pageX - this._moving.x, event.pageY - this._moving.y);
+                        }
                     }
                     if (this._resizing) {
                         this.resize(event.pageX + this._resizing.width, event.pageY + this._resizing.height);
@@ -2439,7 +2422,6 @@ define('ventus/wm/windowmanager', [
         this.createWindow = createWindow.bind(this);
         this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
         this.createWindow.fromElement = createWindow.fromElement.bind(this);
-        this.createWindow.fromUrl = createWindow.fromUrl.bind(this);
     };
     WindowManager.prototype = {
         actions: [
@@ -2546,27 +2528,6 @@ define('ventus/wm/windowmanager', [
     };
     WindowManager.prototype.createWindow.fromElement = function (element, options) {
         options.content = View(element);
-        return this.createWindow(options);
-    };
-    WindowManager.prototype.createWindow.fromUrl = function (url, options) {
-        var fallbackContent = '<h1>Oops, could not get content with given url: "' + url + '".</h1>';
-        var $element = $('<div class="windowContent" data-url="' + url + '">' + fallbackContent + '</div>');
-        if (options.iframe === true) {
-            $element = $('<iframe width="100%" height="100%">' + fallbackContent + '</iframe>');
-            $element.addClass('windowContent');
-            $element.data('url', url);
-            $element.attr('src', url);
-        } else {
-            options.xhr = {
-                url: url,
-                element: $element,
-                fallbackContent: fallbackContent
-            };
-        }
-        if (typeof options.reload === 'undefined') {
-            options.reload = true;
-        }
-        options.content = View($element);
         return this.createWindow(options);
     };
     return WindowManager;
