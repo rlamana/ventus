@@ -4,12 +4,13 @@
  * https://github.com/rlamana
  */
 define([
+	'$',
 	'ventus/core/emitter',
 	'ventus/core/promise',
 	'ventus/core/view',
 	'ventus/tpl/window'
 ],
-function(Emitter, Promise, View, WindowTemplate) {
+function($, Emitter, Promise, View, WindowTemplate) {
 	'use strict';
 
 	function isTouchEvent(e) {
@@ -18,6 +19,17 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 	function convertMoveEvent(e) {
 		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
+	}
+
+	function setXhrResponse(url, $element, content) {
+		$.ajax({
+			url: url,
+			method: 'GET'
+		}).success(function (response) {
+			content = response;
+		}).always(function () {
+			$element.html(content);
+		});
 	}
 
 	var Window = function (options) {
@@ -35,18 +47,25 @@ function(Emitter, Promise, View, WindowTemplate) {
 			resizable: true,
 			widget: false,
 			titlebar: true,
-      animations: true,
-      classname: ''
+			animations: true,
+			classname: '',
+			reload: false,
     };
     
-    if (options.animations) {
-      options.classname + ' animated';
-    }
+		if (options.animations) {
+			options.classname + ' animated';
+		}
+
+		if (typeof options.xhr !== 'undefined') {
+			var xhrOptions = options.xhr;
+			setXhrResponse(xhrOptions.url, xhrOptions.element, xhrOptions.fallbackContent);
+		}
 
 		// View
 		this.el = View(WindowTemplate({
 			title: options.title,
-			classname: options.classname
+			classname: options.classname,
+			showRefresh: options.reload ? '' : 'hidden'
 		}));
 		this.el.listen(this.events.window, this);
 
@@ -154,6 +173,21 @@ function(Emitter, Promise, View, WindowTemplate) {
 				'.wm-window-title dblclick': function() {
 					if(this.enabled && this.resizable) {
 						this.maximize();
+					}
+				},
+
+				'.wm-window-title button.wm-refresh click': function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+
+					var $windowContent = this.$content.find('.windowContent');
+					var url = $windowContent.data('url');
+					var data = '<h1>Oops, could not refresh content with given url: "'+ url +'".</h1>';
+
+					if ($windowContent.is('div')) {
+						setXhrResponse(url, $windowContent, data);
+					} else if ($windowContent.is('iframe')) {
+						$windowContent.attr('src', url);
 					}
 				},
 

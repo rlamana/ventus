@@ -42,6 +42,25 @@ This project started as an experiment and even though it was stable enough **it 
 		x: 0,
 		y: 0
 	});
+	
+##### Using a URL
+	wm.createWindow.fromUrl('example.com', {
+		title: 'Iframe Window from URL',
+		width: 400,
+		height: 500,
+		x: 600,
+		y: 200,
+	});
+	
+##### Using a URL inside an iframe
+	wm.createWindow.fromUrl('example.com', {
+		title: 'Iframe Window from URL',
+		width: 400,
+		height: 500,
+		x: 600,
+		y: 200,
+		iframe: true
+	});
 
 ### Listening to events
 
