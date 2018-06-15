@@ -2219,20 +2219,26 @@ define('ventus/wm/modes/expose', [
     'ventus/core/promise'
 ], function (_, Promise) {
     'use strict';
+    var exposeOnRightClick = true;
     var ExposeMode = {
+        setExposeOnRightClick: function (value) {
+            exposeOnRightClick = value;
+        },
         register: function () {
             var self = this;
             console.log('Expose mode registered.');
-            this.el.on('contextmenu', _.throttle(function () {
-                if (self.mode !== 'expose') {
-                    if (self.windows.length > 0) {
-                        self.mode = 'expose';
+            if (exposeOnRightClick === true) {
+                this.el.on('contextmenu', _.throttle(function () {
+                    if (self.mode !== 'expose') {
+                        if (self.windows.length > 0) {
+                            self.mode = 'expose';
+                        }
+                    } else {
+                        self.mode = 'default';
                     }
-                } else if (self.mode === 'expose') {
-                    self.mode = 'default';
-                }
-                return false;
-            }, 1000));
+                    return false;
+                }, 1000));
+            }
         },
         plug: function () {
             var floor = Math.floor, ceil = Math.ceil, self = this;
@@ -2379,8 +2385,12 @@ define('ventus/wm/windowmanager', [
     'ventus/wm/modes/fullscreen'
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
-    var WindowManager = function () {
+    var WindowManager = function (wmOptions) {
+        if (typeof wmOptions === 'undefined') {
+            wmOptions = {};
+        }
         var createWindow;
+        var options = { exposeOnRightClick: typeof wmOptions.exposeOnRightClick !== 'undefined' ? wmOptions.exposeOnRightClick : true };
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
         this.$overlay = this.el.find('.wm-overlay');
@@ -2396,6 +2406,9 @@ define('ventus/wm/windowmanager', [
         }, this);
         for (var mode in this.modes) {
             if (this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+                if (mode === 'expose') {
+                    this.modes[mode].setExposeOnRightClick(options.exposeOnRightClick);
+                }
                 this.modes[mode].register.apply(this);
             }
         }
