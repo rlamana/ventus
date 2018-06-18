@@ -65,6 +65,7 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		// Bind this to sub-functions of createWindow function
 		this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
 		this.createWindow.fromElement = createWindow.fromElement.bind(this);
+    this.createWindow.fromUrl = createWindow.fromUrl.bind(this);
 	};
 
 	WindowManager.prototype = {
@@ -221,6 +222,31 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 
 	WindowManager.prototype.createWindow.fromElement = function(element, options) {
 		options.content = View(element);
+		return this.createWindow(options);
+	};
+
+	WindowManager.prototype.createWindow.fromUrl = function(url, options) {
+		var fallbackContent = '<h1>Oops, could not get content with given url: "'+ url +'".</h1>';
+		var $element = $('<div class="windowContent" data-url="' + url + '">' + fallbackContent + '</div>');
+
+			if (options.iframe === true) {
+				$element = $('<iframe width="100%" height="100%">'+ fallbackContent +'</iframe>');
+				$element.addClass('windowContent');
+				$element.data('url', url);
+				$element.attr('src', url);
+			} else {
+				options.xhr = {
+						url: url,
+						element: $element,
+						fallbackContent: fallbackContent,
+					};
+			}
+
+			if (typeof options.reload === 'undefined') {
+				options.reload = true;
+			}
+
+			options.content = View($element);
 		return this.createWindow(options);
 	};
 
