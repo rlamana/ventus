@@ -52,7 +52,9 @@
 					$browserAlert.show();
 				}
 
-				var wm = new Ventus.WindowManager();
+				var wm = new Ventus.WindowManager({
+					showExposeOn: 'a|enter|space|rightclick'
+				});
 
 				var pos = 50;
 				var num = 1;

@@ -2231,30 +2231,63 @@ define('underscore', [], function () {
     return;
 });
 define('ventus/wm/modes/expose', [
+    '$',
     'underscore',
     'ventus/core/promise'
-], function (_, Promise) {
+], function ($, _, Promise) {
     'use strict';
-    var exposeOnRightClick = true;
     var ExposeMode = {
-        setExposeOnRightClick: function (value) {
-            exposeOnRightClick = value;
-        },
         register: function () {
             var self = this;
-            console.log('Expose mode registered.');
-            if (exposeOnRightClick === true) {
-                this.el.on('contextmenu', _.throttle(function () {
-                    if (self.mode !== 'expose') {
-                        if (self.windows.length > 0) {
-                            self.mode = 'expose';
-                        }
-                    } else {
-                        self.mode = 'default';
+            var listener;
+            var listeners = this.exposeListeners;
+            var setMode = function () {
+                if (self.mode !== 'expose') {
+                    if (self.windows.length > 0) {
+                        self.mode = 'expose';
                     }
-                    return false;
-                }, 1000));
+                } else {
+                    self.mode = 'default';
+                }
+            };
+            var keypressCallback = function (keyCode) {
+                return {
+                    selector: $(document),
+                    on: 'keypress',
+                    callback: function (event) {
+                        if (event.keyCode === keyCode) {
+                            setMode();
+                        }
+                    }
+                };
+            };
+            var validListeners = {
+                a: keypressCallback(97),
+                enter: keypressCallback(13),
+                space: keypressCallback(32),
+                rightclick: {
+                    selector: this.el,
+                    on: 'contextmenu',
+                    callback: function () {
+                        setMode();
+                        return false;
+                    }
+                }
+            };
+            if (typeof listeners !== 'string') {
+                throw new Error('Error, showExposeOn/exposeListeners must be a string.');
             }
+            listeners = listeners.split('|');
+            if (listeners.indexOf('none') < 0) {
+                listeners.forEach(function (type) {
+                    if (type in validListeners === false) {
+                        throw new Error('Error, exposeListener type is not valid. Valid types are "a,enter,space,rightclick,none".');
+                    }
+                    listener = validListeners[type];
+                    listener.selector.on(listener.on, _.throttle(listener.callback, 1000));
+                });
+            }
+            console.log('Expose mode registered.');
         },
         plug: function () {
             var floor = Math.floor, ceil = Math.ceil, self = this;
@@ -2402,11 +2435,11 @@ define('ventus/wm/windowmanager', [
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
     var WindowManager = function (wmOptions) {
+        var createWindow;
         if (typeof wmOptions === 'undefined') {
             wmOptions = {};
         }
-        var createWindow;
-        var options = { exposeOnRightClick: typeof wmOptions.exposeOnRightClick !== 'undefined' ? wmOptions.exposeOnRightClick : true };
+        this.exposeListeners = wmOptions.showExposeOn || 'rightclick';
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
         this.$overlay = this.el.find('.wm-overlay');
@@ -2422,9 +2455,6 @@ define('ventus/wm/windowmanager', [
         }, this);
         for (var mode in this.modes) {
             if (this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
-                if (mode === 'expose') {
-                    this.modes[mode].setExposeOnRightClick(options.exposeOnRightClick);
-                }
                 this.modes[mode].register.apply(this);
             }
         }

@@ -4,39 +4,72 @@
  * https://github.com/rlamana
  */
 define([
+	'$',
 	'underscore',
 	'ventus/core/promise'
-], function(_, Promise) {
+], function($, _, Promise) {
 	'use strict';
 
-	var exposeOnRightClick = true;
-
 	var ExposeMode = {
-		// Enable/disable expose on right-click (true=disable / false=enable)
-		setExposeOnRightClick: function (value) {
-			exposeOnRightClick = value;
-		},
-
 		// Launch when plugin is registered
 		register: function() {
 			var self = this;
+			var listener;
+			var listeners = this.exposeListeners;
 
-			console.log('Expose mode registered.');
+			var setMode = function (){
+				if (self.mode !== 'expose') {
+					if (self.windows.length > 0) {
+						self.mode = 'expose';
+					}
+				} else {
+					self.mode = 'default';
+				}
+			};
 
-			if (exposeOnRightClick === true) {
-				this.el.on('contextmenu', _.throttle(function() {
-					// Right click sets expose mode
-					if (self.mode !== 'expose') {
-						if (self.windows.length > 0) {
-							self.mode = 'expose';
+			var keypressCallback = function (keyCode) {
+				return {
+					selector: $(document),
+					on: 'keypress',
+					callback: function (event) {
+						if (event.keyCode === keyCode) {
+							setMode();
 						}
-					} else {
-						self.mode = 'default';
+					}
+				};
+			};
+
+			var validListeners = {
+				a: keypressCallback(97),
+				enter: keypressCallback(13),
+				space: keypressCallback(32),
+				rightclick: {
+					selector: this.el,
+					on: 'contextmenu',
+					callback: function () {
+						setMode();
+						return false;
+					}
+				}
+			};
+
+			if (typeof listeners !== 'string') {
+				throw new Error('Error, showExposeOn/exposeListeners must be a string.');
+			}
+
+			listeners = listeners.split('|');
+			if (listeners.indexOf('none') < 0) {
+				listeners.forEach(function (type) {
+					if (type in validListeners === false) {
+						throw new Error('Error, exposeListener type is not valid. Valid types are "a,enter,space,rightclick,none".');
 					}
 
-					return false;
-				}, 1000));
+					listener = validListeners[type];
+					listener.selector.on(listener.on, _.throttle(listener.callback, 1000));
+				});
 			}
+
+			console.log('Expose mode registered.');
 		},
 
 		// Launch when plugin is enabled

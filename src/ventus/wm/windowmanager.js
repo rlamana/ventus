@@ -15,14 +15,13 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
 	var WindowManager = function (wmOptions) {
+		var createWindow;
+
 		if (typeof wmOptions === 'undefined') {
 			wmOptions = {};
 		}
-		var createWindow;
-		var options = {
-			exposeOnRightClick: typeof wmOptions.exposeOnRightClick !== 'undefined' ? wmOptions.exposeOnRightClick : true,
-		};
 
+		this.exposeListeners = wmOptions.showExposeOn || 'rightclick';
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
@@ -43,9 +42,6 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 		// Launch register of every mode plugged-in
 		for(var mode in this.modes) {
 			if(this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
-				if (mode === 'expose') {
-					this.modes[mode].setExposeOnRightClick(options.exposeOnRightClick);
-				}
 				this.modes[mode].register.apply(this);
 			}
 		}
