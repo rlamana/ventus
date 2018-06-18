@@ -69,6 +69,23 @@
 			y: 380
 		});
 
+		var iframeWin = wm.createWindow.fromUrl('from-url/refresh-content.html', {
+			title: 'Iframe Window from URL',
+			width: 400,
+			height: 500,
+			x: 600,
+			y: 200,
+			iframe: true,
+		});
+
+		var divUrlWin = wm.createWindow.fromUrl('from-url/refresh-content.html', {
+			title: 'Content inside DIV from URL',
+			width: 400,
+			height: 500,
+			x: 520,
+			y: 260,
+		});
+
 		// Hide loader when loaded
 		var loader = $("#loading-screen");
 
@@ -87,6 +104,8 @@
 				openWithDelay(todoWin, 200);
 				openWithDelay(aboutWin, 400);
 				openWithDelay(playerWin, 600);
+				openWithDelay(iframeWin, 800);
+				openWithDelay(divUrlWin, 1000);
 			});
 		}
 
