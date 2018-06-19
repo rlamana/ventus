@@ -1337,8 +1337,10 @@ define('ventus/wm/window', [
         set maximized(value) {
             if (value) {
                 this._restoreMaximized = this.stamp();
+                this.el.addClass('maximized');
                 this.signals.emit('maximize', this, this._restoreMaximized);
             } else {
+                this.el.removeClass('maximized');
                 this.signals.emit('restore', this, this._restoreMaximized);
             }
             this._maximized = value;
