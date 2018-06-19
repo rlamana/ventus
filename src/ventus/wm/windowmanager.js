@@ -227,26 +227,32 @@ function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 
 	WindowManager.prototype.createWindow.fromUrl = function(url, options) {
 		var fallbackContent = '<h1>Oops, could not get content with given url: "'+ url +'".</h1>';
-		var $element = $('<div class="windowContent" data-url="' + url + '">' + fallbackContent + '</div>');
+		var element = document.createElement('div');
+		element.setAttribute('class', 'windowContent');
+		element.setAttribute('data-url', url);
+		element.innerHTML = fallbackContent;
 
-			if (options.iframe === true) {
-				$element = $('<iframe width="100%" height="100%">'+ fallbackContent +'</iframe>');
-				$element.addClass('windowContent');
-				$element.data('url', url);
-				$element.attr('src', url);
-			} else {
-				options.xhr = {
-						url: url,
-						element: $element,
-						fallbackContent: fallbackContent,
-					};
-			}
+		if (options.iframe === true) {
+			element = document.createElement('iframe');
+				element.setAttribute('class', 'windowContent');
+				element.setAttribute('width', '100%');
+				element.setAttribute('height', '100%');
+				element.setAttribute('data-url', url);
+				element.setAttribute('src', url);
+				element.innerHTML = fallbackContent;
+		} else {
+			options.xhr = {
+					url: url,
+					element: element,
+					fallbackContent: fallbackContent,
+				};
+		}
 
-			if (typeof options.reload === 'undefined') {
-				options.reload = true;
-			}
+		if (typeof options.reload === 'undefined') {
+			options.reload = true;
+		}
 
-			options.content = View($element);
+		options.content = View(element);
 		return this.createWindow(options);
 	};
 

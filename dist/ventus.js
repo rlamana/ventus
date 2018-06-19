@@ -1129,12 +1129,11 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
     });
 });
 define('ventus/wm/window', [
-    '$',
     'ventus/core/emitter',
     'ventus/core/promise',
     'ventus/core/view',
     'ventus/tpl/window'
-], function ($, Emitter, Promise, View, WindowTemplate) {
+], function (Emitter, Promise, View, WindowTemplate) {
     'use strict';
     function isTouchEvent(e) {
         return !!window.TouchEvent && e.originalEvent instanceof window.TouchEvent;
@@ -1142,14 +1141,39 @@ define('ventus/wm/window', [
     function convertMoveEvent(e) {
         return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
     }
-    function setXhrResponse(url, $element, content) {
-        $.ajax({
-            url: url,
-            method: 'GET'
-        }).success(function (response) {
-            content = response;
-        }).always(function () {
-            $element.html(content);
+    function checkLoadStatus(response) {
+        var promise = new Promise();
+        if (response.status >= 200 && response.status < 300) {
+            promise.done(response);
+        } else {
+            promise.fail(new Error(response.statusText));
+        }
+        return promise.getFuture();
+    }
+    function applyTextToNode(node, text) {
+        node.innerHTML = text;
+        var scripts = node.getElementsByTagName('script');
+        scripts = Array.prototype.slice.call(scripts, 0);
+        scripts.forEach(function (el) {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            if (el.src) {
+                s.src = el.src;
+            } else {
+                s.textContent = el.innerText;
+            }
+            el.parentNode.insertBefore(s, el);
+            el.parentNode.removeChild(el);
+        });
+    }
+    function setXhrResponse(url, node, fallbackContent) {
+        fetch(url, { credentials: 'same-origin' }).then(checkLoadStatus).then(function (response) {
+            return response.text();
+        }).then(function (data) {
+            applyTextToNode(node, data);
+        }).catch(function (error) {
+            node.innerHTML = fallbackContent;
+            console.log('Request failed', error);
         });
     }
     var Window = function (options) {
@@ -1262,13 +1286,13 @@ define('ventus/wm/window', [
                 '.wm-window-title button.wm-refresh click': function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var $windowContent = this.$content.find('.windowContent');
-                    var url = $windowContent.data('url');
+                    var windowContent = this.el[0].querySelector('.windowContent');
+                    var url = windowContent.getAttribute('data-url');
                     var data = '<h1>Oops, could not refresh content with given url: "' + url + '".</h1>';
-                    if ($windowContent.is('div')) {
-                        setXhrResponse(url, $windowContent, data);
-                    } else if ($windowContent.is('iframe')) {
-                        $windowContent.attr('src', url);
+                    if (windowContent.tagName === 'DIV') {
+                        setXhrResponse(url, windowContent, data);
+                    } else if (windowContent.tagName === 'IFRAME') {
+                        windowContent.setAttribute('src', url);
                     }
                 },
                 '.wm-window-title button.wm-close click': function (e) {
@@ -2580,23 +2604,29 @@ define('ventus/wm/windowmanager', [
     };
     WindowManager.prototype.createWindow.fromUrl = function (url, options) {
         var fallbackContent = '<h1>Oops, could not get content with given url: "' + url + '".</h1>';
-        var $element = $('<div class="windowContent" data-url="' + url + '">' + fallbackContent + '</div>');
+        var element = document.createElement('div');
+        element.setAttribute('class', 'windowContent');
+        element.setAttribute('data-url', url);
+        element.innerHTML = fallbackContent;
         if (options.iframe === true) {
-            $element = $('<iframe width="100%" height="100%">' + fallbackContent + '</iframe>');
-            $element.addClass('windowContent');
-            $element.data('url', url);
-            $element.attr('src', url);
+            element = document.createElement('iframe');
+            element.setAttribute('class', 'windowContent');
+            element.setAttribute('width', '100%');
+            element.setAttribute('height', '100%');
+            element.setAttribute('data-url', url);
+            element.setAttribute('src', url);
+            element.innerHTML = fallbackContent;
         } else {
             options.xhr = {
                 url: url,
-                element: $element,
+                element: element,
                 fallbackContent: fallbackContent
             };
         }
         if (typeof options.reload === 'undefined') {
             options.reload = true;
         }
-        options.content = View($element);
+        options.content = View(element);
         return this.createWindow(options);
     };
     return WindowManager;
