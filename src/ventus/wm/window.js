@@ -225,6 +225,15 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 					if (this._moving) {
 						if (this.stayinspace) {
+							if(
+							    this.el[0].clientWidth > this.space[0].clientWidth ||
+							    this.el[0].clientHeight > this.space[0].clientHeight
+							) {
+								this.resize(
+									Math.min(this.el[0].clientWidth,this.space[0].clientWidth),
+									Math.min(this.el[0].clientHeight,this.space[0].clientHeight)
+								);
+							}
 							var movingX = Math.max(0, event.pageX - this._moving.x);
 							var minusX = 0;
 							var movingY = Math.max(0, event.pageY - this._moving.y);
