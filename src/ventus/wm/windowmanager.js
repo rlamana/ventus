@@ -4,21 +4,21 @@
  * https://github.com/rlamana
  */
 define([
-	'$',
 	'ventus/wm/window',
 	'ventus/core/view',
 	'ventus/wm/modes/default',
 	'ventus/wm/modes/expose',
-	'ventus/wm/modes/fullscreen'
+  'ventus/wm/modes/fullscreen',
+  'ventus/less/windowmanager.less'
 ],
-function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
+function(Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
 	var WindowManager = function () {
 		var createWindow;
 
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$(document.body).prepend(this.el);
+    document.body.insertBefore(this.el[0], document.body.firstChild)
 
 		this.$overlay = this.el.find('.wm-overlay');
 		this.$overlay.css('z-index', this._baseZ-1);

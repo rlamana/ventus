@@ -3,8 +3,10 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['$'], function($) {
-	'use strict';
+define(['jquery'], function($) {
+  'use strict';
+  
+  var $ = window.$;
 
 	var splitter = /^(?:(.*)\s)?(\w+)$/;
 

@@ -4,9 +4,10 @@
  * https://github.com/rlamana
  */
 define([
-	'underscore',
-	'ventus/core/promise'
-], function(_, Promise) {
+	'lodash.throttle',
+  'ventus/core/promise',
+  'ventus/less/expose.less'
+], function(throttle, Promise) {
 	'use strict';
 
 	var ExposeMode = {
@@ -16,7 +17,7 @@ define([
 
 			console.log('Expose mode registered.');
 
-			this.el.on('contextmenu', _.throttle(function() {
+			this.el.on('contextmenu', throttle(function() {
 				// Right click sets expose mode
 				if (self.mode !== 'expose') {
 					if(self.windows.length > 0) {

@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "airbnb-base", 
+    "eslint:recommended"
+  ], 
+  "rules": {
+    "max-len": ["error", 100],
+    "indent": ["error", 2, {"SwitchCase": 1}],
+    "import/prefer-default-export": 0
+  },
+  "settings": {
+    "import/resolver": "webpack"
+  },
+  "plugins": [
+    "import"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}
