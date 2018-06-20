@@ -2257,7 +2257,7 @@ define('ventus/wm/modes/expose', [
                     self.mode = 'default';
                 }
             };
-            var keypressCallback = function (keyCode) {
+            var configKeyListener = function (keyCode) {
                 return {
                     selector: $(document),
                     on: 'keypress',
@@ -2269,9 +2269,9 @@ define('ventus/wm/modes/expose', [
                 };
             };
             var validListeners = {
-                a: keypressCallback(97),
-                enter: keypressCallback(13),
-                space: keypressCallback(32),
+                a: configKeyListener(97),
+                enter: configKeyListener(13),
+                space: configKeyListener(32),
                 rightclick: {
                     selector: this.el,
                     on: 'contextmenu',
@@ -2441,12 +2441,12 @@ define('ventus/wm/windowmanager', [
     'ventus/wm/modes/fullscreen'
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
-    var WindowManager = function (wmOptions) {
+    var WindowManager = function (options) {
         var createWindow;
-        if (typeof wmOptions === 'undefined') {
-            wmOptions = {};
+        if (typeof options === 'undefined') {
+            options = {};
         }
-        this.exposeListeners = wmOptions.showExposeOn || 'rightclick';
+        this.exposeListeners = options.showExposeOn || 'rightclick';
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
         this.$overlay = this.el.find('.wm-overlay');

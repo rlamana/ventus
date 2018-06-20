@@ -27,7 +27,7 @@ define([
 				}
 			};
 
-			var keypressCallback = function (keyCode) {
+			var configKeyListener = function (keyCode) {
 				return {
 					selector: $(document),
 					on: 'keypress',
@@ -40,9 +40,9 @@ define([
 			};
 
 			var validListeners = {
-				a: keypressCallback(97),
-				enter: keypressCallback(13),
-				space: keypressCallback(32),
+				a: configKeyListener(97),
+				enter: configKeyListener(13),
+				space: configKeyListener(32),
 				rightclick: {
 					selector: this.el,
 					on: 'contextmenu',

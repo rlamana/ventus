@@ -14,14 +14,14 @@ define([
 function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
-	var WindowManager = function (wmOptions) {
+	var WindowManager = function (options) {
 		var createWindow;
 
-		if (typeof wmOptions === 'undefined') {
-			wmOptions = {};
+		if (typeof options === 'undefined') {
+			options = {};
 		}
 
-		this.exposeListeners = wmOptions.showExposeOn || 'rightclick';
+		this.exposeListeners = options.showExposeOn || 'rightclick';
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
 		$(document.body).prepend(this.el);
 
