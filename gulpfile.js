@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     declare = require('gulp-declare'),
     defineModule = require('gulp-define-module'),
     del = require('del'),
-    mochaPhantomJS = require('gulp-mocha-phantomjs');
+    mochaPhantomJS = require('gulp-mocha-phantomjs'),
+    frep = require('gulp-frep');
 
 var paths = {
     build: 'dist',
@@ -20,6 +21,15 @@ var paths = {
 
 var package = require('./package.json'),
     jshintConfig = require('./jshint.json');
+
+// On Windows, Handlebar templates replace \n characters with \r\n characters
+// This pattern undos this, ensuring only \n characters are used in template
+var pattern = [
+    {
+        pattern: /\\r\\n/g,
+        replacement: '\\n'
+    }
+]
 
 gulp.task('compile:dev', function() {
     return gulp.src([
@@ -69,6 +79,7 @@ gulp.task('less', function () {
 gulp.task('templates', function(){
   gulp.src(paths.source + '/**/*.hbs')
     .pipe(handlebars())
+    .pipe(frep(pattern))
     .pipe(defineModule('amd'))
     .pipe(gulp.dest(paths.source));
 });

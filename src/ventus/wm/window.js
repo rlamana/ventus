@@ -152,7 +152,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 				},
 
 				'.wm-window-title mousedown': function(e) {
-					this.slots.move.call(this, e);
+					if(!this.maximized) {
+						this.slots.move.call(this, e);
+					}
 				},
 
 				'.wm-window-title dblclick': function() {
@@ -304,9 +306,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 		set maximized(value) {
 			if(value) {
 				this._restoreMaximized = this.stamp();
+				this.el.addClass('maximized');
 				this.signals.emit('maximize', this, this._restoreMaximized);
 			}
 			else {
+				this.el.removeClass('maximized');
 				this.signals.emit('restore', this, this._restoreMaximized);
 			}
 			this._maximized = value;
