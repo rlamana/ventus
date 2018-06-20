@@ -3,7 +3,9 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(function() {
+define([
+  'ventus/less/fullscreen.less'
+], function() {
 	'use strict';
 
 	var FullscreenMode = {

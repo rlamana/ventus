@@ -6,11 +6,35 @@
 define([
 	'ventus/core/emitter',
 	'ventus/core/promise',
-	'ventus/core/view',
-	'ventus/tpl/window'
+  'ventus/core/view',
+  'ventus/less/window.less'
 ],
-function(Emitter, Promise, View, WindowTemplate) {
-	'use strict';
+function(Emitter, Promise, View) {
+  'use strict';
+  
+  function render(title, className) {
+    const markup = `<div class="wm-window ${className}">
+      <div class="wm-window-box">
+        <header class="wm-window-title" unselectable="on">
+          <h1 unselectable="on">${title}</h1>
+          <div class="wm-button-group">
+            <button class="wm-minimize">&nbsp;</button>
+            <button class="wm-maximize">&nbsp;</button>
+            <button class="wm-close">&nbsp;</button>
+          </div>
+        </header>
+
+        <section class="wm-content"></section>
+
+        <button class="wm-resize">&nbsp;</button>
+      </div>
+      <div class="wm-window-overlay"></div>
+    </div>`;
+    
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = markup;
+    return wrapper.firstChild;
+  }
 
 	function isTouchEvent(e) {
 		return !!window.TouchEvent && (e.originalEvent instanceof window.TouchEvent);
@@ -45,10 +69,7 @@ function(Emitter, Promise, View, WindowTemplate) {
     }
 
 		// View
-		this.el = View(WindowTemplate({
-			title: options.title,
-			classname: options.classname
-		}));
+		this.el = View(render(options.title, options.classname));
 		this.el.listen(this.events.window, this);
 
 		if(options.opacity) {

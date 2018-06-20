@@ -76,14 +76,14 @@
 					.open();
 				});
 
-				$('.expose-button').click(_.throttle(function(){
+				$('.expose-button').click(function() {
 					if(wm.mode === 'expose')
 						wm.mode = 'default';
 					else
 						wm.mode = 'expose';
 
 					return false;
-				}, 1000));
+				});
 			});
 		</script>
 
