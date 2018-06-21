@@ -1129,28 +1129,17 @@ define('ventus/tpl/window', ['handlebars'], function (Handlebars) {
     });
 });
 define('ventus/wm/window', [
-    '$',
     'ventus/core/emitter',
     'ventus/core/promise',
     'ventus/core/view',
     'ventus/tpl/window'
-], function ($, Emitter, Promise, View, WindowTemplate) {
+], function (Emitter, Promise, View, WindowTemplate) {
     'use strict';
     function isTouchEvent(e) {
         return !!window.TouchEvent && e.originalEvent instanceof window.TouchEvent;
     }
     function convertMoveEvent(e) {
         return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
-    }
-    function setXhrResponse(url, $element, content) {
-        $.ajax({
-            url: url,
-            method: 'GET'
-        }).success(function (response) {
-            content = response;
-        }).always(function () {
-            $element.html(content);
-        });
     }
     var Window = function (options) {
         this.signals = new Emitter();
@@ -1167,20 +1156,15 @@ define('ventus/wm/window', [
             titlebar: true,
             animations: true,
             classname: '',
-            stayinspace: false,
-            reload: false
+            stayinspace: false
         };
         if (options.animations) {
-            options.classname + ' animated';
-        }
-        if (typeof options.xhr !== 'undefined') {
-            var xhrOptions = options.xhr;
-            setXhrResponse(xhrOptions.url, xhrOptions.element, xhrOptions.fallbackContent);
+            options.classname += ' animated';
         }
         this.el = View(WindowTemplate({
             title: options.title,
             classname: options.classname,
-            showRefresh: options.reload ? '' : 'hidden'
+            showRefresh: options.events && typeof options.events.reload === 'function' ? '' : 'hidden'
         }));
         this.el.listen(this.events.window, this);
         if (options.opacity) {
@@ -1263,14 +1247,7 @@ define('ventus/wm/window', [
                 '.wm-window-title button.wm-refresh click': function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    var $windowContent = this.$content.find('.windowContent');
-                    var url = $windowContent.data('url');
-                    var data = '<h1>Oops, could not refresh content with given url: "' + url + '".</h1>';
-                    if ($windowContent.is('div')) {
-                        setXhrResponse(url, $windowContent, data);
-                    } else if ($windowContent.is('iframe')) {
-                        $windowContent.attr('src', url);
-                    }
+                    this.signals.emit('reload', this, e);
                 },
                 '.wm-window-title button.wm-close click': function (e) {
                     e.stopPropagation();
@@ -2462,7 +2439,6 @@ define('ventus/wm/windowmanager', [
         this.createWindow = createWindow.bind(this);
         this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
         this.createWindow.fromElement = createWindow.fromElement.bind(this);
-        this.createWindow.fromUrl = createWindow.fromUrl.bind(this);
     };
     WindowManager.prototype = {
         actions: [
@@ -2569,27 +2545,6 @@ define('ventus/wm/windowmanager', [
     };
     WindowManager.prototype.createWindow.fromElement = function (element, options) {
         options.content = View(element);
-        return this.createWindow(options);
-    };
-    WindowManager.prototype.createWindow.fromUrl = function (url, options) {
-        var fallbackContent = '<h1>Oops, could not get content with given url: "' + url + '".</h1>';
-        var $element = $('<div class="windowContent" data-url="' + url + '">' + fallbackContent + '</div>');
-        if (options.iframe === true) {
-            $element = $('<iframe width="100%" height="100%">' + fallbackContent + '</iframe>');
-            $element.addClass('windowContent');
-            $element.data('url', url);
-            $element.attr('src', url);
-        } else {
-            options.xhr = {
-                url: url,
-                element: $element,
-                fallbackContent: fallbackContent
-            };
-        }
-        if (typeof options.reload === 'undefined') {
-            options.reload = true;
-        }
-        options.content = View($element);
         return this.createWindow(options);
     };
     return WindowManager;
