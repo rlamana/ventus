@@ -164,11 +164,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 					}
 				},
 
-        '.wm-window-title button.wm-refresh click': function (e) {
-          e.stopPropagation();
-          e.preventDefault();
-          this.signals.emit('reload', this, e);
-        },
+				'.wm-window-title button.wm-refresh click': function (e) {
+					e.stopPropagation();
+					e.preventDefault();
+					this.signals.emit('reload', this, e);
+				},
 
 				'.wm-window-title button.wm-close click': function(e) {
 					e.stopPropagation();
