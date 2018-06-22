@@ -7,6 +7,8 @@ A window manager written in Javascript, HTML5 and CSS3.
 
 This project started as an experiment and even though it was stable enough **it was never meant to be mantained over time**. However, feel free to fork and send PRs!
 
+Version 0.3.0 migrates code to webpack and ES6 and is available in branch: https://github.com/rlamana/Ventus/tree/v0.3.0.
+
 ### Creating a new window manager
 
 	var wm = new Ventus.WindowManager();
