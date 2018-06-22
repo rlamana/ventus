@@ -3,50 +3,36 @@
  * Copyright © 2012 Ramón Lamana
  * https://github.com/rlamana
  */
-define(['jquery'], function($) {
+define(function() {
   'use strict';
-  
-  var $ = window.$;
 
-	var splitter = /^(?:(.*)\s)?(\w+)$/;
+  // Wrapper of the DOM element to keep compatibility with the old code.
+  const View = function(elementOrMarkup) {
+    if (typeof elementOrMarkup === 'string') {
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = elementOrMarkup;
+      this.el = wrapper.firstChild;
+    } else {
+      this.el = elementOrMarkup;
+    }
+  };
 
-	var transitionEventNames = 'transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd';
-	var animationEventNames = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
+  View.prototype = {
+    listen(map, scope) {
+      const splitter = /^(?:(.*)\s)?(\w+)$/;
+      let handler, data, selector, event;
+      for(let key in map) {
+        if(!map.hasOwnProperty(key)) {
+          continue;
+        }
 
-	// CSS3 transform, transition, animation hooks, prefixless
-	var hooks = ['transform', 'transition', 'animation', 'transform-origin'];
-	for(var i = hooks.length;i--;) {
-		(function(property) {
-			$.cssHooks[property] = {
-				get: function() {
-					return null;
-				},
-				set: function(elem, value) {
-					elem.style['-webkit-'+property] = value;
-					elem.style['-moz-'+property] = value;
-					elem.style['-ms-'+property] = value;
-					elem.style['-o-'+property] = value;
-					elem.style[property] = value;
-				}
-			};
-		})(hooks[i]);
-	}
+        handler = map[key];
 
-	$.fn.extend({
-		listen: function (map, scope) {
-			var handler, data, selector, event;
-			for(var key in map) {
-				if(!map.hasOwnProperty(key)) {
-					continue;
-				}
+        data = key.match(splitter);
+        selector = data[1];
+        event = data[2];
 
-				handler = map[key];
-
-				data = key.match(splitter);
-				selector = data[1];
-				event = data[2];
-
-				if (event === 'mousedown') {
+        if (event === 'mousedown') {
 					event += ' touchstart';
 				}
 				else if (event === 'mousemove') {
@@ -59,48 +45,103 @@ define(['jquery'], function($) {
 					event += ' touchend';
 				}
 
-				if (typeof handler === 'string') {
-					handler = scope[handler];
-				}
+        if (typeof handler === 'string') {
+          handler = scope[handler];
+        }
 
-				if (!handler) {
-					throw new Error('Handler not found');
-				}
+        if (!handler) {
+          throw new Error('Handler not found');
+        }
 
-				if (selector) {
-					this.on(event, selector, handler.bind(scope));
-				}
-				else {
-					this.on(event, handler.bind(scope));
-				}
-			}
+        for(const eventName of event.split(' ').filter(e => !!e.trim())) {
+          if (selector) {
+            const elements = this.el.querySelectorAll(selector); 
+            for (let i=0; i<elements.length; i++) {
+              elements[i].addEventListener(eventName, handler.bind(scope||this));
+            }
+          }
+          else {
+            this.el.addEventListener(eventName, handler.bind(scope||this));
+          }
+        }
+      }
+      return this;
+    },
 
-			return this;
-		},
+    on(name, handler) {
+      this.el.addEventListener(name, handler);
+    },
 
-		onTransitionEnd: function (callback, scope) {
-			this.one(transitionEventNames, function() {
-				callback.apply(scope||this);
-			});
-		},
+    off(name, handler) {
+      this.el.removeEventListener(name, handler);
+    },
+    
+    one(name, handler) {
+      const wrapper = () => {
+        this.el.removeEventListener(name, wrapper); 
+        handler.apply(this, arguments);
+      };
+      this.el.addEventListener(name, wrapper);
+    },
+    
+    onTransitionEnd(handler, scope) {
+      this.one('transitionend', () => {
+        handler.apply(scope || this);
+      });
+    },
 
-		onAnimationEnd: function (callback, scope) {
-			this.one(animationEventNames, function() {
-				callback.apply(scope||this);
-			});
-		}
-	});
+    onAnimationEnd(handler, scope) {
+      this.one('animationend', () => {
+        handler.apply(scope || this);
+      });
+    },
+    
+    show() {
+      if (this.el.style.display === 'none' || 
+          this.el.style.display === '') {
+        this.el.style.display = this._display || 'block';
+      }
+    },
 
-	return function(root) {
-		if(typeof root === 'function') {
-			// It's a template
-			return function(options) {
-				return $(root(options || {}));
-			};
-		}
-		else {
-			// It's a selector
-			return $(root);
-		}
-	};
+    hide() {
+      if (this.el.style.display !== 'none' && 
+          this.el.style.display !== '') {
+        this._display = this.el.style.display;
+        this.el.style.display = 'none'
+      }
+    },
+
+    find(selector) {
+      const element = this.el.querySelector(selector);
+      return element ? new View(element) : null;
+    },
+
+    set width(value) {
+      this.el.style.width = `${value}px`;
+    },
+
+    get width() {
+      return this.el.offsetWidth;
+    },
+
+    set height(value) {
+      this.el.style.height = `${value}px`;
+    },
+
+    get height() {
+      return this.el.offsetHeight;
+    },
+
+    append(content) {
+      const view = content instanceof View ? 
+        content : new View(content);
+      this.el.appendChild(view.el);
+    },
+
+    empty() {
+      this.el.innerHTML = '';
+    }
+  };
+
+  return View;  
 });

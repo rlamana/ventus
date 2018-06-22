@@ -7,28 +7,21 @@ define(function() {
 	'use strict';
 
 	var DefaultMode = {
-		register: function() {
+		register() {
 			console.log('Default mode registered.');
 		},
 
-		plug: function() {
-		},
-
-		unplug: function() {
-		},
-
 		actions: {
-			maximize: function(win) {
+			maximize(win) {
 				win.move(0,0);
-				win.el.css('-webkit-transform', 'translate3d(0, 0, 0);');
-				win.resize(this.el.width(), this.el.height());
+				win.resize(this.view.width, this.view.height);
 			},
 
-			restore: function(win, restore) {
+			restore(win, restore) {
 				restore.call(win);
 			},
 
-			minimize: function(win) {
+			minimize(win) {
 				win.resize(0,0);
 			}
 		}
