@@ -39,7 +39,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			classname: '',
 			stayinspace: false
     };
-    
+
     if (options.animations) {
       options.classname + ' animated';
     }
@@ -126,6 +126,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				});
 
 				this.el.addClass('move');
+				this._space[0].classList.add('no-events');
 
 				e.preventDefault();
 			}
@@ -209,6 +210,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 						height: this.height - event.pageY
 					};
 
+					this._space[0].classList.add('no-events');
 					this.el.addClass('resizing');
 
 					e.preventDefault();
@@ -275,10 +277,12 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		_stopMove: function() {
 			this.el.removeClass('move');
+			this._space[0].classList.remove('no-events');
 			this._moving = null;
 		},
 
 		_stopResize: function() {
+		  this._space[0].classList.remove('no-events');
 			this.el.removeClass('resizing');
 			this._restore = null;
 			this._resizing = null;
