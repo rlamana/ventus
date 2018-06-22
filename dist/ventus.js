@@ -108,7 +108,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".wm-space.expose .wm-window {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n}\n.wm-space.expose .wm-window section.wm-content {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-space.expose .wm-window.wm-window.animated {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n  -webkit-transition: top 0.5s ease-out, left 0.5s ease-out;\n  transition: top 0.5s ease-out, left 0.5s ease-out;\n}\n.wm-space.expose .wm-window:hover {\n  box-shadow: 0px 0px 40px #000088;\n}\n", ""]);
+exports.push([module.i, "/**\n * Ventus\n * Copyright © 2012-2013 Ramón Lamana\n * https://github.com/rlamana\n */\n.wm-space.expose .wm-window {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n}\n.wm-space.expose .wm-window section.wm-content {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-space.expose .wm-window.wm-window.animated {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n  -webkit-transition: top 0.5s ease-out, left 0.5s ease-out;\n  transition: top 0.5s ease-out, left 0.5s ease-out;\n}\n.wm-space.expose .wm-window:hover {\n  box-shadow: 0px 0px 40px #000088;\n}\n", ""]);
 
 // exports
 
@@ -127,7 +127,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "/* Wobbly animation */\n@-webkit-keyframes wobbly {\n  0% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n  50% {\n    -webkit-transform: rotate(-4deg);\n            transform: rotate(-4deg);\n  }\n  100% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n}\n@keyframes wobbly {\n  0% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n  50% {\n    -webkit-transform: rotate(-4deg);\n            transform: rotate(-4deg);\n  }\n  100% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n}\n/* Appear animation */\n@-webkit-keyframes appear {\n  0% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n  80% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: rotate(1, 1);\n            transform: rotate(1, 1);\n  }\n}\n@keyframes appear {\n  0% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n  80% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: rotate(1, 1);\n            transform: rotate(1, 1);\n  }\n}\n/* Close animation */\n@-webkit-keyframes close {\n  0% {\n    -webkit-transform: scale(1, 1);\n            transform: scale(1, 1);\n  }\n  20% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n}\n@keyframes close {\n  0% {\n    -webkit-transform: scale(1, 1);\n            transform: scale(1, 1);\n  }\n  20% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n}\n/* Window styles */\n.wm-window {\n  opacity: 0.98;\n  display: none;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  overflow: hidden;\n  position: absolute;\n  min-width: 200px;\n  min-height: 60px;\n  background-color: #fff;\n  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n}\n.wm-window .wm-window-overlay {\n  display: none;\n}\n.wm-window .wm-window-box {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: column;\n     -moz-box-orient: vertical;\n     -moz-box-direction: normal;\n          flex-direction: column;\n  height: 100%;\n  min-height: 60px;\n  width: 100%;\n}\n.wm-window .wm-window-box .wm-window-title {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: row;\n     -moz-box-orient: horizontal;\n     -moz-box-direction: normal;\n          flex-direction: row;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n     -moz-box-align: center;\n          align-items: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  height: 36px;\n  min-height: 36px;\n  background-color: #365d98;\n  border: 0;\n  padding: 0 8px;\n  overflow: hidden;\n  /*button.wm-close {\n\t\t\t\tbackground: no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAA6NJREFUeAEAkwNs/AH///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AP///wAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAP///wD///8AAgAAAAAAAAAAAAAAGQAAAIAAAAC6AAAABQAAAAAAAAAAAAAAAAAAAAUAAAC6AAAAgAAAABkAAAAAAAAAAAD///8A////AAAAALQAAAD/AAAA/wAAAL8AAAAFAAAAAAAAAAUAAAC/AAAA/wAAAP8AAAC0////AP///wAA////AP///wAAAABiAAAA/wAAAP8AAAD/AAAAvwAAAAoAAAC/AAAA/wAAAP8AAAD/AAAAYv///wD///8AAP///wD///8AAAAAAAAAAHAAAAD/AAAA/wAAAP8AAADvAAAA/wAAAP8AAAD/AAAAcAAAAAD///8A////AAD///8A////AAAAAAAAAAAAAAAAcAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAcAAAAAAAAAAA////AP///wAA////AP///wAAAAAAAAAAAAAAAAUAAADbAAAA/wAAAP8AAAD/AAAA2wAAAAUAAAAAAAAAAP///wD///8AAP///wD///8AAAAAAAAAAAUAAAC/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAC/AAAABQAAAAD///8A////AAD///8A////AAAAAAUAAAC/AAAA/wAAAP8AAAD/AAAArwAAAP8AAAD/AAAA/wAAAL8AAAAF////AP///wAA////AP///wAAAADYAAAA/wAAAP8AAAD/AAAAcAAAAAAAAABwAAAA/wAAAP8AAAD/AAAA2P///wD///8AAP///wD///8AAAAAugAAAPMAAAD/AAAAcAAAAAAAAAAAAAAAAAAAAHAAAAD/AAAA8wAAALr///8A////AAD///8A////AAAAAAcAAACpAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAAAKkAAAAH////AP///wAA////AP///wAAAAAAAAAANQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1AAAAAP///wD///8AAf///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAP//3IrZ3HU6n9QAAAAASUVORK5CYII=);\n\t\t\t}\n\n\t\t\tbutton.wm-maximize {\n\t\t\t\tbackground: no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1QjVBNEU5QjQ4MjA2ODExODIyQUFEQUJGRDI2QzFCNiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3MTM1RjQxMzRFRTAxMUUyODUwRjg1ODE1RkQxMDIxRCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3MTM1RjQxMjRFRTAxMUUyODUwRjg1ODE1RkQxMDIxRCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NUI1QTRFOUI0ODIwNjgxMTgyMkFBREFCRkQyNkMxQjYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NUI1QTRFOUI0ODIwNjgxMTgyMkFBREFCRkQyNkMxQjYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5/zPe0AAAAPUlEQVR42mL8//8/A7mAiYECwAIiGBkZSbYe6GJGimym3NnozsGlGN17A+fsQRRgpMT5wDmbccAyBkCAAQBGYQ8f7/o0HQAAAABJRU5ErkJggg==);\n\t\t\t}\n\n\t\t\tbutton.wm-minimize {\n\t\t\t\tbackground: no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1QjVBNEU5QjQ4MjA2ODExODIyQUFEQUJGRDI2QzFCNiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3MTM1RjQxNzRFRTAxMUUyODUwRjg1ODE1RkQxMDIxRCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3MTM1RjQxNjRFRTAxMUUyODUwRjg1ODE1RkQxMDIxRCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NUI1QTRFOUI0ODIwNjgxMTgyMkFBREFCRkQyNkMxQjYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NUI1QTRFOUI0ODIwNjgxMTgyMkFBREFCRkQyNkMxQjYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6V8bAdAAAALUlEQVR42mL8//8/A7mAiYECMBI1s4AIRkZGkoMcGEuMA+dsxtFEQkfNAAEGAAPWChlCSQpaAAAAAElFTkSuQmCC);\n\t\t\t}*/\n}\n.wm-window .wm-window-box .wm-window-title h1 {\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n     -moz-box-flex: 1;\n          flex: 1;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: row;\n     -moz-box-orient: horizontal;\n     -moz-box-direction: normal;\n          flex-direction: row;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n     -moz-box-align: center;\n          align-items: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: default;\n  padding: 0;\n  padding-left: 8px;\n  margin: 0;\n  font-size: 16px;\n  font-weight: 400;\n  color: #fff;\n}\n.wm-window .wm-window-box .wm-window-title .wm-button-group {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: row;\n     -moz-box-orient: horizontal;\n     -moz-box-direction: normal;\n          flex-direction: row;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n     -moz-box-align: center;\n          align-items: center;\n  padding-left: 2px;\n}\n.wm-window .wm-window-box .wm-window-title button {\n  display: inline-block;\n  border: 0;\n  background-repeat: no-repeat;\n  background-color: #365d98;\n  color: #FFFFFF;\n  margin: 0;\n  margin-left: 3px;\n  padding: 0;\n  width: 15px;\n  height: 15px;\n  opacity: .7;\n}\n.wm-window .wm-window-box .wm-window-title button:hover {\n  opacity: 1;\n}\n.wm-window .wm-window-box .wm-window-title button.wm-close {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkIxOUQwNTEzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkIxOUQwNTIzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCQjE5RDA0RjMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCQjE5RDA1MDMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpFaWsQAAABxSURBVHjajJDRDcAgCERtJ2AER+oIjuZIHcER3IBCvDYX5KMklwg8lPNQ1fI3TjpfJgl9QX2F32yquuI2CWqCXNH/YFejgUpgexmGeUAjmMH+9AA4aKUN5h174qFkYEs8CMNuaMYdkc/sNySAW/0RYABjHiW8yydeWwAAAABJRU5ErkJggg==) no-repeat 1px 1px;\n}\n.wm-window .wm-window-box .wm-window-title button.wm-maximize {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkIxOUQwNTUzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkIxOUQwNTYzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCQjE5RDA1MzMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCQjE5RDA1NDMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqAiG1YAAAA7SURBVHjaYvz//z8DsYAJSj8E4v948AdkxSSZDALyQMyIBQtgU0ySyQOomAWJ/RCPuo8ggpGUSAEIMACTWxDft/Hl3wAAAABJRU5ErkJggg==) no-repeat 1px 1px;\n}\n.wm-window .wm-window-box .wm-window-title button.wm-minimize {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NzYwRDNDRkMzMDM5MTFFMkI5MUFGMzlFMTgwOEI4ODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NzYwRDNDRkQzMDM5MTFFMkI5MUFGMzlFMTgwOEI4ODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCQjE5RDA1NzMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCQjE5RDA1ODMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsZJjdUAAAAlSURBVHjaYvz//z8DsYCJgQQwqhgZsCCx8QU4I7piRkImAwQYAJ10BBYiYyqTAAAAAElFTkSuQmCC) no-repeat 1px 1px;\n}\n.wm-window .wm-window-box header.wm-window-title.hide {\n  display: none;\n}\n.wm-window .wm-window-box section.wm-content {\n  display: block;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n     -moz-box-flex: 1;\n          flex: 1;\n  min-height: 60px;\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.wm-window .wm-window-box button.wm-resize {\n  position: absolute;\n  bottom: 0;\n  right: 4px;\n  background: transparent;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  cursor: se-resize;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QzREODAwQzcyRjZDMTFFMjg5NkREMENBNjJERUE4Q0IiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QzREODAwQzgyRjZDMTFFMjg5NkREMENBNjJERUE4Q0IiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpDNEQ4MDBDNTJGNkMxMUUyODk2REQwQ0E2MkRFQThDQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDNEQ4MDBDNjJGNkMxMUUyODk2REQwQ0E2MkRFQThDQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuQy0VQAAACLSURBVHjaYpw9ezYDEUARiO8zEaHQHohPArEcCxEK1wGxPxA/wmeyDZLCIyABJjwKNwJxEFShIi7FyAoPArEZEB8DYi0mHFaHIikEaUwE4mtMWBRGAPE+NIU7kJ0BUxiNQyFInpMJKgFTuBuLQj8gXg3yJCicHyFZDQJfgDgOqhEE3gGxD8jNAAEGADlXJQUd3J75AAAAAElFTkSuQmCC) no-repeat;\n  height: 15px;\n  width: 10px;\n}\n.wm-window.disabled * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-window.disabled .wm-window-overlay {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black;\n  opacity: 0;\n  z-index: 30000;\n}\n.wm-window.inactive * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-window.inactive header.wm-window-title {\n  background-color: #888;\n}\n.wm-window.inactive header.wm-window-title h1 {\n  color: #bbb;\n}\n.wm-window.active .wm-content * {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text;\n}\n.wm-window.noresizable .wm-window-box header.wm-window-title button.wm-maximize,\n.wm-window.noresizable .wm-window-box header.wm-window-title button.wm-minimize {\n  display: none;\n}\n.wm-window.noresizable .wm-window-box section.wm-content {\n  overflow-y: hidden;\n}\n.wm-window.noresizable .wm-window-box button.wm-resize {\n  display: none;\n}\n.wm-window.animated.minimizing,\n.wm-window.animated.maximazing {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n  -webkit-transition: all 0.5s ease-out;\n  transition: all 0.5s ease-out;\n}\n.wm-window.animated.closing {\n  -webkit-animation: close 0.3s 1 ease-in forwards;\n          animation: close 0.3s 1 ease-in forwards;\n}\n.wm-window.closing {\n  -webkit-animation: close;\n          animation: close;\n}\n.wm-window.animated.opening {\n  -webkit-animation: appear 0.4s 1 ease-out forwards;\n          animation: appear 0.4s 1 ease-out forwards;\n}\n.wm-window.opening {\n  -webkit-animation: appear;\n          animation: appear;\n}\n.wm-window.animated.resizing {\n  -webkit-transition: none;\n  transition: none;\n}\n.wm-window.animated.move {\n  -webkit-animation: wobbly 0.5s 0.2s infinite;\n          animation: wobbly 0.5s 0.2s infinite;\n}\n.wm-window.animated.move * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-window.closed {\n  display: none;\n}\n", ""]);
+exports.push([module.i, "/**\n * Ventus\n * Copyright © 2012-2013 Ramón Lamana\n * https://github.com/rlamana\n */\n/* Wobbly animation */\n@-webkit-keyframes wobbly {\n  0% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n  50% {\n    -webkit-transform: rotate(-4deg);\n            transform: rotate(-4deg);\n  }\n  100% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n}\n@keyframes wobbly {\n  0% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n  50% {\n    -webkit-transform: rotate(-4deg);\n            transform: rotate(-4deg);\n  }\n  100% {\n    -webkit-transform: rotate(4deg);\n            transform: rotate(4deg);\n  }\n}\n/* Appear animation */\n@-webkit-keyframes appear {\n  0% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n  80% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: rotate(1, 1);\n            transform: rotate(1, 1);\n  }\n}\n@keyframes appear {\n  0% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n  80% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: rotate(1, 1);\n            transform: rotate(1, 1);\n  }\n}\n/* Close animation */\n@-webkit-keyframes close {\n  0% {\n    -webkit-transform: scale(1, 1);\n            transform: scale(1, 1);\n  }\n  20% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n}\n@keyframes close {\n  0% {\n    -webkit-transform: scale(1, 1);\n            transform: scale(1, 1);\n  }\n  20% {\n    -webkit-transform: scale(1.2, 1.2);\n            transform: scale(1.2, 1.2);\n  }\n  100% {\n    -webkit-transform: scale(0, 0);\n            transform: scale(0, 0);\n  }\n}\n/* Window styles */\n.wm-window {\n  opacity: 0.98;\n  display: none;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  overflow: hidden;\n  position: absolute;\n  min-width: 200px;\n  min-height: 60px;\n  background-color: #fff;\n  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.6);\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n}\n.wm-window .wm-window-overlay {\n  display: none;\n}\n.wm-window .wm-window-box {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: column;\n     -moz-box-orient: vertical;\n     -moz-box-direction: normal;\n          flex-direction: column;\n  height: 100%;\n  min-height: 60px;\n  width: 100%;\n}\n.wm-window .wm-window-box .wm-window-title {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: row;\n     -moz-box-orient: horizontal;\n     -moz-box-direction: normal;\n          flex-direction: row;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n     -moz-box-align: center;\n          align-items: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  height: 36px;\n  min-height: 36px;\n  background-color: #365d98;\n  border: 0;\n  padding: 0 8px;\n  overflow: hidden;\n}\n.wm-window .wm-window-box .wm-window-title h1 {\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n     -moz-box-flex: 1;\n          flex: 1;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: row;\n     -moz-box-orient: horizontal;\n     -moz-box-direction: normal;\n          flex-direction: row;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n     -moz-box-align: center;\n          align-items: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: default;\n  padding: 0;\n  padding-left: 8px;\n  margin: 0;\n  font-size: 16px;\n  font-weight: 400;\n  color: #fff;\n}\n.wm-window .wm-window-box .wm-window-title .wm-button-group {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -moz-box;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: row;\n     -moz-box-orient: horizontal;\n     -moz-box-direction: normal;\n          flex-direction: row;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n     -moz-box-align: center;\n          align-items: center;\n  padding-left: 2px;\n}\n.wm-window .wm-window-box .wm-window-title button {\n  display: inline-block;\n  border: 0;\n  background-repeat: no-repeat;\n  background-color: #365d98;\n  color: #ffffff;\n  margin: 0;\n  margin-left: 3px;\n  padding: 0;\n  width: 15px;\n  height: 15px;\n  opacity: 0.7;\n}\n.wm-window .wm-window-box .wm-window-title button:hover {\n  opacity: 1;\n}\n.wm-window .wm-window-box .wm-window-title button.wm-close {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkIxOUQwNTEzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkIxOUQwNTIzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCQjE5RDA0RjMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCQjE5RDA1MDMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpFaWsQAAABxSURBVHjajJDRDcAgCERtJ2AER+oIjuZIHcER3IBCvDYX5KMklwg8lPNQ1fI3TjpfJgl9QX2F32yquuI2CWqCXNH/YFejgUpgexmGeUAjmMH+9AA4aKUN5h174qFkYEs8CMNuaMYdkc/sNySAW/0RYABjHiW8yydeWwAAAABJRU5ErkJggg==) no-repeat 1px 1px;\n}\n.wm-window .wm-window-box .wm-window-title button.wm-maximize {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkIxOUQwNTUzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkIxOUQwNTYzMDM0MTFFMkI5MUFGMzlFMTgwOEI4ODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCQjE5RDA1MzMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCQjE5RDA1NDMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqAiG1YAAAA7SURBVHjaYvz//z8DsYAJSj8E4v948AdkxSSZDALyQMyIBQtgU0ySyQOomAWJ/RCPuo8ggpGUSAEIMACTWxDft/Hl3wAAAABJRU5ErkJggg==) no-repeat 1px 1px;\n}\n.wm-window .wm-window-box .wm-window-title button.wm-minimize {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NzYwRDNDRkMzMDM5MTFFMkI5MUFGMzlFMTgwOEI4ODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NzYwRDNDRkQzMDM5MTFFMkI5MUFGMzlFMTgwOEI4ODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCQjE5RDA1NzMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCQjE5RDA1ODMwMzQxMUUyQjkxQUYzOUUxODA4Qjg4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsZJjdUAAAAlSURBVHjaYvz//z8DsYCJgQQwqhgZsCCx8QU4I7piRkImAwQYAJ10BBYiYyqTAAAAAElFTkSuQmCC) no-repeat 1px 1px;\n}\n.wm-window .wm-window-box header.wm-window-title.hide {\n  display: none;\n}\n.wm-window .wm-window-box section.wm-content {\n  display: block;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n     -moz-box-flex: 1;\n          flex: 1;\n  min-height: 60px;\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.wm-window .wm-window-box button.wm-resize {\n  position: absolute;\n  bottom: 0;\n  right: 4px;\n  background: transparent;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  cursor: se-resize;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QzREODAwQzcyRjZDMTFFMjg5NkREMENBNjJERUE4Q0IiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QzREODAwQzgyRjZDMTFFMjg5NkREMENBNjJERUE4Q0IiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpDNEQ4MDBDNTJGNkMxMUUyODk2REQwQ0E2MkRFQThDQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDNEQ4MDBDNjJGNkMxMUUyODk2REQwQ0E2MkRFQThDQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuQy0VQAAACLSURBVHjaYpw9ezYDEUARiO8zEaHQHohPArEcCxEK1wGxPxA/wmeyDZLCIyABJjwKNwJxEFShIi7FyAoPArEZEB8DYi0mHFaHIikEaUwE4mtMWBRGAPE+NIU7kJ0BUxiNQyFInpMJKgFTuBuLQj8gXg3yJCicHyFZDQJfgDgOqhEE3gGxD8jNAAEGADlXJQUd3J75AAAAAElFTkSuQmCC) no-repeat;\n  height: 15px;\n  width: 10px;\n}\n.wm-window.disabled * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-window.disabled .wm-window-overlay {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: black;\n  opacity: 0;\n  z-index: 30000;\n}\n.wm-window.inactive * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-window.inactive header.wm-window-title {\n  background-color: #888;\n}\n.wm-window.inactive header.wm-window-title h1 {\n  color: #bbb;\n}\n.wm-window.active .wm-content * {\n  -webkit-user-select: text;\n     -moz-user-select: text;\n      -ms-user-select: text;\n          user-select: text;\n}\n.wm-window.noresizable .wm-window-box header.wm-window-title button.wm-maximize,\n.wm-window.noresizable .wm-window-box header.wm-window-title button.wm-minimize {\n  display: none;\n}\n.wm-window.noresizable .wm-window-box section.wm-content {\n  overflow-y: hidden;\n}\n.wm-window.noresizable .wm-window-box button.wm-resize {\n  display: none;\n}\n.wm-window.animated.minimizing,\n.wm-window.animated.maximazing {\n  -webkit-transform: translate3d(0, 0, 0);\n          transform: translate3d(0, 0, 0);\n  -webkit-transition: all 0.5s ease-out;\n  transition: all 0.5s ease-out;\n}\n.wm-window.animated.closing {\n  -webkit-animation: close 0.3s 1 ease-in forwards;\n          animation: close 0.3s 1 ease-in forwards;\n}\n.wm-window.closing {\n  -webkit-animation: close;\n          animation: close;\n}\n.wm-window.animated.opening {\n  -webkit-animation: appear 0.4s 1 ease-out forwards;\n          animation: appear 0.4s 1 ease-out forwards;\n}\n.wm-window.opening {\n  -webkit-animation: appear;\n          animation: appear;\n}\n.wm-window.animated.resizing {\n  -webkit-transition: none;\n  transition: none;\n}\n.wm-window.animated.move {\n  -webkit-animation: wobbly 0.5s 0.2s infinite;\n          animation: wobbly 0.5s 0.2s infinite;\n}\n.wm-window.animated.move * {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.wm-window.closed {\n  display: none;\n}\n", ""]);
 
 // exports
 
@@ -146,7 +146,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".wm-space {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  z-index: -1;\n  cursor: default;\n}\n.wm-space .wm-overlay {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background-color: #000;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  opacity: 0;\n  -webkit-transition: opacity 0.5s ease-out;\n  transition: opacity 0.5s ease-out;\n}\n", ""]);
+exports.push([module.i, "/**\n * Ventus\n * Copyright © 2012-2013 Ramón Lamana\n * https://github.com/rlamana\n */\n.wm-space {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  z-index: -1;\n  cursor: default;\n}\n.wm-space .wm-overlay {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background-color: #000;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  opacity: 0;\n  -webkit-transition: opacity 0.5s ease-out;\n  transition: opacity 0.5s ease-out;\n}\n", ""]);
 
 // exports
 
@@ -1238,28 +1238,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
-
 module.exports = {
-	version: '0.3',
-	browser: {
-		animationEventName: function animationEventName() {
-			var style = document.body.style;
-			var event = null;
+  version: '0.3.0',
 
-			if (style.animation === '') {
-				event = 'animationend';
-			} else if (style.MozAnimation === '') {
-				event = 'mozAnimationEnd';
-			} else if (style.webkitAnimation === '') {
-				event = 'webkitAnimationEnd';
-			}
-
-			return event;
-		}
-	},
-
-	WindowManager: _windowmanager2.default,
-	Window: _window2.default
+  WindowManager: _windowmanager2.default,
+  Window: _window2.default
 };
 
 /***/ }),
@@ -1278,7 +1261,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
  * Signal/slots Emitter
  * (Fork of Basejs Emitter by A. Matías Quezada)
  *
- * Copyright © 2013 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  * Under MIT license
  */
@@ -1289,173 +1272,173 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
  */
 
 /**
-* interface Emitter {
-*   void on(String signal, Function slot, [Object scope]);
-*   void off(String signal, Function slot, [Object scope]);
-*   void once(String signal, Function slot, [Object scope]);
-*   void emit(String signal, Object var_args...);
-*   void connect(Object slots, [Object scope]);
-*   void disconnect(Object slots, [Object scope]);
-* }
-*
-* Provides a constructor to listen and emit signals.
-*/
+ * interface Emitter {
+ *   void on(String signal, Function slot, [Object scope]);
+ *   void off(String signal, Function slot, [Object scope]);
+ *   void once(String signal, Function slot, [Object scope]);
+ *   void emit(String signal, Object var_args...);
+ *   void connect(Object slots, [Object scope]);
+ *   void disconnect(Object slots, [Object scope]);
+ * }
+ *
+ * Provides a constructor to listen and emit signals.
+ */
 
 !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-	'use strict';
+  "use strict";
 
-	function equals(slot, scope, expected) {
-		return function (item) {
-			return (item.funct === slot && item.scope === scope) === expected;
-		};
-	}
+  function equals(slot, scope, expected) {
+    return function (item) {
+      return (item.funct === slot && item.scope === scope) === expected;
+    };
+  }
 
-	function hasListener(listeners, signal, slot, scope) {
-		if (!listeners[signal]) {
-			return false;
-		}
+  function hasListener(listeners, signal, slot, scope) {
+    if (!listeners[signal]) {
+      return false;
+    }
 
-		return listeners[signal].some(equals(slot, scope, true));
-	}
+    return listeners[signal].some(equals(slot, scope, true));
+  }
 
-	/**
-  * Creates an object with methods to add callbacks (listeners)
-  *   to specific signals and invoke this callbacks.
-  */
-	function Emitter() {
-		this._listeners = {};
-	}
-
-	Emitter.prototype = {
-		/**
-   * Returns the count of listeners for a specific signal.
-   *
-   * @param signal <String> The signal we want to count listeners from.
-   * @returns <Number> The count.
+  /**
+   * Creates an object with methods to add callbacks (listeners)
+   *   to specific signals and invoke this callbacks.
    */
-		listenersCount: function listenersCount(signal) {
-			var list = this._listeners[signal];
-			return list ? list.length : 0;
-		},
+  function Emitter() {
+    this._listeners = {};
+  }
 
-		/**
-   * Adds a listener to a signal, optionally a scope can be provided.
-   * NOTE: Calling this method with the same arguments will NOT add a new listener.
-   *
-   * @param signal <String> The signal to listen.
-   * @param slot <Function> The callback function.
-   * @param scope <Object?> The scope for the callback.
-   */
-		on: function on(signal, slot, scope) {
-			var list = this._listeners;
+  Emitter.prototype = {
+    /**
+     * Returns the count of listeners for a specific signal.
+     *
+     * @param signal <String> The signal we want to count listeners from.
+     * @returns <Number> The count.
+     */
+    listenersCount: function listenersCount(signal) {
+      var list = this._listeners[signal];
+      return list ? list.length : 0;
+    },
 
-			if (hasListener(list, signal, slot, scope)) {
-				return;
-			}
+    /**
+     * Adds a listener to a signal, optionally a scope can be provided.
+     * NOTE: Calling this method with the same arguments will NOT add a new listener.
+     *
+     * @param signal <String> The signal to listen.
+     * @param slot <Function> The callback function.
+     * @param scope <Object?> The scope for the callback.
+     */
+    on: function on(signal, slot, scope) {
+      var list = this._listeners;
 
-			if (!list[signal]) {
-				list[signal] = [];
-			}
+      if (hasListener(list, signal, slot, scope)) {
+        return;
+      }
 
-			list[signal].push({
-				funct: slot,
-				scope: scope
-			});
-		},
+      if (!list[signal]) {
+        list[signal] = [];
+      }
 
-		/**
-   * Removes the listener added with exactly the same arguments.
-   *
-   * @param signal <String> The signal from we want to remove the listener.
-   * @param slot <Function> The callback passed to .on() method.
-   * @param scope <Object> The scope for the callback.
-   */
-		off: function off(signal, slot, scope) {
-			var list = this._listeners[signal];
-			if (!list) {
-				return;
-			}
+      list[signal].push({
+        funct: slot,
+        scope: scope
+      });
+    },
 
-			this._listeners[signal] = list.filter(equals(slot, scope, false));
-		},
+    /**
+     * Removes the listener added with exactly the same arguments.
+     *
+     * @param signal <String> The signal from we want to remove the listener.
+     * @param slot <Function> The callback passed to .on() method.
+     * @param scope <Object> The scope for the callback.
+     */
+    off: function off(signal, slot, scope) {
+      var list = this._listeners[signal];
+      if (!list) {
+        return;
+      }
 
-		/**
-   * Adds a listener to be fired only the next time the signal is emitted.
-   *
-   * @param signal <String> The signal to listen.
-   * @param slot <Function> The callback function.
-   * @param scope <Object?> The scope for the callback.
-   */
-		once: function once(signal, slot, scope) {
-			if (hasListener(this._listeners, signal, slot, scope)) {
-				return;
-			}
+      this._listeners[signal] = list.filter(equals(slot, scope, false));
+    },
 
-			this.on(signal, function wrapper() {
-				this.off(signal, wrapper, this);
-				slot.apply(scope, arguments);
-			}, this);
-		},
+    /**
+     * Adds a listener to be fired only the next time the signal is emitted.
+     *
+     * @param signal <String> The signal to listen.
+     * @param slot <Function> The callback function.
+     * @param scope <Object?> The scope for the callback.
+     */
+    once: function once(signal, slot, scope) {
+      if (hasListener(this._listeners, signal, slot, scope)) {
+        return;
+      }
 
-		/**
-   * Executes the callbacks for the given signal.
-   * Any extra argument will be passed to the callback.
-   *
-   * @param signal <String> The signal of the listeners we want to invoke.
-   * @param var_args <object...> Any arguments we want the callbacks to recive.
-   */
-		emit: function emit(signal /*, var_args*/) {
-			var list = this._listeners[signal];
-			if (!list) {
-				return;
-			}
+      this.on(signal, function wrapper() {
+        this.off(signal, wrapper, this);
+        slot.apply(scope, arguments);
+      }, this);
+    },
 
-			var data = Array.prototype.slice.call(arguments, 1);
-			list.forEach(function (item) {
-				item.funct.apply(item.scope, data);
-			});
-		},
+    /**
+     * Executes the callbacks for the given signal.
+     * Any extra argument will be passed to the callback.
+     *
+     * @param signal <String> The signal of the listeners we want to invoke.
+     * @param var_args <object...> Any arguments we want the callbacks to recive.
+     */
+    emit: function emit(signal /*, var_args*/) {
+      var list = this._listeners[signal];
+      if (!list) {
+        return;
+      }
 
-		/**
-   * Connects slots to a group of signals,
-   * optionally a scope can be provided.
-   *
-   * @param slots <Object> Map of signals and slots.
-   * @param scope <Object> The scope for the callback.
-   */
-		connect: function connect(slots, scope) {
-			if (!slots) {
-				return;
-			}
+      var data = Array.prototype.slice.call(arguments, 1);
+      list.forEach(function (item) {
+        item.funct.apply(item.scope, data);
+      });
+    },
 
-			for (var signal in slots) {
-				if (slots.hasOwnProperty(signal)) {
-					this.on(signal, slots[signal], scope);
-				}
-			}
-		},
+    /**
+     * Connects slots to a group of signals,
+     * optionally a scope can be provided.
+     *
+     * @param slots <Object> Map of signals and slots.
+     * @param scope <Object> The scope for the callback.
+     */
+    connect: function connect(slots, scope) {
+      if (!slots) {
+        return;
+      }
 
-		/**
-   * Disconnects slots to a group of signals,
-   * optionally a scope can be provided.
-   *
-   * @param slots <Object> Map of signals and slots.
-   * @param scope <Object> The scope for the callback.
-   */
-		disconnect: function disconnect(slots, scope) {
-			if (!slots) {
-				return;
-			}
+      for (var signal in slots) {
+        if (slots.hasOwnProperty(signal)) {
+          this.on(signal, slots[signal], scope);
+        }
+      }
+    },
 
-			for (var signal in slots) {
-				if (slots.hasOwnProperty(signal)) {
-					this.off(signal, slots[signal], scope);
-				}
-			}
-		}
-	};
+    /**
+     * Disconnects slots to a group of signals,
+     * optionally a scope can be provided.
+     *
+     * @param slots <Object> Map of signals and slots.
+     * @param scope <Object> The scope for the callback.
+     */
+    disconnect: function disconnect(slots, scope) {
+      if (!slots) {
+        return;
+      }
 
-	return Emitter;
+      for (var signal in slots) {
+        if (slots.hasOwnProperty(signal)) {
+          this.off(signal, slots[signal], scope);
+        }
+      }
+    }
+  };
+
+  return Emitter;
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -1473,13 +1456,11 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
 
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
 !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
   'use strict';
-
-  // Wrapper of the DOM element to keep compatibility with the old code.
 
   var View = function View(elementOrMarkup) {
     if (typeof elementOrMarkup === 'string') {
@@ -1626,6 +1607,54 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
       return this.el.offsetHeight;
     },
 
+    set top(value) {
+      this.el.style.top = (value || 0) + 'px';
+    },
+
+    get top() {
+      return parseInt(this.el.style.top || 0, 10);
+    },
+
+    set bottom(value) {
+      this.el.style.bottom = (value || 0) + 'px';
+    },
+
+    get bottom() {
+      return parseInt(this.el.style.top || 0, 10);
+    },
+
+    set left(value) {
+      this.el.style.left = (value || 0) + 'px';
+    },
+
+    get left() {
+      return parseInt(this.el.style.left || 0, 10);
+    },
+
+    set right(value) {
+      this.el.style.right = (value || 0) + 'px';
+    },
+
+    get right() {
+      return parseInt(this.el.style.right || 0, 10);
+    },
+
+    set zIndex(value) {
+      this.el.style.zIndex = value;
+    },
+
+    get zIndex() {
+      return parseInt(this.el.style.zIndex || 0, 10);
+    },
+
+    set opacity(value) {
+      this.el.style.opacity = value;
+    },
+
+    get opacity() {
+      return parseInt(this.el.style.opacity || 0, 10);
+    },
+
     append: function append(content) {
       var view = content instanceof View ? content : new View(content);
       this.el.appendChild(view.el);
@@ -1743,33 +1772,33 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
 
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
 !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-	'use strict';
+  'use strict';
 
-	var DefaultMode = {
-		register: function register() {
-			console.log('Default mode registered.');
-		},
+  var DefaultMode = {
+    register: function register() {
+      console.log('Default mode registered.');
+    },
 
 
-		actions: {
-			maximize: function maximize(win) {
-				win.move(0, 0);
-				win.resize(this.view.width, this.view.height);
-			},
-			restore: function restore(win, _restore) {
-				_restore.call(win);
-			},
-			minimize: function minimize(win) {
-				win.resize(0, 0);
-			}
-		}
-	};
+    actions: {
+      maximize: function maximize(win) {
+        win.move(0, 0);
+        win.resize(this.view.width, this.view.height);
+      },
+      restore: function restore(win, _restore) {
+        _restore.call(win);
+      },
+      minimize: function minimize(win) {
+        win.resize(0, 0);
+      }
+    }
+  };
 
-	return DefaultMode;
+  return DefaultMode;
 }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -1787,150 +1816,156 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! lodash.throttle */ "../node_modules/lodash.throttle/index.js"), __webpack_require__(/*! ventus/less/expose.less */ "./ventus/less/expose.less")], __WEBPACK_AMD_DEFINE_RESULT__ = (function (throttle) {
-	'use strict';
+  'use strict';
 
-	var ExposeMode = {
-		// Launch when plugin is registered.
-		register: function register() {
-			var _this = this;
+  var ExposeMode = {
+    // Launch when plugin is registered.
+    register: function register() {
+      var _this = this;
 
-			console.log('Expose mode registered.');
+      console.log('Expose mode registered.');
 
-			this.view.on('contextmenu', throttle(function () {
-				// Right click sets expose mode.
-				if (_this.mode !== 'expose') {
-					if (_this.windows.length > 0) {
-						_this.mode = 'expose';
-					}
-				} else if (_this.mode === 'expose') {
-					_this.mode = 'default';
-				}
-				return false;
-			}, 1000));
-		},
-
-
-		// Launch when plugin is enabled.
-		plug: function plug() {
-			var _this2 = this;
-
-			var grid = Math.ceil(this.windows.length / 2);
-			var maxWidth = Math.floor(this.view.width / grid);
-			var maxHeight = Math.floor(this.view.height / 2);
-			var scale = void 0,
-			    left = void 0,
-			    top = void 0,
-			    pos = void 0;
-
-			this.view.el.classList.add('expose');
-
-			for (var win, i = 0, len = this.windows.length; i < len; i++) {
-				win = this.windows[i];
-				win.stamp();
-
-				// Scale factor.
-				if (win.height > win.width) {
-					scale = win.height > maxHeight ? maxHeight / win.height : 1;
-				} else {
-					scale = win.width > maxWidth ? maxWidth / win.width : 1;
-				}
-
-				scale -= 0.15; // To add a little padding.
-
-				pos = {
-					x: i % grid * maxWidth,
-					y: (i < grid ? 0 : 1) * maxHeight
-				};
-
-				// New position.
-				left = pos.x + Math.floor((maxWidth - scale * win.width) / 2);
-				top = pos.y + Math.floor((maxHeight - scale * win.height) / 2);
-
-				win.enabled = false;
-				win.movable = false;
-
-				win.view.el.classList.add('exposing');
-				win.view.el.style.transformOrigin = '0 0';
-				win.view.el.style.transform = 'scale(' + scale + ')';
-				win.view.el.style.top = top + 'px';
-				win.view.el.style.left = left + 'px';
-
-				var endExposing = function endExposing() {
-					win.view.el.classList.remove('exposing');
-				};
-
-				if (win.animations) {
-					win.view.onTransitionEnd(endExposing, this);
-				} else {
-					endExposing.call(this);
-				}
-			}
-
-			this.overlay = true;
-			this.view.one('click', function () {
-				_this2.mode = 'default';
-			});
-		},
+      this.view.on('contextmenu', throttle(function (event) {
+        // Right click sets expose mode.
+        if (_this.mode !== 'expose') {
+          if (_this.windows.length > 0) {
+            _this.mode = 'expose';
+          }
+        } else if (_this.mode === 'expose') {
+          _this.mode = 'default';
+        }
+        event.stopPropagation();
+        event.preventDEfault();
+      }, 1000));
+    },
 
 
-		// Lauch when plugin is disabled
-		unplug: function unplug() {
-			var _this3 = this;
+    // Launch when plugin is enabled.
+    plug: function plug() {
+      var _this2 = this;
 
-			return new Promise(function (done) {
-				if (_this3.windows.length === 0) {
-					done();
-				}
+      var grid = Math.ceil(this.windows.length / 2);
+      var maxWidth = Math.floor(this.view.width / grid);
+      var maxHeight = Math.floor(this.view.height / 2);
+      var scale = void 0,
+          left = void 0,
+          top = void 0,
+          pos = void 0;
 
-				for (var win, i = _this3.windows.length; i--;) {
-					win = _this3.windows[i];
-					win.restore();
-					win.view.el.style.transform = 'scale(1)';
-					win.view.el.style.transformOrigin = '50% 50%';
+      this.view.el.classList.add('expose');
 
-					var removeTransform = function (win, windowIndex) {
-						return function () {
-							if (windowIndex === 0) {
-								done();
-							}
-							win.view.el.style.transform = '';
-						};
-					}(win, i);
+      var _loop = function _loop(_win, i, len) {
+        _win = _this2.windows[i];
+        _win.stamp();
 
-					if (win.animations) {
-						_this3.view.onTransitionEnd(removeTransform, _this3);
-					} else {
-						removeTransform.call(_this3);
-					}
+        // Scale factor.
+        if (_win.height > _win.width) {
+          scale = _win.height > maxHeight ? maxHeight / _win.height : 1;
+        } else {
+          scale = _win.width > maxWidth ? maxWidth / _win.width : 1;
+        }
 
-					win.movable = true;
-					win.enabled = true;
-				}
+        scale -= 0.15; // To add a little padding.
 
-				_this3.overlay = false;
-			}).then(function () {
-				_this3.view.el.classList.remove('expose');
-			});
-		},
+        pos = {
+          x: i % grid * maxWidth,
+          y: (i < grid ? 0 : 1) * maxHeight
+        };
+
+        // New position.
+        left = pos.x + Math.floor((maxWidth - scale * _win.width) / 2);
+        top = pos.y + Math.floor((maxHeight - scale * _win.height) / 2);
+
+        _win.enabled = false;
+        _win.movable = false;
+
+        _win.view.el.classList.add('exposing');
+        _win.view.el.style.transformOrigin = '0 0';
+        _win.view.el.style.transform = 'scale(' + scale + ')';
+        _win.view.top = top;
+        _win.view.left = left;
+
+        var endExposing = function endExposing() {
+          _win.view.el.classList.remove('exposing');
+        };
+
+        if (_win.animations) {
+          _win.view.on('transitionend', endExposing);
+        } else {
+          endExposing();
+        }
+        win = _win;
+      };
+
+      for (var win, i = 0, len = this.windows.length; i < len; i++) {
+        _loop(win, i, len);
+      }
+
+      this.overlay = true;
+      this.view.one('click', function () {
+        _this2.mode = 'default';
+      });
+    },
 
 
-		actions: {
-			focus: function focus() {},
-			close: function close() {
-				this.mode = 'expose';
-			},
-			select: function select(win) {
-				this.mode = 'default';
-				win.focus();
-			}
-		}
-	};
+    // Lauch when plugin is disabled
+    unplug: function unplug() {
+      var _this3 = this;
 
-	return ExposeMode;
+      return new Promise(function (done) {
+        if (_this3.windows.length === 0) {
+          done();
+        }
+
+        for (var _win2, i = _this3.windows.length; i--;) {
+          _win2 = _this3.windows[i];
+          _win2.restore();
+          _win2.view.el.style.transform = 'scale(1)';
+          _win2.view.el.style.transformOrigin = '50% 50%';
+
+          var removeTransform = function (win, windowIndex) {
+            return function () {
+              if (windowIndex === 0) {
+                done();
+              }
+              win.view.el.style.transform = '';
+            };
+          }(_win2, i);
+
+          if (_win2.animations) {
+            _this3.view.onTransitionEnd(removeTransform, _this3);
+          } else {
+            removeTransform.call(_this3);
+          }
+
+          _win2.movable = true;
+          _win2.enabled = true;
+        }
+
+        _this3.overlay = false;
+      }).then(function () {
+        _this3.view.el.classList.remove('expose');
+      });
+    },
+
+
+    actions: {
+      focus: function focus() {},
+      close: function close() {
+        this.mode = 'expose';
+      },
+      select: function select(win) {
+        this.mode = 'default';
+        win.focus();
+      }
+    }
+  };
+
+  return ExposeMode;
 }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -1948,592 +1983,596 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ventus/core/emitter */ "./ventus/core/emitter.js"), __webpack_require__(/*! ventus/core/view */ "./ventus/core/view.js"), __webpack_require__(/*! ventus/less/window.less */ "./ventus/less/window.less")], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Emitter, View) {
-	'use strict';
-
-	function isTouchEvent(e) {
-		return !!window.TouchEvent && e.originalEvent instanceof window.TouchEvent;
-	}
-
-	function convertMoveEvent(e) {
-		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e;
-	}
-
-	var Window = function Window(options) {
-		this.signals = new Emitter();
-
-		options = options || {
-			title: 'Untitle Window',
-			width: 400,
-			height: 200,
-			x: 0,
-			y: 0,
-			content: '',
-			movable: true,
-			resizable: true,
-			widget: false,
-			titlebar: true,
-			animations: true,
-			classname: '',
-			stayinspace: false
-		};
-
-		if (options.animations) {
-			options.classname + ' animated';
-		}
-
-		// View
-		this.view = new View('<div class="wm-window ' + options.classname + '">\n      <div class="wm-window-box">\n        <header class="wm-window-title" unselectable="on">\n          <h1 unselectable="on">' + options.title + '</h1>\n          <div class="wm-button-group">\n            <button class="wm-minimize">&nbsp;</button>\n            <button class="wm-maximize">&nbsp;</button>\n            <button class="wm-close">&nbsp;</button>\n          </div>\n        </header>\n\n        <section class="wm-content"></section>\n\n        <button class="wm-resize">&nbsp;</button>\n      </div>\n      <div class="wm-window-overlay"></div>\n    </div>');
-		this.view.listen(this.events.window, this);
-
-		if (options.opacity) {
-			this.view.el.style.opacity = options.opacity;
-		}
-
-		// Predefined signal/events handlers.
-		if (options.events) {
-			for (var eventName in options.events) {
-				if (options.events.hasOwnProperty(eventName) && typeof options.events[eventName] === 'function') {
-					this.signals.on(eventName, options.events[eventName], this);
-				}
-			}
-		}
-
-		// Cache content element.
-		this.$content = this.view.find('.wm-content');
-		if (options.content) {
-			this.$content.append(options.content);
-		}
-
-		// Cache header element.
-		this.$titlebar = this.view.find('header');
-
-		this.width = options.width || 400;
-		this.height = options.height || 200;
-
-		this.x = options.x || 0;
-		this.y = options.y || 0;
-		this.z = 10000;
-
-		// State
-		this.enabled = true;
-		this.active = false;
-		this.maximized = false;
-		this.minimized = false;
-
-		this._closed = true;
-		this._destroyed = false;
-
-		// Properties
-		this.widget = false;
-		this.movable = typeof options.movable !== 'undefined' ? options.movable : true;
-		this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
-		this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
-		this.titlebar = true;
-		this.stayinspace = typeof options.stayinspace !== 'undefined' ? options.stayinspace : false;
-	};
-
-	Window.prototype = {
-		_restore: null,
-		_moving: null,
-		_resizing: null,
-
-		slots: {
-			move: function move(e) {
-				var event = convertMoveEvent(e);
-
-				if (!this.enabled || !this.movable) {
-					return;
-				}
-
-				this._moving = this.toLocal({
-					x: event.pageX,
-					y: event.pageY
-				});
-
-				this.view.el.classList.add('move');
-
-				e.preventDefault();
-			}
-		},
-
-		events: {
-			window: {
-				'click': function click(e) {
-					this.signals.emit('select', this, e);
-				},
-
-				'mousedown': function mousedown(e) {
-					this.focus();
-
-					if (this.widget) {
-						this.slots.move.call(this, e);
-					}
-				},
-
-				'.wm-content click': function wmContentClick(e) {
-					if (this.enabled) {
-						this.signals.emit('click', this, e);
-					}
-				},
-
-				'.wm-window-title mousedown': function wmWindowTitleMousedown(e) {
-					if (!this.maximized) {
-						this.slots.move.call(this, e);
-					}
-				},
-
-				'.wm-window-title dblclick': function wmWindowTitleDblclick() {
-					if (this.enabled && this.resizable) {
-						this.maximize();
-					}
-				},
-
-				'.wm-window-title button.wm-close click': function wmWindowTitleButtonWmCloseClick(e) {
-					e.stopPropagation();
-					e.preventDefault();
-
-					if (this.enabled) {
-						this.close();
-					}
-				},
-
-				'.wm-window-title button.wm-maximize click': function wmWindowTitleButtonWmMaximizeClick(e) {
-					e.stopPropagation();
-					e.preventDefault();
-
-					if (this.enabled && this.resizable) {
-						this.maximize();
-					}
-				},
-
-				'.wm-window-title button.wm-minimize click': function wmWindowTitleButtonWmMinimizeClick(e) {
-					e.stopPropagation();
-					e.preventDefault();
-
-					if (this.enabled) {
-						this.minimize();
-					}
-				},
-
-				'.wm-window-title button mousedown': function wmWindowTitleButtonMousedown(e) {
-					this.focus();
-
-					e.stopPropagation();
-					e.preventDefault();
-				},
-
-				'button.wm-resize mousedown': function buttonWmResizeMousedown(e) {
-					var event = convertMoveEvent(e);
-
-					if (!this.enabled || !this.resizable) {
-						return;
-					}
-
-					this._resizing = {
-						width: this.width - event.pageX,
-						height: this.height - event.pageY
-					};
-
-					this.view.el.classList.add('resizing');
-
-					e.preventDefault();
-				}
-			},
-
-			space: {
-				'mousemove': function mousemove(e) {
-					var event = convertMoveEvent(e);
-
-					// Fix #20. Mousemove outside browser
-					if (!isTouchEvent(e) && e.which !== 1) {
-						this._moving && this._stopMove();
-						this._resizing && this._stopResize();
-					}
-
-					if (this._moving) {
-						if (this.stayinspace) {
-							if (this.view.el.clientWidth > this.space.el.clientWidth || this.view.el.clientHeight > this.space.el.clientHeight) {
-								this.resize(Math.min(this.view.el.clientWidth, this.space.el.clientWidth), Math.min(this.view.el.clientHeight, this.space.el.clientHeight));
-							}
-							var movingX = Math.max(0, event.pageX - this._moving.x);
-							var minusX = 0;
-							var movingY = Math.max(0, event.pageY - this._moving.y);
-							var minusY = 0;
-							if (movingX + this.view.el.clientWidth > this.space.el.clientWidth) {
-								minusX = movingX + this.view.el.clientWidth - this.space.el.clientWidth;
-							}
-							if (movingY + this.view.el.clientHeight > this.space.el.clientHeight) {
-								minusY = movingY + this.view.el.clientHeight - this.space.el.clientHeight;
-							}
-							this.move(movingX - minusX, movingY - minusY);
-						} else {
-							this.move(event.pageX - this._moving.x, event.pageY - this._moving.y);
-						}
-					}
-
-					if (this._resizing) {
-						this.resize(event.pageX + this._resizing.width, event.pageY + this._resizing.height);
-					}
-				},
-
-				'mouseup': function mouseup() {
-					this._moving && this._stopMove();
-					this._resizing && this._stopResize();
-				}
-			}
-		},
-
-		_stopMove: function _stopMove() {
-			this.view.el.classList.remove('move');
-			this._moving = null;
-		},
-		_stopResize: function _stopResize() {
-			this.view.el.classList.remove('resizing');
-			this._restore = null;
-			this._resizing = null;
-		},
-
-
-		set space(el) {
-			if (el && !el.listen) {
-				console.error('The given space element is not a valid View');
-				return;
-			}
-
-			this._space = el;
-			el.append(this.view);
-			el.listen(this.events.space, this);
-		},
-
-		get space() {
-			return this._space;
-		},
-
-		get maximized() {
-			return this._maximized;
-		},
-
-		set maximized(value) {
-			if (value) {
-				this._restoreMaximized = this.stamp();
-				this.view.el.classList.add('maximized');
-				this.signals.emit('maximize', this, this._restoreMaximized);
-			} else {
-				this.view.el.classList.remove('maximized');
-				this.signals.emit('restore', this, this._restoreMaximized);
-			}
-			this._maximized = value;
-		},
-
-		get minimized() {
-			return this._minimized;
-		},
-
-		set minimized(value) {
-			if (value) {
-				this._restoreMinimized = this.stamp();
-				this.signals.emit('minimize', this, this._restoreMinimized);
-			} else {
-				this.signals.emit('restore', this, this._restoreMinimized);
-			}
-
-			this._minimized = value;
-		},
-
-		set active(value) {
-			if (value) {
-				this.signals.emit('focus', this);
-				this.view.el.classList.add('active');
-				this.view.el.classList.remove('inactive');
-			} else {
-				this.signals.emit('blur', this);
-				this.view.el.classList.remove('active');
-				this.view.el.classList.add('inactive');
-			}
-
-			this._active = value;
-		},
-
-		get active() {
-			return this._active;
-		},
-
-		set enabled(value) {
-			if (!value) {
-				this.view.el.classList.add('disabled');
-			} else {
-				this.view.el.classList.remove('disabled');
-			}
-
-			this._enabled = value;
-		},
-
-		get enabled() {
-			return this._enabled;
-		},
-
-		set movable(value) {
-			this._movable = !!value;
-		},
-
-		get movable() {
-			return this._movable;
-		},
-
-		set resizable(value) {
-			if (!value) {
-				this.view.el.classList.add('noresizable');
-			} else {
-				this.view.el.classList.remove('noresizable');
-			}
-
-			this._resizable = !!value;
-		},
-
-		get resizable() {
-			return this._resizable;
-		},
-
-		set closed(value) {}, // jshint ignore:line
-		get closed() {
-			return this._closed;
-		},
-
-		set destroyed(value) {}, // jshint ignore:line
-		get destroyed() {
-			return this._destroyed;
-		},
-
-		set widget(value) {
-			this._widget = value;
-		},
-
-		get widget() {
-			return this._widget;
-		},
-
-		set titlebar(value) {
-			if (value) {
-				this.$titlebar.el.classList.remove('hide');
-			} else {
-				this.$titlebar.el.classList.add('hide');
-			}
-
-			this._titlebar = value;
-		},
-
-		get titlebar() {
-			return this._titlebar;
-		},
-
-		set animations(value) {
-			if (value) {
-				this.view.el.classList.add('animated');
-			} else {
-				this.view.el.classList.remove('animated');
-			}
-
-			this._animations = value;
-		},
-
-		get animations() {
-			return this._animations;
-		},
-
-		set width(value) {
-			this.view.width = value;
-		},
-
-		get width() {
-			return parseInt(this.view.width, 10);
-		},
-
-		set height(value) {
-			this.view.height = value;
-		},
-
-		get height() {
-			return parseInt(this.view.height, 10);
-		},
-
-		set x(value) {
-			this.view.el.style.left = value + 'px';
-		},
-
-		set y(value) {
-			this.view.el.style.top = value + 'px';
-		},
-
-		get x() {
-			return parseInt(this.view.el.style.left || 0, 10);
-		},
-
-		get y() {
-			return parseInt(this.view.el.style.top || 0, 10);
-		},
-
-		set z(value) {
-			this.view.el.style.zIndex = value;
-		},
-
-		get z() {
-			return parseInt(this.view.el.style.zIndex || 0, 10);
-		},
-
-		open: function open() {
-			var _this = this;
-
-			return new Promise(function (done) {
-				_this.signals.emit('open', _this);
-
-				// Open animation.
-				_this.view.show();
-				_this.view.el.classList.add('opening');
-				_this.view.onAnimationEnd(function () {
-					_this.view.el.classList.remove('opening');
-					done();
-				}, _this);
-				_this._closed = false;
-			});
-		},
-		close: function close() {
-			var _this2 = this;
-
-			return new Promise(function (done) {
-				_this2.signals.emit('close', _this2);
-
-				_this2.view.el.classList.add('closing');
-				_this2.view.onAnimationEnd(function () {
-					_this2.view.el.classList.remove('closing');
-					_this2.view.el.classList.add('closed');
-					_this2.view.hide();
-
-					_this2.signals.emit('closed', _this2);
-					done();
-				}, _this2);
-
-				_this2._closed = true;
-			});
-		},
-		destroy: function destroy() {
-			var _this3 = this;
-
-			var destroy = function destroy() {
-				_this3.$content.empty();
-				_this3.signals.emit('destroyed', _this3);
-				_this3._destroyed = true;
-			};
-
-			this.signals.emit('destroy', this);
-
-			if (!this.closed) {
-				this.close().then(function () {
-					return destroy();
-				});
-			} else {
-				destroy();
-			}
-		},
-		resize: function resize(w, h) {
-			this.width = w;
-			this.height = h;
-			return this;
-		},
-		move: function move(x, y) {
-			this.x = x;
-			this.y = y;
-			return this;
-		},
-
-
-		/**
-   * @return A function that restores this window
-   */
-		stamp: function stamp() {
-			this.restore = function () {
-				var size = {
-					width: this.width,
-					height: this.height
-				};
-
-				var pos = {
-					x: this.x,
-					y: this.y
-				};
-
-				return function () {
-					this.resize(size.width, size.height);
-					this.move(pos.x, pos.y);
-
-					return this;
-				};
-			}.apply(this);
-
-			return this.restore;
-		},
-		restore: function restore() {},
-		maximize: function maximize() {
-			this.view.el.classList.add('maximazing');
-
-			var endMaximize = function endMaximize() {
-				this.view.el.classList.remove('maximazing');
-			};
-
-			if (this.animations) {
-				this.view.onTransitionEnd(endMaximize, this);
-			} else {
-				endMaximize.call(this);
-			}
-
-			this.maximized = !this.maximized;
-			return this;
-		},
-		minimize: function minimize() {
-			this.view.el.classList.add('minimizing');
-
-			var endMinimize = function endMinimize() {
-				this.view.el.classList.remove('minimizing');
-			};
-
-			if (this.animations) {
-				this.view.onTransitionEnd(endMinimize, this);
-			} else {
-				endMinimize.call(this);
-			}
-
-			this.minimized = !this.minimized;
-			return this;
-		},
-		focus: function focus() {
-			this.active = true;
-			return this;
-		},
-		blur: function blur() {
-			this.active = false;
-			return this;
-		},
-		toLocal: function toLocal(coord) {
-			return {
-				x: coord.x - this.x,
-				y: coord.y - this.y
-			};
-		},
-		toGlobal: function toGlobal(coord) {
-			return {
-				x: coord.x + this.x,
-				y: coord.y + this.y
-			};
-		},
-		append: function append(content) {
-			this.$content.append(content);
-		}
-	};
-
-	return Window;
+  'use strict';
+
+  function isTouchEvent(e) {
+    return !!window.TouchEvent && e.originalEvent instanceof window.TouchEvent;
+  }
+
+  function convertMoveEvent(e) {
+    return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e;
+  }
+
+  var Window = function Window(options) {
+    this.signals = new Emitter();
+
+    options = options || {
+      title: 'Untitle Window',
+      width: 400,
+      height: 200,
+      x: 0,
+      y: 0,
+      content: '',
+      movable: true,
+      resizable: true,
+      widget: false,
+      titlebar: true,
+      animations: true,
+      classname: '',
+      stayinspace: false
+    };
+
+    if (options.animations) {
+      options.classname + ' animated';
+    }
+
+    // View
+    this.view = new View('<div class=\'wm-window ' + options.classname + '\'>\n      <div class=\'wm-window-box\'>\n        <header class=\'wm-window-title\' unselectable=\'on\'>\n          <h1 unselectable=\'on\'>' + options.title + '</h1>\n          <div class=\'wm-button-group\'>\n            <button class=\'wm-minimize\'>&nbsp;</button>\n            <button class=\'wm-maximize\'>&nbsp;</button>\n            <button class=\'wm-close\'>&nbsp;</button>\n          </div>\n        </header>\n\n        <section class=\'wm-content\'></section>\n\n        <button class=\'wm-resize\'>&nbsp;</button>\n      </div>\n      <div class=\'wm-window-overlay\'></div>\n    </div>');
+    this.view.listen(this.events.window, this);
+
+    if (options.opacity) {
+      this.view.opacity = options.opacity;
+    }
+
+    // Predefined signal/events handlers.
+    if (options.events) {
+      for (var eventName in options.events) {
+        if (options.events.hasOwnProperty(eventName) && typeof options.events[eventName] === 'function') {
+          this.signals.on(eventName, options.events[eventName], this);
+        }
+      }
+    }
+
+    // Cache content element.
+    this.$content = this.view.find('.wm-content');
+    if (options.content) {
+      this.$content.append(options.content);
+    }
+
+    // Cache header element.
+    this.$titlebar = this.view.find('header');
+
+    this.width = options.width || 400;
+    this.height = options.height || 200;
+
+    this.x = options.x || 0;
+    this.y = options.y || 0;
+    this.z = 10000;
+
+    // State
+    this.enabled = true;
+    this.active = false;
+    this.maximized = false;
+    this.minimized = false;
+
+    this._closed = true;
+    this._destroyed = false;
+
+    // Properties
+    this.widget = false;
+    this.movable = typeof options.movable !== 'undefined' ? options.movable : true;
+    this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
+    this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
+    this.titlebar = true;
+    this.stayinspace = typeof options.stayinspace !== 'undefined' ? options.stayinspace : false;
+  };
+
+  Window.prototype = {
+    _restore: null,
+    _moving: null,
+    _resizing: null,
+
+    slots: {
+      move: function move(e) {
+        var event = convertMoveEvent(e);
+
+        if (!this.enabled || !this.movable) {
+          return;
+        }
+
+        this._moving = this.toLocal({
+          x: event.pageX,
+          y: event.pageY
+        });
+
+        this.view.el.classList.add('move');
+
+        e.preventDefault();
+      }
+    },
+
+    events: {
+      window: {
+        click: function click(e) {
+          this.signals.emit('select', this, e);
+        },
+
+        mousedown: function mousedown(e) {
+          this.focus();
+
+          if (this.widget) {
+            this.slots.move.call(this, e);
+          }
+        },
+
+        '.wm-content click': function wmContentClick(e) {
+          if (this.enabled) {
+            this.signals.emit('click', this, e);
+          }
+        },
+
+        '.wm-window-title mousedown': function wmWindowTitleMousedown(e) {
+          if (!this.maximized) {
+            this.slots.move.call(this, e);
+          }
+        },
+
+        '.wm-window-title dblclick': function wmWindowTitleDblclick() {
+          if (this.enabled && this.resizable) {
+            this.maximize();
+          }
+        },
+
+        '.wm-window-title button.wm-close click': function wmWindowTitleButtonWmCloseClick(e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          if (this.enabled) {
+            this.close();
+          }
+        },
+
+        '.wm-window-title button.wm-maximize click': function wmWindowTitleButtonWmMaximizeClick(e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          if (this.enabled && this.resizable) {
+            this.maximize();
+          }
+        },
+
+        '.wm-window-title button.wm-minimize click': function wmWindowTitleButtonWmMinimizeClick(e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          if (this.enabled) {
+            this.minimize();
+          }
+        },
+
+        '.wm-window-title button mousedown': function wmWindowTitleButtonMousedown(e) {
+          this.focus();
+
+          e.stopPropagation();
+          e.preventDefault();
+        },
+
+        'button.wm-resize mousedown': function buttonWmResizeMousedown(e) {
+          var event = convertMoveEvent(e);
+
+          if (!this.enabled || !this.resizable) {
+            return;
+          }
+
+          this._resizing = {
+            width: this.width - event.pageX,
+            height: this.height - event.pageY
+          };
+
+          this.view.el.classList.add('resizing');
+
+          e.preventDefault();
+        }
+      },
+
+      space: {
+        mousemove: function mousemove(e) {
+          var event = convertMoveEvent(e);
+
+          // Fix #20. Mousemove outside browser
+          if (!isTouchEvent(e) && e.which !== 1) {
+            this._moving && this._stopMove();
+            this._resizing && this._stopResize();
+          }
+
+          if (this._moving) {
+            if (this.stayinspace) {
+              if (this.view.el.clientWidth > this.space.el.clientWidth || this.view.el.clientHeight > this.space.el.clientHeight) {
+                this.resize(Math.min(this.view.el.clientWidth, this.space.el.clientWidth), Math.min(this.view.el.clientHeight, this.space.el.clientHeight));
+              }
+              var movingX = Math.max(0, event.pageX - this._moving.x);
+              var minusX = 0;
+              var movingY = Math.max(0, event.pageY - this._moving.y);
+              var minusY = 0;
+              if (movingX + this.view.el.clientWidth > this.space.el.clientWidth) {
+                minusX = movingX + this.view.el.clientWidth - this.space.el.clientWidth;
+              }
+              if (movingY + this.view.el.clientHeight > this.space.el.clientHeight) {
+                minusY = movingY + this.view.el.clientHeight - this.space.el.clientHeight;
+              }
+              this.move(movingX - minusX, movingY - minusY);
+            } else {
+              this.move(event.pageX - this._moving.x, event.pageY - this._moving.y);
+            }
+          }
+
+          if (this._resizing) {
+            this.resize(event.pageX + this._resizing.width, event.pageY + this._resizing.height);
+          }
+        },
+
+        mouseup: function mouseup() {
+          this._moving && this._stopMove();
+          this._resizing && this._stopResize();
+        }
+      }
+    },
+
+    _stopMove: function _stopMove() {
+      this.view.el.classList.remove('move');
+      this._moving = null;
+    },
+    _stopResize: function _stopResize() {
+      this.view.el.classList.remove('resizing');
+      this._restore = null;
+      this._resizing = null;
+    },
+
+
+    set space(el) {
+      if (el && !el.listen) {
+        console.error('The given space element is not a valid View');
+        return;
+      }
+
+      this._space = el;
+      el.append(this.view);
+      el.listen(this.events.space, this);
+    },
+
+    get space() {
+      return this._space;
+    },
+
+    get maximized() {
+      return this._maximized;
+    },
+
+    set maximized(value) {
+      if (value) {
+        this._restoreMaximized = this.stamp();
+        this.view.el.classList.add('maximized');
+        this.signals.emit('maximize', this, this._restoreMaximized);
+      } else {
+        this.view.el.classList.remove('maximized');
+        this.signals.emit('restore', this, this._restoreMaximized);
+      }
+      this._maximized = value;
+    },
+
+    get minimized() {
+      return this._minimized;
+    },
+
+    set minimized(value) {
+      if (value) {
+        this._restoreMinimized = this.stamp();
+        this.signals.emit('minimize', this, this._restoreMinimized);
+      } else {
+        this.signals.emit('restore', this, this._restoreMinimized);
+      }
+
+      this._minimized = value;
+    },
+
+    set active(value) {
+      if (value) {
+        this.signals.emit('focus', this);
+        this.view.el.classList.add('active');
+        this.view.el.classList.remove('inactive');
+      } else {
+        this.signals.emit('blur', this);
+        this.view.el.classList.remove('active');
+        this.view.el.classList.add('inactive');
+      }
+
+      this._active = value;
+    },
+
+    get active() {
+      return this._active;
+    },
+
+    set enabled(value) {
+      if (!value) {
+        this.view.el.classList.add('disabled');
+      } else {
+        this.view.el.classList.remove('disabled');
+      }
+
+      this._enabled = value;
+    },
+
+    get enabled() {
+      return this._enabled;
+    },
+
+    set movable(value) {
+      this._movable = !!value;
+    },
+
+    get movable() {
+      return this._movable;
+    },
+
+    set resizable(value) {
+      if (!value) {
+        this.view.el.classList.add('noresizable');
+      } else {
+        this.view.el.classList.remove('noresizable');
+      }
+
+      this._resizable = !!value;
+    },
+
+    get resizable() {
+      return this._resizable;
+    },
+
+    set closed(value) {}, // jshint ignore:line
+    get closed() {
+      return this._closed;
+    },
+
+    set destroyed(value) {}, // jshint ignore:line
+    get destroyed() {
+      return this._destroyed;
+    },
+
+    set widget(value) {
+      this._widget = value;
+    },
+
+    get widget() {
+      return this._widget;
+    },
+
+    set titlebar(value) {
+      if (value) {
+        this.$titlebar.el.classList.remove('hide');
+      } else {
+        this.$titlebar.el.classList.add('hide');
+      }
+
+      this._titlebar = value;
+    },
+
+    get titlebar() {
+      return this._titlebar;
+    },
+
+    set animations(value) {
+      if (value) {
+        this.view.el.classList.add('animated');
+      } else {
+        this.view.el.classList.remove('animated');
+      }
+
+      this._animations = value;
+    },
+
+    get animations() {
+      return this._animations;
+    },
+
+    set width(value) {
+      this.view.width = value;
+    },
+
+    get width() {
+      return this.view.width;
+    },
+
+    set height(value) {
+      this.view.height = value;
+    },
+
+    get height() {
+      return this.view.height;
+    },
+
+    set x(value) {
+      this.view.left = value;
+    },
+
+    set y(value) {
+      this.view.top = value;
+    },
+
+    get x() {
+      return this.view.left;
+    },
+
+    get y() {
+      return this.view.top;
+    },
+
+    set z(value) {
+      this.view.zIndex = value;
+    },
+
+    get z() {
+      return this.view.zIndex;
+    },
+
+    open: function open() {
+      var _this = this;
+
+      return new Promise(function (done) {
+        _this.signals.emit('open', _this);
+
+        // Open animation.
+        _this.view.show();
+        _this.view.el.classList.add('opening');
+        _this.view.onAnimationEnd(function () {
+          _this.view.el.classList.remove('opening');
+          done();
+        }, _this);
+        _this._closed = false;
+      });
+    },
+    close: function close() {
+      var _this2 = this;
+
+      return new Promise(function (done) {
+        _this2.signals.emit('close', _this2);
+
+        _this2.view.el.classList.add('closing');
+        _this2.view.onAnimationEnd(function () {
+          _this2.view.el.classList.remove('closing');
+          _this2.view.el.classList.add('closed');
+          _this2.view.hide();
+
+          _this2.signals.emit('closed', _this2);
+          done();
+        }, _this2);
+
+        _this2._closed = true;
+      });
+    },
+    destroy: function destroy() {
+      var _this3 = this;
+
+      var destroy = function destroy() {
+        _this3.$content.empty();
+        _this3.signals.emit('destroyed', _this3);
+        _this3._destroyed = true;
+      };
+
+      this.signals.emit('destroy', this);
+
+      if (!this.closed) {
+        this.close().then(function () {
+          return destroy();
+        });
+      } else {
+        destroy();
+      }
+    },
+    resize: function resize(w, h) {
+      this.width = w;
+      this.height = h;
+      return this;
+    },
+    move: function move(x, y) {
+      this.x = x;
+      this.y = y;
+      return this;
+    },
+
+
+    /**
+     * @return A function that restores this window
+     */
+    stamp: function stamp() {
+      this.restore = function () {
+        var size = {
+          width: this.width,
+          height: this.height
+        };
+
+        var pos = {
+          x: this.x,
+          y: this.y
+        };
+
+        return function () {
+          this.resize(size.width, size.height);
+          this.move(pos.x, pos.y);
+
+          return this;
+        };
+      }.apply(this);
+
+      return this.restore;
+    },
+    restore: function restore() {},
+    maximize: function maximize() {
+      var _this4 = this;
+
+      this.view.el.classList.add('maximazing');
+
+      var endMaximize = function endMaximize() {
+        _this4.view.el.classList.remove('maximazing');
+      };
+
+      if (this.animations) {
+        this.view.on('transitionend', endMaximize);
+      } else {
+        endMaximize();
+      }
+
+      this.maximized = !this.maximized;
+      return this;
+    },
+    minimize: function minimize() {
+      var _this5 = this;
+
+      this.view.el.classList.add('minimizing');
+
+      var endMinimize = function endMinimize() {
+        _this5.view.el.classList.remove('minimizing');
+      };
+
+      if (this.animations) {
+        this.view.on('transitionend', endMinimize);
+      } else {
+        endMinimize();
+      }
+
+      this.minimized = !this.minimized;
+      return this;
+    },
+    focus: function focus() {
+      this.active = true;
+      return this;
+    },
+    blur: function blur() {
+      this.active = false;
+      return this;
+    },
+    toLocal: function toLocal(coord) {
+      return {
+        x: coord.x - this.x,
+        y: coord.y - this.y
+      };
+    },
+    toGlobal: function toGlobal(coord) {
+      return {
+        x: coord.x + this.x,
+        y: coord.y + this.y
+      };
+    },
+    append: function append(content) {
+      this.$content.append(content);
+    }
+  };
+
+  return Window;
 }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -2551,208 +2590,209 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
+
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ventus/wm/window */ "./ventus/wm/window.js"), __webpack_require__(/*! ventus/core/view */ "./ventus/core/view.js"), __webpack_require__(/*! ventus/wm/modes/default */ "./ventus/wm/modes/default.js"), __webpack_require__(/*! ventus/wm/modes/expose */ "./ventus/wm/modes/expose.js"), __webpack_require__(/*! ventus/less/windowmanager.less */ "./ventus/less/windowmanager.less")], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Window, View, DefaultMode, ExposeMode) {
-	'use strict';
+  'use strict';
 
-	var WindowManager = function WindowManager() {
-		var createWindow;
+  var WindowManager = function WindowManager() {
+    var createWindow = void 0;
 
-		this.view = new View('<div class="wm-space"><div class="wm-overlay" /></div>');
-		document.body.insertBefore(this.view.el, document.body.firstChild);
+    this.view = new View('<div class="wm-space"><div class="wm-overlay" /></div>');
+    document.body.insertBefore(this.view.el, document.body.firstChild);
 
-		this.$overlay = this.view.find('.wm-overlay');
-		this.$overlay.el.style.zIndex = this._baseZ - 1;
+    this.$overlay = this.view.find('.wm-overlay');
+    this.$overlay.zIndex = this._baseZ - 1;
 
-		// Generate mode plugin actions wrapper
-		this.actions.forEach(function (value) {
-			this[value] = function (action) {
-				return function () {
-					if (this.currentMode.actions[action]) {
-						this.currentMode.actions[action].apply(this, arguments);
-					}
-				};
-			}.call(this, value);
-		}, this);
+    // Generate mode plugin actions wrapper
+    this.actions.forEach(function (value) {
+      this[value] = function (action) {
+        return function () {
+          if (this.currentMode.actions[action]) {
+            this.currentMode.actions[action].apply(this, arguments);
+          }
+        };
+      }.call(this, value);
+    }, this);
 
-		// Launch register of every mode plugged-in
-		for (var mode in this.modes) {
-			if (this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
-				this.modes[mode].register.apply(this);
-			}
-		}
+    // Launch register of every mode plugged-in
+    for (var mode in this.modes) {
+      if (this.modes.hasOwnProperty(mode) && this.modes[mode].register) {
+        this.modes[mode].register.apply(this);
+      }
+    }
 
-		this.windows = [];
-		this.active = null;
+    this.windows = [];
+    this.active = null;
 
-		this.mode = 'default';
+    this.mode = 'default';
 
-		// Replace createWindow function on prototype with instance-specific copy
-		// (avoids pollution of prototype during the next step)
-		createWindow = this.createWindow;
-		this.createWindow = createWindow.bind(this);
-		// Bind this to sub-functions of createWindow function
-		this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
-		this.createWindow.fromElement = createWindow.fromElement.bind(this);
-	};
+    // Replace createWindow function on prototype with instance-specific copy
+    // (avoids pollution of prototype during the next step).
+    createWindow = this.createWindow;
+    this.createWindow = createWindow.bind(this);
+    // Bind this to sub-functions of createWindow function
+    this.createWindow.fromQuery = createWindow.fromQuery.bind(this);
+    this.createWindow.fromElement = createWindow.fromElement.bind(this);
+  };
 
-	WindowManager.prototype = {
-		actions: ['focus', 'blur', 'close', 'maximize', 'minimize', 'restore', 'select'],
+  WindowManager.prototype = {
+    actions: ['focus', 'blur', 'close', 'maximize', 'minimize', 'restore', 'select'],
 
-		modes: {
-			'default': DefaultMode,
-			'expose': ExposeMode
-		},
+    modes: {
+      default: DefaultMode,
+      expose: ExposeMode
+    },
 
-		set mode(value) {
-			var mode = this.modes[value];
-			if (!mode || this._mode === value) {
-				return;
-			}
+    set mode(value) {
+      var mode = this.modes[value];
+      if (!mode || this._mode === value) {
+        return;
+      }
 
-			// Unplug old system
-			if (this._mode && this.currentMode.unplug) {
-				this.currentMode.unplug.apply(this);
-			}
+      // Unplug old system
+      if (this._mode && this.currentMode.unplug) {
+        this.currentMode.unplug.apply(this);
+      }
 
-			// Plug new mode system
-			if (mode.plug) {
-				mode.plug.apply(this);
-			}
+      // Plug new mode system
+      if (mode.plug) {
+        mode.plug.apply(this);
+      }
 
-			this._mode = value;
-		},
+      this._mode = value;
+    },
 
-		get mode() {
-			return this._mode;
-		},
+    get mode() {
+      return this._mode;
+    },
 
-		get currentMode() {
-			return this.modes[this._mode];
-		},
+    get currentMode() {
+      return this.modes[this._mode];
+    },
 
-		set overlay(value) {
-			this.$overlay.el.style.opacity = value ? 0.8 : 0;
-			this._overlay = this.$overlay.el.style.opacity;
-		},
+    set overlay(value) {
+      this.$overlay.opacity = value ? 0.8 : 0;
+      this._overlay = this.$overlay.opacity;
+    },
 
-		get overlay() {
-			return this._overlay;
-		},
+    get overlay() {
+      return this._overlay;
+    },
 
-		createWindow: function createWindow(options) {
-			var win = new Window(options);
+    createWindow: function createWindow(options) {
+      var win = new Window(options);
 
-			// Show 'default' mode
-			this.mode = 'default';
+      // Show 'default' mode
+      this.mode = 'default';
 
-			// Connect window signals to the manager listeners
-			win.signals.on('focus', this._focus, this);
-			win.signals.on('blur', this._blur, this);
-			win.signals.on('close', this._close, this);
+      // Connect window signals to the manager listeners
+      win.signals.on('focus', this._focus, this);
+      win.signals.on('blur', this._blur, this);
+      win.signals.on('close', this._close, this);
 
-			// Connect window signals to manager mode actions
-			this.actions.forEach(function (action) {
-				win.signals.on(action, this[action], this);
-			}, this);
+      // Connect window signals to manager mode actions
+      this.actions.forEach(function (action) {
+        win.signals.on(action, this[action], this);
+      }, this);
 
-			this.windows.push(win);
+      this.windows.push(win);
 
-			win.space = this.view;
+      win.space = this.view;
 
-			win.focus();
-			return win;
-		},
-
-
-		/**
-   * Internal action always performed besides the mode definition
-   */
-		_focus: function _focus(win) {
-			var currentZ,
-			    baseZ = 10000,
-			    maxZ = baseZ + 10000,
-			    index;
-
-			if (this.active && this.active === win) {
-				return;
-			}
-
-			if (this.active) {
-				currentZ = this.active.z;
-				this.active.blur();
-			} else {
-				currentZ = baseZ;
-			}
-
-			// Reorder windows stack (@todo optimize this)
-			index = this.windows.indexOf(win);
-			this.windows.splice(index, 1); // Remove from array
-			this.windows.push(win);
-
-			win.z = currentZ + 1;
-
-			// Refresh z-indexes just every 'maxZ' activations
-			if (currentZ > maxZ + this.windows.length) {
-				for (var z, i = this.windows.length; i--;) {
-					z = this.windows[i].z;
-					this.windows[i].z = baseZ + (z - maxZ);
-				}
-			}
-
-			this.active = win;
-		},
+      win.focus();
+      return win;
+    },
 
 
-		/**
-   * Internal action always performed besides the mode definition
-   */
-		_blur: function _blur(win) {
-			if (this.active === win) {
-				this.active = null;
-			}
-		},
+    /**
+     * Internal action always performed besides the mode definition
+     */
+    _focus: function _focus(win) {
+      var currentZ = void 0,
+          index = void 0;
+      var baseZ = 10000;
+      var maxZ = baseZ + 10000;
+
+      if (this.active && this.active === win) {
+        return;
+      }
+
+      if (this.active) {
+        currentZ = this.active.z;
+        this.active.blur();
+      } else {
+        currentZ = baseZ;
+      }
+
+      // Reorder windows stack (@todo optimize this)
+      index = this.windows.indexOf(win);
+      this.windows.splice(index, 1); // Remove from array
+      this.windows.push(win);
+
+      win.z = currentZ + 1;
+
+      // Refresh z-indexes just every 'maxZ' activations
+      if (currentZ > maxZ + this.windows.length) {
+        for (var z, i = this.windows.length; i--;) {
+          z = this.windows[i].z;
+          this.windows[i].z = baseZ + (z - maxZ);
+        }
+      }
+
+      this.active = win;
+    },
 
 
-		/**
-   * Internal action always performed besides the mode definition
-   */
-		_close: function _close(win) {
-			// Remove window from manager
-			var id = this.windows.indexOf(win),
-			    len;
-			if (id === -1) {
-				console.log('Trying to close a window that doesn\'t exist in this window manager');
-				return;
-			}
+    /**
+     * Internal action always performed besides the mode definition
+     */
+    _blur: function _blur(win) {
+      if (this.active === win) {
+        this.active = null;
+      }
+    },
 
-			this.windows.splice(id, 1); // Remove from array
-			len = this.windows.length;
-			if (this.active && this.active === win) {
-				this.active = len !== 0 ? this.windows[len - 1] : null;
-				if (this.active) {
-					this.active.focus();
-				}
-			}
-		}
-	};
 
-	WindowManager.prototype.createWindow.fromQuery = function (selector, options) {
-		var element = document.querySelector(selector);
-		if (!!element) {
-			options.content = new View(element);
-		}
-		return this.createWindow(options);
-	};
+    /**
+     * Internal action always performed besides the mode definition
+     */
+    _close: function _close(win) {
+      // Remove window from manager
+      var id = this.windows.indexOf(win);
+      var len = void 0;
+      if (id === -1) {
+        console.log('Trying to close a window that doesn\'t exist in this window manager');
+        return;
+      }
 
-	WindowManager.prototype.createWindow.fromElement = function (element, options) {
-		options.content = new View(element);
-		return this.createWindow(options);
-	};
+      this.windows.splice(id, 1); // Remove from array
+      len = this.windows.length;
+      if (this.active && this.active === win) {
+        this.active = len !== 0 ? this.windows[len - 1] : null;
+        if (this.active) {
+          this.active.focus();
+        }
+      }
+    }
+  };
 
-	return WindowManager;
+  WindowManager.prototype.createWindow.fromQuery = function (selector, options) {
+    var element = document.querySelector(selector);
+    if (!!element) {
+      options.content = new View(element);
+    }
+    return this.createWindow(options);
+  };
+
+  WindowManager.prototype.createWindow.fromElement = function (element, options) {
+    options.content = new View(element);
+    return this.createWindow(options);
+  };
+
+  return WindowManager;
 }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
