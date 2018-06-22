@@ -1239,7 +1239,7 @@ define('ventus/wm/window', [
         this.resizable = typeof options.resizable !== 'undefined' ? options.resizable : true;
         this.animations = typeof options.animations !== 'undefined' ? options.animations : true;
         this.titlebar = true;
-        this.stayinspace = typeof options.stayinspace !== 'undefined' ? options.stayinspace : true;
+        this.stayinspace = typeof options.stayinspace !== 'undefined' ? options.stayinspace : false;
     };
     Window.prototype = {
         _restore: null,
@@ -1276,7 +1276,9 @@ define('ventus/wm/window', [
                     }
                 },
                 '.wm-window-title mousedown': function (e) {
-                    this.slots.move.call(this, e);
+                    if (!this.maximized) {
+                        this.slots.move.call(this, e);
+                    }
                 },
                 '.wm-window-title dblclick': function () {
                     if (this.enabled && this.resizable) {
@@ -1343,6 +1345,9 @@ define('ventus/wm/window', [
                     }
                     if (this._moving) {
                         if (this.stayinspace) {
+                            if (this.el[0].clientWidth > this.space[0].clientWidth || this.el[0].clientHeight > this.space[0].clientHeight) {
+                                this.resize(Math.min(this.el[0].clientWidth, this.space[0].clientWidth), Math.min(this.el[0].clientHeight, this.space[0].clientHeight));
+                            }
                             var movingX = Math.max(0, event.pageX - this._moving.x);
                             var minusX = 0;
                             var movingY = Math.max(0, event.pageY - this._moving.y);
@@ -1395,8 +1400,10 @@ define('ventus/wm/window', [
         set maximized(value) {
             if (value) {
                 this._restoreMaximized = this.stamp();
+                this.el.addClass('maximized');
                 this.signals.emit('maximize', this, this._restoreMaximized);
             } else {
+                this.el.removeClass('maximized');
                 this.signals.emit('restore', this, this._restoreMaximized);
             }
             this._maximized = value;
