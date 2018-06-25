@@ -33,11 +33,14 @@
 
 		<div class="buttonbar">
 			<button class="button create-button">Create Window</button>
+			<button class="button create-url-div">Create Window (from URL in DIV)</button>
+			<button class="button create-url-iframe">Create Window (from URL in IFRAME)</button>
 			<button class="button expose-button">Exposé</button>
 		</div>
 
 		<script type="text/javascript" src="../../vendor/jquery.js"></script>
 		<script type="text/javascript" src="../../dist/ventus.js"></script>
+		<script type="text/javascript" src="from-url.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
@@ -76,6 +79,31 @@
 						}
 					})
 					.open();
+				});
+				$('.create-url-div').click(function () {
+					createWindowFromUrl('../simple/from-url/refresh-content.html', false, {
+						title: 'URL in DIV',
+						x: (pos += 60),
+						y: pos,
+						width: 500,
+						height: 350,
+						animations: false,
+						events: {
+							closed: function () {
+								this.destroy();
+							}
+						}
+					});
+				});
+				$('.create-url-iframe').click(function () {
+					createWindowFromUrl('../simple/from-url/refresh-content.html', true, {
+						title: 'URL in IFRAME',
+						x: (pos += 60),
+						y: pos,
+						width: 500,
+						height: 350,
+						animations: false,
+					});
 				});
 
 				$('.expose-button').click(_.throttle(function(){

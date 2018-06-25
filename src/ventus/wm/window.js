@@ -20,52 +20,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
 	}
 
-  function checkLoadStatus(response) {
-		var promise = new Promise();
-		if (response.status >= 200 && response.status < 300) {
-			promise.done(response);
-		} else {
-			promise.fail(new Error(response.statusText));
-		}
-
-		return promise.getFuture();
-	}
-
-  function applyTextToNode(node, text) {
-		node.innerHTML = text;
-		var scripts = node.getElementsByTagName('script');
-		scripts = Array.prototype.slice.call( scripts, 0 );
-		scripts.forEach(function (el) {
-			var s = document.createElement('script');
-			s.type = 'text/javascript';
-			if (el.src) {
-				s.src = el.src;
-			} else {
-				s.textContent = el.innerText;
-			}
-			// re-insert the script tag so it executes.
-			el.parentNode.insertBefore(s, el);
-			el.parentNode.removeChild(el);
-		});
-	}
-
-	function setXhrResponse(url, node, fallbackContent) {
-		/* global fetch */
-		fetch(url, {
-			credentials: 'same-origin'
-		}).then(checkLoadStatus)
-			.then(function (response) {
-			return response.text();
-		}).then(function (data) {
-			applyTextToNode(node, data);
-		}).catch(function (error) {
-			node.innerHTML = fallbackContent;
-			console.log('Request failed', error);
-		});
-	}
-
 	var Window = function (options) {
-		var xhrOptions;
 		this.signals = new Emitter();
 
 		options = options || {
@@ -83,23 +38,17 @@ function(Emitter, Promise, View, WindowTemplate) {
 			animations: true,
 			classname: '',
 			stayinspace: false,
-			reload: false
     };
     
 		if (options.animations) {
 			options.classname + ' animated';
 		}
 
-		if (typeof options.xhr !== 'undefined') {
-				xhrOptions = options.xhr;
-				setXhrResponse(xhrOptions.url, xhrOptions.element, xhrOptions.fallbackContent);
-			}
-
 		// View
 		this.el = View(WindowTemplate({
 			title: options.title,
 			classname: options.classname,
-			showRefresh: options.reload ? '' : 'hidden'
+			showRefresh: options.events && typeof options.events.reload === 'function' ? '' : 'hidden'
 		}));
 		this.el.listen(this.events.window, this);
 
@@ -218,16 +167,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				'.wm-window-title button.wm-refresh click': function(e) {
 					e.stopPropagation();
 					e.preventDefault();
-
-					var windowContent = this.el[0].querySelector('.windowContent');
-					var url = windowContent.getAttribute('data-url');
-					var data = '<h1>Oops, could not refresh content with given url: "'+ url +'".</h1>';
-
-					if (windowContent.tagName === 'DIV') {
-						setXhrResponse(url, windowContent, data);
-					} else if (windowContent.tagName === 'IFRAME') {
-						windowContent.setAttribute('src', url);
-					}
+					this.signals.emit('reload', this, e);
 				},
 
 				'.wm-window-title button.wm-close click': function(e) {

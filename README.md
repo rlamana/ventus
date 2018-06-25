@@ -46,6 +46,30 @@ Default is false (right click shows expose).
 	
 	window.open();
 	
+
+### Creating a new empty window with refresh button
+To create a window with a refresh button, you have to add a event-listener to the options when creating a window.
+A working example is added to `examples/simple/index.html`
+
+	var window = wm.createWindow({
+		title: 'A new window',
+		x: 50,
+		y: 50,
+		width: 400,
+		height: 250
+
+		animations: false,
+		stayinspace: true,
+		events: {
+			reload: function () {
+				// Add logic here that will be executed 
+				// when refresh button is clicked.
+			}
+		}
+	});
+	
+	window.open();
+
 ### Creating a new window wrapping a DOM Element
 
 ##### Using a query
@@ -64,25 +88,6 @@ Default is false (right click shows expose).
 		height: 500,
 		x: 0,
 		y: 0
-	});
-	
-##### Using a URL
-	wm.createWindow.fromUrl('example.com', {
-		title: 'Iframe Window from URL',
-		width: 400,
-		height: 500,
-		x: 600,
-		y: 200,
-	});
-	
-##### Using a URL inside an iframe
-	wm.createWindow.fromUrl('example.com', {
-		title: 'Iframe Window from URL',
-		width: 400,
-		height: 500,
-		x: 600,
-		y: 200,
-		iframe: true
 	});
 
 ### Listening to events
