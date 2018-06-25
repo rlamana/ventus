@@ -189,6 +189,28 @@
 			width: 10px;
 		}
 	}
+
+	&.mouse-edge {
+		&.mouse-edge-top,
+		&.mouse-edge-bottom {
+			cursor: ns-resize;
+		}
+
+		&.mouse-edge-left,
+		&.mouse-edge-right {
+			cursor: ew-resize;
+		}
+
+		&.mouse-edge-top-left,
+		&.mouse-edge-bottom-right {
+			cursor: nwse-resize;
+		}
+
+		&.mouse-edge-top-right,
+		&.mouse-edge-bottom-left {
+			cursor: nesw-resize;
+		}
+	}
 }
 
 .wm-window.disabled {

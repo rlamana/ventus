@@ -1199,6 +1199,7 @@ define('ventus/wm/window', [
         _restore: null,
         _moving: null,
         _resizing: null,
+        _mouseEdgePosition: null,
         slots: {
             move: function (e) {
                 var event = convertMoveEvent(e);
@@ -1224,6 +1225,9 @@ define('ventus/wm/window', [
                     if (this.widget) {
                         this.slots.move.call(this, e);
                     }
+                    if (this.enabled && this.resizable && !this.maximized && this.mouseOnWindowEdge) {
+                        this.startResize(e);
+                    }
                 },
                 '.wm-content click': function (e) {
                     if (this.enabled) {
@@ -1231,7 +1235,7 @@ define('ventus/wm/window', [
                     }
                 },
                 '.wm-window-title mousedown': function (e) {
-                    if (!this.maximized) {
+                    if (!this.maximized && !this.mouseOnWindowEdge) {
                         this.slots.move.call(this, e);
                     }
                 },
@@ -1267,17 +1271,55 @@ define('ventus/wm/window', [
                     e.preventDefault();
                 },
                 'button.wm-resize mousedown': function (e) {
-                    var event = convertMoveEvent(e);
-                    if (!this.enabled || !this.resizable) {
+                    if (this.enabled && this.resizable) {
+                        this._mouseEdgePosition = {
+                            top: false,
+                            left: false,
+                            bottom: true,
+                            right: true
+                        };
+                        this.startResize(e);
+                    }
+                },
+                'mousemove': function (e) {
+                    var EdgeSensitivities = {
+                        TOP: 5,
+                        LEFT: 15,
+                        BOTTOM: 15,
+                        RIGHT: 15
+                    };
+                    var TITLE_HEIGHT = 36;
+                    if (!this.enabled || !this.resizable || this._resizing) {
                         return;
                     }
-                    this._resizing = {
-                        width: this.width - event.pageX,
-                        height: this.height - event.pageY
+                    var event = convertMoveEvent(e);
+                    this._mouseEdgePosition = {
+                        top: !e.srcElement.classList.contains('wm-content') && event.offsetY < EdgeSensitivities.TOP,
+                        left: event.offsetX < EdgeSensitivities.LEFT,
+                        bottom: this.height - TITLE_HEIGHT - event.offsetY < EdgeSensitivities.BOTTOM,
+                        right: this.width - event.offsetX < EdgeSensitivities.RIGHT
                     };
-                    this._space[0].classList.add('no-events');
-                    this.el.addClass('resizing');
-                    e.preventDefault();
+                    this.el[0].classList.remove('mouse-edge', 'mouse-edge-top', 'mouse-edge-top-left', 'mouse-edge-top-right', 'mouse-edge-left', 'mouse-edge-right', 'mouse-edge-bottom', 'mouse-edge-bottom-left', 'mouse-edge-bottom-right');
+                    if (this.mouseOnWindowEdge) {
+                        var className = 'mouse-edge';
+                        if (this._mouseEdgePosition.top) {
+                            className += '-top';
+                        } else if (this._mouseEdgePosition.bottom) {
+                            className += '-bottom';
+                        }
+                        if (this._mouseEdgePosition.left) {
+                            className += '-left';
+                        } else if (this._mouseEdgePosition.right) {
+                            className += '-right';
+                        }
+                        this.el[0].classList.add('mouse-edge', className);
+                    }
+                },
+                'mouseleave': function () {
+                    if (!this._resizing) {
+                        this._mouseEdgePosition = null;
+                        this.el[0].classList.remove('mouse-edge', 'mouse-edge-top', 'mouse-edge-top-left', 'mouse-edge-top-right', 'mouse-edge-left', 'mouse-edge-right', 'mouse-edge-bottom', 'mouse-edge-bottom-left', 'mouse-edge-bottom-right');
+                    }
                 }
             },
             space: {
@@ -1308,7 +1350,29 @@ define('ventus/wm/window', [
                         }
                     }
                     if (this._resizing) {
-                        this.resize(event.pageX + this._resizing.width, event.pageY + this._resizing.height);
+                        var newWidth;
+                        if (!this.resizingHorizontally) {
+                            newWidth = this.width;
+                        } else if (this._mouseEdgePosition.left) {
+                            newWidth = this._resizing.pageX - event.pageX + this._resizing.width;
+                        } else {
+                            newWidth = event.pageX - this._resizing.pageX + this._resizing.width;
+                        }
+                        var newHeight;
+                        if (!this.resizingVertically) {
+                            newHeight = this.height;
+                        } else if (this._mouseEdgePosition.top) {
+                            newHeight = this._resizing.pageY - event.pageY + this._resizing.height;
+                        } else {
+                            newHeight = event.pageY - this._resizing.pageY + this._resizing.height;
+                        }
+                        this.resize(newWidth, newHeight);
+                        if (this._mouseEdgePosition.left) {
+                            this.move(event.pageX, this.y);
+                        }
+                        if (this._mouseEdgePosition.top) {
+                            this.move(this.x, event.pageY);
+                        }
                     }
                 },
                 'mouseup': function () {
@@ -1327,6 +1391,15 @@ define('ventus/wm/window', [
             this.el.removeClass('resizing');
             this._restore = null;
             this._resizing = null;
+        },
+        get mouseOnWindowEdge() {
+            return this._mouseEdgePosition && (this._mouseEdgePosition.top || this._mouseEdgePosition.left || this._mouseEdgePosition.bottom || this._mouseEdgePosition.right);
+        },
+        get resizingHorizontally() {
+            return this._mouseEdgePosition && (this._mouseEdgePosition.left || this._mouseEdgePosition.right);
+        },
+        get resizingVertically() {
+            return this._mouseEdgePosition && (this._mouseEdgePosition.top || this._mouseEdgePosition.bottom);
         },
         set space(el) {
             if (el && !el.listen) {
@@ -1476,6 +1549,18 @@ define('ventus/wm/window', [
         },
         get z() {
             return parseInt(this.el.css('z-index'), 10);
+        },
+        startResize: function (e) {
+            var event = convertMoveEvent(e);
+            this._resizing = {
+                pageX: event.pageX,
+                pageY: event.pageY,
+                width: this.width,
+                height: this.height
+            };
+            this._space[0].classList.add('no-events');
+            this.el.addClass('resizing');
+            e.preventDefault();
         },
         open: function () {
             var promise = new Promise();
@@ -2590,3 +2675,4 @@ define('src/main', [
 
     return require('ventus');
 }));
+
