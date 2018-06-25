@@ -11,6 +11,14 @@ This project started as an experiment and even though it was stable enough **it 
 
 	var wm = new Ventus.WindowManager();
 	
+### Creating a new window manager and disable expose on right-click
+Set rightClick on true to disable expose on right click.
+Default is false (right click shows expose).
+
+    var wm = new Ventus.WindowManager({
+        rightClick: true
+    });
+	
 ### Creating a new empty window
 
 	var window = wm.createWindow({
@@ -38,6 +46,30 @@ This project started as an experiment and even though it was stable enough **it 
 	
 	window.open();
 	
+
+### Creating a new empty window with refresh button
+To create a window with a refresh button, you have to add a event-listener to the options when creating a window.
+A working example is added to `examples/simple/index.html`
+
+	var window = wm.createWindow({
+		title: 'A new window',
+		x: 50,
+		y: 50,
+		width: 400,
+		height: 250
+
+		animations: false,
+		stayinspace: true,
+		events: {
+			reload: function () {
+				// Add logic here that will be executed 
+				// when refresh button is clicked.
+			}
+		}
+	});
+	
+	window.open();
+
 ### Creating a new window wrapping a DOM Element
 
 ##### Using a query

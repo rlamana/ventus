@@ -37,17 +37,25 @@ function(Emitter, Promise, View, WindowTemplate) {
 			titlebar: true,
 			animations: true,
 			classname: '',
-			stayinspace: false
+			stayinspace: false,
     };
+<<<<<<< HEAD
+    
+		if (options.animations) {
+			options.classname + ' animated';
+		}
+=======
 
     if (options.animations) {
       options.classname + ' animated';
     }
+>>>>>>> ventus/master
 
 		// View
 		this.el = View(WindowTemplate({
 			title: options.title,
-			classname: options.classname
+			classname: options.classname,
+			showRefresh: options.events && typeof options.events.reload === 'function' ? '' : 'hidden'
 		}));
 		this.el.listen(this.events.window, this);
 
@@ -162,6 +170,12 @@ function(Emitter, Promise, View, WindowTemplate) {
 					if(this.enabled && this.resizable) {
 						this.maximize();
 					}
+				},
+
+				'.wm-window-title button.wm-refresh click': function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+					this.signals.emit('reload', this, e);
 				},
 
 				'.wm-window-title button.wm-close click': function(e) {

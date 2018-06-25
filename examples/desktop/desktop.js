@@ -4,7 +4,9 @@
  */
 (function($, Ventus) {
 	document.addEventListener('DOMContentLoaded', function() {
-		var wm = new Ventus.WindowManager();
+		var wm = new Ventus.WindowManager({
+			rightClick: true, // false = enable expose on right click
+		});
 
 		window.wm = wm; // For debugging reasons
 
