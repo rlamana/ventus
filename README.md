@@ -11,6 +11,21 @@ This project started as an experiment and even though it was stable enough **it 
 
 	var wm = new Ventus.WindowManager();
 	
+### Creating a new window manager and set the expose listeners
+
+Set the exposeListeners. If you don't specify this, it will use the default `rightclick`.
+Available listeners are `a,enter,space,rightclick,none`.
+If `none` is specified it will not set any listener.
+
+	var wm = new Ventus.WindowManager({
+		showExposeOn: 'a|enter|space|rightclick'
+	});
+
+Disable the listeners:
+
+	var wm = new Ventus.WindowManager({
+		showExposeOn: 'none'
+	});
 ### Creating a new empty window
 
 	var window = wm.createWindow({

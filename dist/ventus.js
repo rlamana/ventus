@@ -2242,24 +2242,63 @@ define('underscore', [], function () {
     return;
 });
 define('ventus/wm/modes/expose', [
+    '$',
     'underscore',
     'ventus/core/promise'
-], function (_, Promise) {
+], function ($, _, Promise) {
     'use strict';
     var ExposeMode = {
         register: function () {
             var self = this;
-            console.log('Expose mode registered.');
-            this.el.on('contextmenu', _.throttle(function () {
+            var listener;
+            var listeners = this.exposeListeners;
+            var setMode = function () {
                 if (self.mode !== 'expose') {
                     if (self.windows.length > 0) {
                         self.mode = 'expose';
                     }
-                } else if (self.mode === 'expose') {
+                } else {
                     self.mode = 'default';
                 }
-                return false;
-            }, 1000));
+            };
+            var configKeyListener = function (keyCode) {
+                return {
+                    selector: $(document),
+                    on: 'keypress',
+                    callback: function (event) {
+                        if (event.keyCode === keyCode) {
+                            setMode();
+                        }
+                    }
+                };
+            };
+            var validListeners = {
+                a: configKeyListener(97),
+                enter: configKeyListener(13),
+                space: configKeyListener(32),
+                rightclick: {
+                    selector: this.el,
+                    on: 'contextmenu',
+                    callback: function () {
+                        setMode();
+                        return false;
+                    }
+                }
+            };
+            if (typeof listeners !== 'string') {
+                throw new Error('Error, showExposeOn/exposeListeners must be a string.');
+            }
+            listeners = listeners.split('|');
+            if (listeners.indexOf('none') < 0) {
+                listeners.forEach(function (type) {
+                    if (type in validListeners === false) {
+                        throw new Error('Error, exposeListener type is not valid. Valid types are "a,enter,space,rightclick,none".');
+                    }
+                    listener = validListeners[type];
+                    listener.selector.on(listener.on, _.throttle(listener.callback, 1000));
+                });
+            }
+            console.log('Expose mode registered.');
         },
         plug: function () {
             var floor = Math.floor, ceil = Math.ceil, self = this;
@@ -2406,8 +2445,12 @@ define('ventus/wm/windowmanager', [
     'ventus/wm/modes/fullscreen'
 ], function ($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
     'use strict';
-    var WindowManager = function () {
+    var WindowManager = function (options) {
         var createWindow;
+        if (typeof options === 'undefined') {
+            options = {};
+        }
+        this.exposeListeners = options.showExposeOn || 'rightclick';
         this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
         $(document.body).prepend(this.el);
         this.$overlay = this.el.find('.wm-overlay');

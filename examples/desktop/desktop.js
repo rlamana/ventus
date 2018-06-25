@@ -4,7 +4,9 @@
  */
 (function($, Ventus) {
 	document.addEventListener('DOMContentLoaded', function() {
-		var wm = new Ventus.WindowManager();
+		var wm = new Ventus.WindowManager({
+			showExposeOn: 'a|enter|space|rightclick'
+		});
 
 		window.wm = wm; // For debugging reasons
 
