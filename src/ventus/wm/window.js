@@ -111,7 +111,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		_restore: null,
 		_moving: null,
 		_resizing: null,
-		_resizeDirection: null,
+		_mouseEdgePosition: null,
 
 		slots: {
 			move: function(e) {
@@ -146,7 +146,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 						this.slots.move.call(this, e);
 					}
 
-					if(this.enabled && this.resizable && this._resizeDirectionState().any) {
+					if(this.enabled && this.resizable &&
+						!this.maximized && this.mouseOnWindowEdge) {
 						this.startResize(e);
 					}
 				},
@@ -158,7 +159,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				},
 
 				'.wm-window-title mousedown': function(e) {
-					if(!this.maximized && !this._resizeDirectionState().any) {
+					if(!this.maximized && !this.mouseOnWindowEdge) {
 						this.slots.move.call(this, e);
 					}
 				},
@@ -205,7 +206,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 				'button.wm-resize mousedown': function(e) {
 					if(this.enabled && this.resizable) {
-						this._resizeDirection = {
+						this._mouseEdgePosition = {
 							top: false,
 							left: false,
 							bottom: true,
@@ -219,7 +220,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 				'mousemove': function(e) {
 					var EdgeSensitivities = {
 						TOP: 5, // lower because bar is used to drag
-						LEFT: 10,
+						LEFT: 15,
 						BOTTOM: 15,
 						RIGHT: 15
 					};
@@ -233,7 +234,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 					 // top can be triggered from wm-content, but should only be triggered by wm-window
 					 // otherwise you get resize event from top of content
-					this._resizeDirection = {
+					this._mouseEdgePosition = {
 						top: !e.srcElement.classList.contains('wm-content') &&
 							event.offsetY < EdgeSensitivities.TOP,
 						left: event.offsetX < EdgeSensitivities.LEFT,
@@ -247,22 +248,19 @@ function(Emitter, Promise, View, WindowTemplate) {
 						'mouse-edge-bottom', 'mouse-edge-bottom-left', 'mouse-edge-bottom-right'
 					);
 
-					if(this._resizeDirectionState().any) {
+					if(this.mouseOnWindowEdge) {
 						var className = 'mouse-edge';
-						window.counter = window.counter || 0;
-						if(this._resizeDirection.top) {
-							window.counter++;
-							console.log('top', window.counter);
+						if(this._mouseEdgePosition.top) {
 							className += '-top';
 						}
-						else if(this._resizeDirection.bottom) {
+						else if(this._mouseEdgePosition.bottom) {
 							className += '-bottom';
 						}
 
-						if(this._resizeDirection.left) {
+						if(this._mouseEdgePosition.left) {
 							className += '-left';
 						}
-						else if(this._resizeDirection.right) {
+						else if(this._mouseEdgePosition.right) {
 							className += '-right';
 						}
 
@@ -272,7 +270,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 				'mouseleave': function() {
 					if(!this._resizing) {
-						this._resizeDirection = null;
+						this._mouseEdgePosition = null;
 						this.el[0].classList.remove('mouse-edge', 
 							'mouse-edge-top', 'mouse-edge-top-left', 'mouse-edge-top-right',
 							'mouse-edge-left', 'mouse-edge-right',
@@ -327,10 +325,10 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 					if(this._resizing) {
 						var newWidth;
-						if(!this._resizeDirectionState().horizontal) {
+						if(!this.resizingHorizontally) {
 							newWidth = this.width;
 						}
-						else if(this._resizeDirection.left) {
+						else if(this._mouseEdgePosition.left) {
 							newWidth = this._resizing.pageX - event.pageX + this._resizing.width;
 						}
 						else {
@@ -338,10 +336,10 @@ function(Emitter, Promise, View, WindowTemplate) {
 						}
 
 						var newHeight;
-						if(!this._resizeDirectionState().vertical) {
+						if(!this.resizingVertically) {
 							newHeight = this.height;
 						}
-						else if(this._resizeDirection.top) {
+						else if(this._mouseEdgePosition.top) {
 							newHeight = this._resizing.pageY - event.pageY + this._resizing.height;
 						}
 						else {
@@ -350,11 +348,11 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 						this.resize(newWidth, newHeight);
 
-						if(this._resizeDirection.left) {
+						if(this._mouseEdgePosition.left) {
 							this.move(event.pageX, this.y);
 						}
 
-						if(this._resizeDirection.top) {
+						if(this._mouseEdgePosition.top) {
 							this.move(this.x, event.pageY);
 						}
 					}
@@ -380,16 +378,20 @@ function(Emitter, Promise, View, WindowTemplate) {
 			this._resizing = null;
 		},
 
-		_resizeDirectionState: function() {
-			return {
-				any: this._resizeDirection &&
-					(this._resizeDirection.top || this._resizeDirection.left ||
-					this._resizeDirection.bottom || this._resizeDirection.right),
-				horizontal: this._resizeDirection &&
-					(this._resizeDirection.left || this._resizeDirection.right),
-				vertical: this._resizeDirection &&
-					(this._resizeDirection.top || this._resizeDirection.bottom)
-			};
+		get mouseOnWindowEdge() {
+			return this._mouseEdgePosition &&
+				(this._mouseEdgePosition.top || this._mouseEdgePosition.left ||
+				this._mouseEdgePosition.bottom || this._mouseEdgePosition.right);
+		},
+
+		get resizingHorizontally() {
+			return this._mouseEdgePosition &&
+				(this._mouseEdgePosition.left || this._mouseEdgePosition.right);
+		},
+
+		get resizingVertically() {
+			return this._mouseEdgePosition &&
+				(this._mouseEdgePosition.top || this._mouseEdgePosition.bottom);
 		},
 
 		set space(el) {

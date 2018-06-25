@@ -1199,7 +1199,7 @@ define('ventus/wm/window', [
         _restore: null,
         _moving: null,
         _resizing: null,
-        _resizeDirection: null,
+        _mouseEdgePosition: null,
         slots: {
             move: function (e) {
                 var event = convertMoveEvent(e);
@@ -1225,7 +1225,7 @@ define('ventus/wm/window', [
                     if (this.widget) {
                         this.slots.move.call(this, e);
                     }
-                    if (this.enabled && this.resizable && this._resizeDirectionState().any) {
+                    if (this.enabled && this.resizable && !this.maximized && this.mouseOnWindowEdge) {
                         this.startResize(e);
                     }
                 },
@@ -1235,7 +1235,7 @@ define('ventus/wm/window', [
                     }
                 },
                 '.wm-window-title mousedown': function (e) {
-                    if (!this.maximized && !this._resizeDirectionState().any) {
+                    if (!this.maximized && !this.mouseOnWindowEdge) {
                         this.slots.move.call(this, e);
                     }
                 },
@@ -1272,7 +1272,7 @@ define('ventus/wm/window', [
                 },
                 'button.wm-resize mousedown': function (e) {
                     if (this.enabled && this.resizable) {
-                        this._resizeDirection = {
+                        this._mouseEdgePosition = {
                             top: false,
                             left: false,
                             bottom: true,
@@ -1284,7 +1284,7 @@ define('ventus/wm/window', [
                 'mousemove': function (e) {
                     var EdgeSensitivities = {
                         TOP: 5,
-                        LEFT: 10,
+                        LEFT: 15,
                         BOTTOM: 15,
                         RIGHT: 15
                     };
@@ -1293,26 +1293,23 @@ define('ventus/wm/window', [
                         return;
                     }
                     var event = convertMoveEvent(e);
-                    this._resizeDirection = {
+                    this._mouseEdgePosition = {
                         top: !e.srcElement.classList.contains('wm-content') && event.offsetY < EdgeSensitivities.TOP,
                         left: event.offsetX < EdgeSensitivities.LEFT,
                         bottom: this.height - TITLE_HEIGHT - event.offsetY < EdgeSensitivities.BOTTOM,
                         right: this.width - event.offsetX < EdgeSensitivities.RIGHT
                     };
                     this.el[0].classList.remove('mouse-edge', 'mouse-edge-top', 'mouse-edge-top-left', 'mouse-edge-top-right', 'mouse-edge-left', 'mouse-edge-right', 'mouse-edge-bottom', 'mouse-edge-bottom-left', 'mouse-edge-bottom-right');
-                    if (this._resizeDirectionState().any) {
+                    if (this.mouseOnWindowEdge) {
                         var className = 'mouse-edge';
-                        window.counter = window.counter || 0;
-                        if (this._resizeDirection.top) {
-                            window.counter++;
-                            console.log('top', window.counter);
+                        if (this._mouseEdgePosition.top) {
                             className += '-top';
-                        } else if (this._resizeDirection.bottom) {
+                        } else if (this._mouseEdgePosition.bottom) {
                             className += '-bottom';
                         }
-                        if (this._resizeDirection.left) {
+                        if (this._mouseEdgePosition.left) {
                             className += '-left';
-                        } else if (this._resizeDirection.right) {
+                        } else if (this._mouseEdgePosition.right) {
                             className += '-right';
                         }
                         this.el[0].classList.add('mouse-edge', className);
@@ -1320,7 +1317,7 @@ define('ventus/wm/window', [
                 },
                 'mouseleave': function () {
                     if (!this._resizing) {
-                        this._resizeDirection = null;
+                        this._mouseEdgePosition = null;
                         this.el[0].classList.remove('mouse-edge', 'mouse-edge-top', 'mouse-edge-top-left', 'mouse-edge-top-right', 'mouse-edge-left', 'mouse-edge-right', 'mouse-edge-bottom', 'mouse-edge-bottom-left', 'mouse-edge-bottom-right');
                     }
                 }
@@ -1354,26 +1351,26 @@ define('ventus/wm/window', [
                     }
                     if (this._resizing) {
                         var newWidth;
-                        if (!this._resizeDirectionState().horizontal) {
+                        if (!this.resizingHorizontally) {
                             newWidth = this.width;
-                        } else if (this._resizeDirection.left) {
+                        } else if (this._mouseEdgePosition.left) {
                             newWidth = this._resizing.pageX - event.pageX + this._resizing.width;
                         } else {
                             newWidth = event.pageX - this._resizing.pageX + this._resizing.width;
                         }
                         var newHeight;
-                        if (!this._resizeDirectionState().vertical) {
+                        if (!this.resizingVertically) {
                             newHeight = this.height;
-                        } else if (this._resizeDirection.top) {
+                        } else if (this._mouseEdgePosition.top) {
                             newHeight = this._resizing.pageY - event.pageY + this._resizing.height;
                         } else {
                             newHeight = event.pageY - this._resizing.pageY + this._resizing.height;
                         }
                         this.resize(newWidth, newHeight);
-                        if (this._resizeDirection.left) {
+                        if (this._mouseEdgePosition.left) {
                             this.move(event.pageX, this.y);
                         }
-                        if (this._resizeDirection.top) {
+                        if (this._mouseEdgePosition.top) {
                             this.move(this.x, event.pageY);
                         }
                     }
@@ -1395,12 +1392,14 @@ define('ventus/wm/window', [
             this._restore = null;
             this._resizing = null;
         },
-        _resizeDirectionState: function () {
-            return {
-                any: this._resizeDirection && (this._resizeDirection.top || this._resizeDirection.left || this._resizeDirection.bottom || this._resizeDirection.right),
-                horizontal: this._resizeDirection && (this._resizeDirection.left || this._resizeDirection.right),
-                vertical: this._resizeDirection && (this._resizeDirection.top || this._resizeDirection.bottom)
-            };
+        get mouseOnWindowEdge() {
+            return this._mouseEdgePosition && (this._mouseEdgePosition.top || this._mouseEdgePosition.left || this._mouseEdgePosition.bottom || this._mouseEdgePosition.right);
+        },
+        get resizingHorizontally() {
+            return this._mouseEdgePosition && (this._mouseEdgePosition.left || this._mouseEdgePosition.right);
+        },
+        get resizingVertically() {
+            return this._mouseEdgePosition && (this._mouseEdgePosition.top || this._mouseEdgePosition.bottom);
         },
         set space(el) {
             if (el && !el.listen) {
