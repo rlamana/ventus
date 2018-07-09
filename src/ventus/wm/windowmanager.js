@@ -14,11 +14,12 @@ define([
 function($, Window, View, DefaultMode, ExposeMode, FullscreenMode) {
 	'use strict';
 
-	var WindowManager = function () {
+	var WindowManager = function (container) {
 		var createWindow;
 
 		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
-		$(document.body).prepend(this.el);
+
+		$(container?container:document.body).prepend(this.el);
 
 		this.$overlay = this.el.find('.wm-overlay');
 		this.$overlay.css('z-index', this._baseZ-1);
