@@ -50,7 +50,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 			classname: options.classname
 		}));
 		this.el.listen(this.events.window, this);
-
+		this.el.onAnimationEnd(function () {
+			this._animationEndFunc();
+		}, this);
 		if(options.opacity) {
 			this.el.css('opacity', options.opacity);
 		}
@@ -111,6 +113,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		_restore: null,
 		_moving: null,
 		_resizing: null,
+		_animationEndFunc: null,
 
 		slots: {
 			move: function(e) {
@@ -486,34 +489,45 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		open: function() {
+			if(!this._closed) {
+				return;
+			}
+
 			var promise = new Promise();
 			this.signals.emit('open', this);
 
 			// Open animation
+			this.el.stop();
 			this.el.show();
+			this.el.removeClass('closing');
 			this.el.addClass('opening');
-			this.el.onAnimationEnd(function () {
+			this._animationEndFunc = function () {
 				this.el.removeClass('opening');
 				promise.done();
-			}, this);
-
+			};
 			this._closed = false;
 			return promise;
 		},
 
 		close: function() {
+			if(this._closed) {
+				return;
+			}
+
 			var promise = new Promise();
 			this.signals.emit('close', this);
 
+			this.el.stop();
+			this.el.removeClass('opening');
 			this.el.addClass('closing');
-			this.el.onAnimationEnd(function () {
+			this._animationEndFunc = function () {
 				this.el.removeClass('closing');
 				this.el.addClass('closed');
 				this.el.hide();
 
 				this.signals.emit('closed', this);
 				promise.done();
-			}, this);
+			};
 
 			this._closed = true;
 			return promise;
