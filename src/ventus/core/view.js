@@ -83,9 +83,13 @@ define(['$'], function($) {
 		},
 
 		onAnimationEnd: function (callback, scope) {
-			this.one(animationEventNames, function() {
+			this.on(animationEventNames, function() {
 				callback.apply(scope||this);
 			});
+		},
+
+		finalize: function() {
+			this.off(animationEventNames);
 		}
 	});
 
