@@ -535,6 +535,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		destroy: function() {
 			var destroy = function() {
+				this.el.finalize();
 				// Remove element
 				this.$content.html('');
 				this.signals.emit('destroyed', this);

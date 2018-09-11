@@ -1091,6 +1091,9 @@ define('ventus/core/view', ['$'], function ($) {
             this.on(animationEventNames, function () {
                 callback.apply(scope || this);
             });
+        },
+        finalize: function () {
+            this.off(animationEventNames);
         }
     });
     return function (root) {
@@ -1519,6 +1522,7 @@ define('ventus/wm/window', [
         },
         destroy: function () {
             var destroy = function () {
+                this.el.finalize();
                 this.$content.html('');
                 this.signals.emit('destroyed', this);
                 this._destroyed = true;
