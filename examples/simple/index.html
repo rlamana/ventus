@@ -2,101 +2,58 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>Ventus: HTML5, CSS3 & Javascript Window Manager Experiment</title>
-		<meta name="keywords" content="window, manager, experiment, html5, css3, javascript, github, web, example" />
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 
-		<meta name="viewport" content="width=1024">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ventus: HTML5, CSS3 & Javascript Window Manager Experiment</title>
+  <meta name="keywords" content="window, manager, experiment, html5, css3, javascript, github, web, example" />
+  <meta name="viewport" content="width=1024">
+  <link href='simple.css' rel='stylesheet' type='text/css' />
+</head>
 
-		<link href='css/normalize.css' rel='stylesheet' type='text/css' />
-		<link href='css/simple.css' rel='stylesheet' type='text/css' />
-		<link href='../../dist/ventus.css' rel='stylesheet' type='text/css' />
+<body unselectable="on">
+  <div class="buttonbar">
+    <button class="button create-button">Create Window</button>
+    <button class="button expose-button">Exposé</button>
+  </div>
 
-		<link href='css/browseralert.css' rel='stylesheet' type='text/css' />
+  <script type="text/javascript" src="../../dist/ventus.js"></script>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+      var wm = new Ventus.WindowManager();
+      var pos = 50;
+      var num = 1;
 
-		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
+      document.querySelector('.create-button').addEventListener('click', function () {
+        wm.createWindow({
+          title: 'Window ' + (num++),
+          x: (pos += 60),
+          y: pos,
+          width: 400,
+          height: 250,
+          animations: true,
+          stayinspace: true,
+          events: {
+            closed: function () {
+              this.destroy();
+            }
+          }
+        })
+          .open();
+      });
 
-		<script type="text/javascript" src="../../vendor/modernizr.js"></script>
-	</head>
-	<body unselectable="on">
-		<div class="browser-overlay">
-			<div class="wrapper">
-				<h2>This experiment has only been tested on <strong>Chrome</strong> and <strong>Safari</strong> browsers!</h2>
-				<i class="icon-chrome" style="font-size: 50px; color: white; float: right;"></i>
-				<p>This means we cannot guarantee that everything will be displayed properly on your browser. Sorry.</p>
-				<small><a href="#" class="close-button">Continue anyway &gt;</a></small>
-			</div>
-		</div>
-
-		<div class="buttonbar">
-			<button class="button create-button">Create Window</button>
-			<button class="button expose-button">Exposé</button>
-		</div>
-
-		<script type="text/javascript" src="../../vendor/jquery.js"></script>
-		<script type="text/javascript" src="../../dist/ventus.js"></script>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-				var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-				var $browserAlert = $('.browser-overlay');
-
-				if(!isChrome && !isSafari) {
-					$browserAlert.find('.close-button').click(function() {
-						$browserAlert.hide();
-					});
-
-					$browserAlert.show();
-				}
-
-				var wm = new Ventus.WindowManager();
-
-				var pos = 50;
-				var num = 1;
-				window.wm = wm; // For debugging reasons
-
-				$('.create-button').click(function(){
-					wm.createWindow({
-						title: 'Window ' + (num++),
-						x: (pos += 60),
-						y: pos,
-						width: 400,
-						height: 250,
-						animations: true,
-
-						events: {
-							closed: function() {
-								this.destroy();
-							}
-						}
-					})
-					.open();
-				});
-
-				$('.expose-button').click(_.throttle(function(){
-					if(wm.mode === 'expose')
-						wm.mode = 'default';
-					else
-						wm.mode = 'expose';
-
-					return false;
-				}, 1000));
-			});
-		</script>
-
-		<script type="text/javascript">
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-11674457-1']);
-			_gaq.push(['_trackPageview']);
-
-			(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		</script>
-	</body>
+      document.querySelector('.expose-button').addEventListener('click', function () {
+        if (wm.mode === 'expose')
+          wm.mode = 'default';
+        else
+          wm.mode = 'expose';
+        return false;
+      });
+    });
+  </script>
+</body>
 </html>

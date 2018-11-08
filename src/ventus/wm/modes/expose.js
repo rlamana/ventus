@@ -1,151 +1,141 @@
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
-define([
-	'underscore',
-	'ventus/core/promise'
-], function(_, Promise) {
-	'use strict';
+define(['lodash.throttle', 'ventus/less/expose.less'], function(throttle) {
+  'use strict';
 
-	var ExposeMode = {
-		// Launch when plugin is registered
-		register: function() {
-			var self = this;
+  const ExposeMode = {
+    // Launch when plugin is registered.
+    register() {
+      console.log('Expose mode registered.');
 
-			console.log('Expose mode registered.');
+      this.view.on(
+        'contextmenu',
+        throttle(event => {
+          // Right click sets expose mode.
+          if (this.mode !== 'expose') {
+            if (this.windows.length > 0) {
+              this.mode = 'expose';
+            }
+          } else if (this.mode === 'expose') {
+            this.mode = 'default';
+          }
+					event.stopPropagation();
+					event.preventDEfault();
+        }, 1000)
+      );
+    },
 
-			this.el.on('contextmenu', _.throttle(function() {
-				// Right click sets expose mode
-				if (self.mode !== 'expose') {
-					if(self.windows.length > 0) {
-						self.mode = 'expose';
-					}
-				} else if(self.mode === 'expose') {
-					self.mode = 'default';
-				}
+    // Launch when plugin is enabled.
+    plug() {
+      const grid = Math.ceil(this.windows.length / 2);
+      const maxWidth = Math.floor(this.view.width / grid);
+      const maxHeight = Math.floor(this.view.height / 2);
+      let scale, left, top, pos;
 
-				return false;
-			}, 1000));
-		},
+      this.view.el.classList.add('expose');
 
-		// Launch when plugin is enabled
-		plug: function() {
-			var floor = Math.floor, ceil = Math.ceil, self = this;
+      for (let win, i = 0, len = this.windows.length; i < len; i++) {
+        win = this.windows[i];
+        win.stamp();
 
-			var grid = ceil(this.windows.length / 2);
-			var maxWidth = floor(this.el.width() / grid);
-			var maxHeight = floor(this.el.height() / 2);
+        // Scale factor.
+        if (win.height > win.width) {
+          scale = win.height > maxHeight ? maxHeight / win.height : 1;
+        } else {
+          scale = win.width > maxWidth ? maxWidth / win.width : 1;
+        }
 
-			var scale, left, top, pos;
+        scale -= 0.15; // To add a little padding.
 
-			this.el.addClass('expose');
+        pos = {
+          x: (i % grid) * maxWidth,
+          y: (i < grid ? 0 : 1) * maxHeight
+        };
 
-			for(var win, i=0, len=this.windows.length; i<len; i++) {
-				win = this.windows[i];
+        // New position.
+        left = pos.x + Math.floor((maxWidth - scale * win.width) / 2);
+        top = pos.y + Math.floor((maxHeight - scale * win.height) / 2);
 
-				win.stamp();
+        win.enabled = false;
+        win.movable = false;
 
-				// Scale factor
-				if(win.height > win.width) {
-					scale = (win.height > maxHeight) ? maxHeight / win.height : 1;
-				}
-				else {
-					scale = (win.width > maxWidth) ? maxWidth / win.width : 1;
-				}
+        win.view.el.classList.add('exposing');
+        win.view.el.style.transformOrigin = '0 0';
+        win.view.el.style.transform = `scale(${scale})`;
+        win.view.top = top;
+        win.view.left = left;
 
-				scale -= 0.15; // To add a little padding
+        const endExposing = () => {
+          win.view.el.classList.remove('exposing');
+        };
 
-				pos = {
-					x: (i%grid)*maxWidth,
-					y: ((i<grid)?0:1)*maxHeight
-				};
+        if (win.animations) {
+          win.view.on('transitionend', endExposing);
+        } else {
+          endExposing();
+        }
+      }
 
-				// New position
-				left = pos.x + floor((maxWidth - scale*win.width) / 2);
-				top = pos.y + floor((maxHeight - scale*win.height) / 2);
+      this.overlay = true;
+      this.view.one('click', () => {
+        this.mode = 'default';
+      });
+    },
 
-				win.enabled = false;
-				win.movable = false;
+    // Lauch when plugin is disabled
+    unplug() {
+      return new Promise(done => {
+        if (this.windows.length === 0) {
+          done();
+        }
 
-				win.el.addClass('exposing');
-				win.el.css('transform-origin', '0 0');
-				win.el.css('transform', 'scale(' + scale + ')');
-				win.el.css('top', top);
-				win.el.css('left', left);
+        for (let win, i = this.windows.length; i--; ) {
+          win = this.windows[i];
+          win.restore();
+          win.view.el.style.transform = 'scale(1)';
+          win.view.el.style.transformOrigin = '50% 50%';
 
-				var endExposing = function() {
-					win.el.removeClass('exposing');
-				};
+          const removeTransform = (function(win, windowIndex) {
+            return function() {
+              if (windowIndex === 0) {
+                done();
+              }
+              win.view.el.style.transform = '';
+            };
+          })(win, i);
 
-				if (win.animations) {
-					win.el.onTransitionEnd(endExposing, this);
-				} else {
-					endExposing.call(this);
-				}
-			}
+          if (win.animations) {
+            this.view.onTransitionEnd(removeTransform, this);
+          } else {
+            removeTransform.call(this);
+          }
 
-			this.overlay = true;
-			this.el.one('click', function() {
-				self.mode = 'default';
-			});
-		},
+          win.movable = true;
+          win.enabled = true;
+        }
 
-		// Lauch when plugin is disabled
-		unplug: function() {
-			var promise = new Promise();
-			promise.getFuture().then(function() {
-				this.el.removeClass('expose');
-			}.bind(this));
+        this.overlay = false;
+      }).then(() => {
+        this.view.el.classList.remove('expose');
+      });
+    },
 
-			if (this.windows.length === 0) {
-				promise.done();
-			}
+    actions: {
+      focus() {},
 
-			for(var win, i=this.windows.length; i--;) {
-				win = this.windows[i];
+      close() {
+        this.mode = 'expose';
+      },
 
-				win.restore();
-				win.el.css('transform', 'scale(1)');
-				win.el.css('transform-origin', '50% 50%');
+      select(win) {
+        this.mode = 'default';
+        win.focus();
+      }
+    }
+  };
 
-				var removeTransform = (function(win, windowIndex){
-					return function () {
-						if (windowIndex === 0) {
-							promise.done();
-						}
-						win.el.css('transform', '');
-					};
-				})(win, i);
-
-				if (win.animations) {
-					this.el.onTransitionEnd(removeTransform, this);
-				} else {
-					removeTransform.call(this);
-				}
-
-				win.movable = true;
-				win.enabled = true;
-			}
-
-			this.overlay = false;
-		},
-
-		actions: {
-			focus: function() {
-			},
-
-			close: function() {
-				this.mode = 'expose';
-			},
-
-			select: function(win) {
-				this.mode = 'default';
-				win.focus();
-			}
-		}
-	};
-
-	return ExposeMode;
+  return ExposeMode;
 });

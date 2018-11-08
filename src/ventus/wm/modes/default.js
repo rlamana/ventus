@@ -1,38 +1,31 @@
 /**
  * Ventus
- * Copyright © 2012 Ramón Lamana
+ * Copyright © 2012-2013 Ramón Lamana
  * https://github.com/rlamana
  */
 define(function() {
-	'use strict';
+  'use strict';
 
-	var DefaultMode = {
-		register: function() {
-			console.log('Default mode registered.');
-		},
+  const DefaultMode = {
+    register() {
+      console.log('Default mode registered.');
+    },
 
-		plug: function() {
-		},
+    actions: {
+      maximize(win) {
+        win.move(0, 0);
+        win.resize(this.view.width, this.view.height);
+      },
 
-		unplug: function() {
-		},
+      restore(win, restore) {
+        restore.call(win);
+      },
 
-		actions: {
-			maximize: function(win) {
-				win.move(0,0);
-				win.el.css('-webkit-transform', 'translate3d(0, 0, 0);');
-				win.resize(this.el.width(), this.el.height());
-			},
+      minimize(win) {
+        win.resize(0, 0);
+      }
+    }
+  };
 
-			restore: function(win, restore) {
-				restore.call(win);
-			},
-
-			minimize: function(win) {
-				win.resize(0,0);
-			}
-		}
-	};
-
-	return DefaultMode;
+  return DefaultMode;
 });

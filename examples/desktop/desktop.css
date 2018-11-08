@@ -1,4 +1,8 @@
-html, body{ height: 100% }
+html, body{ 
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 body {
 	font-family: "Open Sans", sans-serif;
@@ -14,7 +18,7 @@ body {
 }
 
 .wm-space {
-	background: url(../img/bg3.jpg) no-repeat center center fixed;
+	background: url(images/bg3.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;

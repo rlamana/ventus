@@ -2,13 +2,11 @@
  * Ventus example
  * Copyright © 2012 Ramón Lamana
  */
-(function($, Ventus) {
+(function(Ventus) {
 	document.addEventListener('DOMContentLoaded', function() {
 		var wm = new Ventus.WindowManager();
 
-		window.wm = wm; // For debugging reasons
-
-		// Terminal
+		// Terminal App.
 		var terminalWin = wm.createWindow.fromQuery('.terminal-app', {
 			title: 'Terminal',
 			classname: 'terminal-window',
@@ -31,12 +29,13 @@
 		terminal.shell.include([TestCommands, ShapeCommands]);
 
 		terminal.display.events.on('prompt', function() {
-			terminalWin.$content.animate({
-				scrollTop:terminalWin.el.find('.terminusjs').height()
-			}, 300);
+			terminalWin.$content.el.scrollTo({
+        top: terminalWin.view.find('.terminusjs').height,
+        behavior: 'smooth'
+      });
 		});
 
-
+    // Todo App.
 		var todoWin = wm.createWindow.fromQuery('.todo-app', {
 			title: 'Todo',
 			width: 330,
@@ -56,9 +55,7 @@
 			opacity: 1 // To fix problems with chrome video on Linux
 		});
 
-		/*playerWin.titlebar = false;
-		playerWin.widget = true;*/
-
+    // About App.
 		var aboutWin = wm.createWindow.fromQuery('.about-app', {
 			title: 'About Ventus',
 			width: 250,
@@ -67,18 +64,18 @@
 			y: 380
 		});
 
-		// Hide loader when loaded
-		var loader = $("#loading-screen");
+		// Hide loader when loaded.
+		var loader = document.querySelector("#loading-screen");
 
-		// For look & feel reasons
+		// For look & feel reasons.
 		function openWithDelay(win, delay) {
 			setTimeout(function(){win.open();}, delay);
 		}
 
 		function init() {
-			loader.addClass('hide');
-			loader.on(Ventus.browser.animationEventName(), function() {
-				loader.hide();
+			loader.classList.add('hide');
+			loader.addEventListener('animationend', function() {
+				loader.style.display = 'none';
 
 				// Open windows
 				openWithDelay(terminalWin, 0);
@@ -88,29 +85,11 @@
 			});
 		}
 
-		setTimeout(function() {
-			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-			var $browserAlert = $('.browser-overlay');
+		setTimeout(init, 3000);
 
-			if(!isChrome && !isSafari) {
-				$browserAlert.find('.close-button').click(function() {
-					$browserAlert.hide();
-
-					init();
-				});
-
-				$browserAlert.show();
-			} else {
-				init();
-			}
-		}, 3000);
-
-
-		// Exposé test button
-		$(".expose-button").click(_.throttle(function(){
-			wm.mode = 'expose';
-			return false;
-		}, 1000));
+		// Exposé test button.
+		document.querySelector(".expose-button").addEventListener('click', function() {
+			setTimeout(function() { wm.mode = 'expose' }, 100);
+		}, false);
 	});
-})($, Ventus);
+})(Ventus);

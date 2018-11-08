@@ -5,22 +5,21 @@
  */
 define([
 	'ventus/core/emitter',
-	'ventus/core/promise',
-	'ventus/core/view',
-	'ventus/tpl/window'
+  'ventus/core/view',
+  'ventus/less/window.less'
 ],
-function(Emitter, Promise, View, WindowTemplate) {
-	'use strict';
+function(Emitter, View) {
+  'use strict';
 
 	function isTouchEvent(e) {
 		return !!window.TouchEvent && (e.originalEvent instanceof window.TouchEvent);
 	}
 
 	function convertMoveEvent(e) {
-		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e.originalEvent;
+		return isTouchEvent(e) ? e.originalEvent.changedTouches[0] : e;
 	}
 
-	var Window = function (options) {
+	var Window = function(options) {
 		this.signals = new Emitter();
 
 		options = options || {
@@ -30,7 +29,6 @@ function(Emitter, Promise, View, WindowTemplate) {
 			x: 0,
 			y: 0,
 			content: '',
-
 			movable: true,
 			resizable: true,
 			widget: false,
@@ -45,17 +43,30 @@ function(Emitter, Promise, View, WindowTemplate) {
     }
 
 		// View
-		this.el = View(WindowTemplate({
-			title: options.title,
-			classname: options.classname
-		}));
-		this.el.listen(this.events.window, this);
+		this.view = new View(`<div class="wm-window ${options.classname}">
+      <div class="wm-window-box">
+        <header class="wm-window-title" unselectable="on">
+          <h1 unselectable="on">${options.title}</h1>
+          <div class="wm-button-group">
+            <button class="wm-minimize">&nbsp;</button>
+            <button class="wm-maximize">&nbsp;</button>
+            <button class="wm-close">&nbsp;</button>
+          </div>
+        </header>
+
+        <section class="wm-content"></section>
+
+        <button class="wm-resize">&nbsp;</button>
+      </div>
+      <div class="wm-window-overlay"></div>
+    </div>`);
+		this.view.listen(this.events.window, this);
 
 		if(options.opacity) {
-			this.el.css('opacity', options.opacity);
+			this.view.el.style.opacity = options.opacity;
 		}
 
-		// Predefined signal/events handlers
+		// Predefined signal/events handlers.
 		if(options.events) {
 			for(var eventName in options.events) {
 				if(options.events.hasOwnProperty(eventName) &&
@@ -65,14 +76,14 @@ function(Emitter, Promise, View, WindowTemplate) {
 			}
 		}
 
-		// Cache content element
-		this.$content = this.el.find('.wm-content');
+		// Cache content element.
+		this.$content = this.view.find('.wm-content');
 		if(options.content) {
 			this.$content.append(options.content);
 		}
 
-		// Cache header element
-		this.$titlebar = this.el.find('header');
+    // Cache header element.
+		this.$titlebar = this.view.find('header');
 
 		this.width = options.width || 400;
 		this.height = options.height || 200;
@@ -113,7 +124,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		_resizing: null,
 
 		slots: {
-			move: function(e) {
+			move(e) {
 				var event = convertMoveEvent(e);
 
 				if(!this.enabled || !this.movable) {
@@ -125,8 +136,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 					y: event.pageY
 				});
 
-				this.el.addClass('move');
-				this._space[0].classList.add('no-events');
+				this.view.el.classList.add('move');
+				this._space.el.classList.add('no-events');
 
 				e.preventDefault();
 			}
@@ -210,8 +221,8 @@ function(Emitter, Promise, View, WindowTemplate) {
 						height: this.height - event.pageY
 					};
 
-					this._space[0].classList.add('no-events');
-					this.el.addClass('resizing');
+					this._space.el.classList.add('no-events');
+					this.view.el.classList.add('resizing');
 
 					e.preventDefault();
 				}
@@ -229,24 +240,24 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 					if (this._moving) {
 						if (this.stayinspace) {
-							if(
-							    this.el[0].clientWidth > this.space[0].clientWidth ||
-							    this.el[0].clientHeight > this.space[0].clientHeight
+							if (
+                this.view.el.clientWidth > this.space.el.clientWidth ||
+                this.view.el.clientHeight > this.space.el.clientHeight
 							) {
 								this.resize(
-									Math.min(this.el[0].clientWidth,this.space[0].clientWidth),
-									Math.min(this.el[0].clientHeight,this.space[0].clientHeight)
+									Math.min(this.view.el.clientWidth, this.space.el.clientWidth),
+									Math.min(this.view.el.clientHeight, this.space.el.clientHeight)
 								);
 							}
 							var movingX = Math.max(0, event.pageX - this._moving.x);
 							var minusX = 0;
 							var movingY = Math.max(0, event.pageY - this._moving.y);
 							var minusY = 0;
-							if (movingX + this.el[0].clientWidth > this.space[0].clientWidth) {
-								minusX = movingX + this.el[0].clientWidth - this.space[0].clientWidth;
+							if (movingX + this.view.el.clientWidth > this.space.el.clientWidth) {
+								minusX = movingX + this.view.el.clientWidth - this.space.el.clientWidth;
 							}
-							if (movingY + this.el[0].clientHeight > this.space[0].clientHeight) {
-								minusY = movingY + this.el[0].clientHeight - this.space[0].clientHeight;
+							if (movingY + this.view.el.clientHeight > this.space.el.clientHeight) {
+								minusY = movingY + this.view.el.clientHeight - this.space.el.clientHeight;
 							}
 							this.move(
 								(movingX - minusX),
@@ -260,7 +271,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 						}
 					}
 
-					if(this._resizing) {
+					if (this._resizing) {
 						this.resize(
 							event.pageX + this._resizing.width,
 							event.pageY + this._resizing.height
@@ -276,26 +287,26 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		_stopMove: function() {
-			this.el.removeClass('move');
-			this._space[0].classList.remove('no-events');
+			this.view.el.classList.remove('move');
+			this._space.el.classList.remove('no-events');
 			this._moving = null;
 		},
 
 		_stopResize: function() {
-		  this._space[0].classList.remove('no-events');
-			this.el.removeClass('resizing');
+		  this._space.el.classList.remove('no-events');
+			this.view.el.classList.remove('resizing');
 			this._restore = null;
 			this._resizing = null;
 		},
 
 		set space(el) {
-			if(el && !el.listen) {
-				console.error('The given space element is not a valid View');
+			if (el && !(el instanceof View)) {
+				console.error('The given space element is not a valid View.');
 				return;
 			}
 
 			this._space = el;
-			el.append(this.el);
+			el.append(this.view);
 			el.listen(this.events.space, this);
 		},
 
@@ -310,11 +321,10 @@ function(Emitter, Promise, View, WindowTemplate) {
 		set maximized(value) {
 			if(value) {
 				this._restoreMaximized = this.stamp();
-				this.el.addClass('maximized');
+				this.view.el.classList.add('maximized');
 				this.signals.emit('maximize', this, this._restoreMaximized);
-			}
-			else {
-				this.el.removeClass('maximized');
+			} else {
+				this.view.el.classList.remove('maximized');
 				this.signals.emit('restore', this, this._restoreMaximized);
 			}
 			this._maximized = value;
@@ -329,8 +339,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 			if(value) {
 				this._restoreMinimized = this.stamp();
 				this.signals.emit('minimize', this, this._restoreMinimized);
-			}
-			else {
+			} else {
 				this.signals.emit('restore', this, this._restoreMinimized);
 			}
 
@@ -340,13 +349,13 @@ function(Emitter, Promise, View, WindowTemplate) {
 		set active(value) {
 			if(value) {
 				this.signals.emit('focus', this);
-				this.el.addClass('active');
-				this.el.removeClass('inactive');
+				this.view.el.classList.add('active');
+				this.view.el.classList.remove('inactive');
 			}
 			else {
 				this.signals.emit('blur', this);
-				this.el.removeClass('active');
-				this.el.addClass('inactive');
+				this.view.el.classList.remove('active');
+				this.view.el.classList.add('inactive');
 			}
 
 			this._active = value;
@@ -358,10 +367,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set enabled(value) {
 			if(!value) {
-				this.el.addClass('disabled');
-			}
-			else {
-				this.el.removeClass('disabled');
+				this.view.el.classList.add('disabled');
+			} else {
+				this.view.el.classList.remove('disabled');
 			}
 
 			this._enabled = value;
@@ -381,10 +389,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set resizable(value) {
 			if(!value) {
-				this.el.addClass('noresizable');
-			}
-			else {
-				this.el.removeClass('noresizable');
+				this.view.el.classList.add('noresizable');
+			}	else {
+				this.view.el.classList.remove('noresizable');
 			}
 
 			this._resizable = !!value;
@@ -414,10 +421,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set titlebar(value) {
 			if(value) {
-				this.$titlebar.removeClass('hide');
-			}
-			else {
-				this.$titlebar.addClass('hide');
+				this.$titlebar.el.classList.remove('hide');
+			} else {
+				this.$titlebar.el.classList.add('hide');
 			}
 
 			this._titlebar = value;
@@ -429,9 +435,9 @@ function(Emitter, Promise, View, WindowTemplate) {
 
 		set animations(value) {
 			if (value) {
-				this.el.addClass('animated');
+				this.view.el.classList.add('animated');
 			} else {
-				this.el.removeClass('animated');
+				this.view.el.classList.remove('animated');
 			}
 
 			this._animations = value;
@@ -442,112 +448,101 @@ function(Emitter, Promise, View, WindowTemplate) {
 		},
 
 		set width(value) {
-			this.el.width(value);
+			this.view.width = value;
 		},
 
 		get width() {
-			return parseInt(this.el.width(), 10);
+			return parseInt(this.view.width, 10);
 		},
 
 		set height(value) {
-			// This shouldn't be done if flexible box model
-			// worked properly with overflow-y: auto
-			//this.$content.height(value - this.$header.outerHeight());
-
-			this.el.height(value);
+			this.view.height = value;
 		},
 
 		get height() {
-			return parseInt(this.el.height(), 10);
+			return parseInt(this.view.height, 10);
 		},
 
 		set x(value) {
-			this.el.css('left', value);
+			this.view.el.style.left = `${value}px`;
 		},
 
 		set y(value) {
-			this.el.css('top', value);
+			this.view.el.style.top = `${value}px`;
 		},
 
 		get x() {
-			return parseInt(this.el.css('left'), 10);
+			return parseInt(this.view.el.style.left||0, 10);
 		},
 
 		get y() {
-			return parseInt(this.el.css('top'), 10);
+			return parseInt(this.view.el.style.top||0, 10);
 		},
 
 		set z(value) {
-			this.el.css('z-index', value);
+			this.view.el.style.zIndex = value;
 		},
 
 		get z() {
-			return parseInt(this.el.css('z-index'), 10);
+			return parseInt(this.view.el.style.zIndex||0, 10);
 		},
 
-		open: function() {
-			var promise = new Promise();
-			this.signals.emit('open', this);
+		open() {
+      return new Promise(done => {
+        this.signals.emit('open', this);
 
-			// Open animation
-			this.el.show();
-			this.el.addClass('opening');
-			this.el.onAnimationEnd(function () {
-				this.el.removeClass('opening');
-				promise.done();
-			}, this);
-
-			this._closed = false;
-			return promise;
+        // Open animation.
+        this.view.show();
+        this.view.el.classList.add('opening');
+        this.view.onAnimationEnd(() => {
+          this.view.el.classList.remove('opening');
+          done();
+        }, this);
+        this._closed = false;
+      });
 		},
 
-		close: function() {
-			var promise = new Promise();
-			this.signals.emit('close', this);
+		close() {
+			return new Promise(done => {
+        this.signals.emit('close', this);
 
-			this.el.addClass('closing');
-			this.el.onAnimationEnd(function () {
-				this.el.removeClass('closing');
-				this.el.addClass('closed');
-				this.el.hide();
+        this.view.el.classList.add('closing');
+        this.view.onAnimationEnd(() => {
+          this.view.el.classList.remove('closing');
+          this.view.el.classList.add('closed');
+          this.view.hide();
 
-				this.signals.emit('closed', this);
-				promise.done();
-			}, this);
+          this.signals.emit('closed', this);
+          done();
+        }, this);
 
-			this._closed = true;
-			return promise;
+        this._closed = true;
+      });
 		},
 
-		destroy: function() {
-			var destroy = function() {
-				// Remove element
-				this.$content.html('');
+		destroy() {
+			const destroy = () => {
+				this.$content.empty();
 				this.signals.emit('destroyed', this);
-
 				this._destroyed = true;
-			}
-			.bind(this);
-
+      };
+      
 			this.signals.emit('destroy', this);
 
 			if(!this.closed) {
-				this.close().getFuture().then(function() {
-					destroy();
-				});
-			}
-			else {
+				this.close().then(() => destroy());
+			} else {
 				destroy();
 			}
 		},
 
-		resize: function(w, h) {
+		resize(w, h) {
 			this.width = w;
 			this.height = h;
 			return this;
 		},
 
-		move: function(x, y) {
+		move(x, y) {
 			this.x = x;
 			this.y = y;
 			return this;
@@ -556,7 +551,7 @@ function(Emitter, Promise, View, WindowTemplate) {
 		/**
 		 * @return A function that restores this window
 		 */
-		stamp: function() {
+		stamp() {
 			this.restore = (function() {
 				var size = {
 					width: this.width,
@@ -579,17 +574,17 @@ function(Emitter, Promise, View, WindowTemplate) {
 			return this.restore;
 		},
 
-		restore: function(){},
+		restore(){},
 
-		maximize: function() {
-      this.el.addClass('maximazing');
+		maximize() {
+      this.view.el.classList.add('maximazing');
       
       var endMaximize = function(){
-				this.el.removeClass('maximazing');
+				this.view.el.classList.remove('maximazing');
 			};
 
       if (this.animations) {
-        this.el.onTransitionEnd(endMaximize, this);
+        this.view.onTransitionEnd(endMaximize, this);
       } else {
         endMaximize.call(this);
       }
@@ -598,15 +593,15 @@ function(Emitter, Promise, View, WindowTemplate) {
 			return this;
 		},
 
-		minimize: function() {
-      this.el.addClass('minimizing');
+		minimize() {
+      this.view.el.classList.add('minimizing');
 
       var endMinimize = function() {
-				this.el.removeClass('minimizing');
+				this.view.el.classList.remove('minimizing');
 			};
       
       if (this.animations) {
-        this.el.onTransitionEnd(endMinimize, this);
+        this.view.onTransitionEnd(endMinimize, this);
       } else {
         endMinimize.call(this);
       }
@@ -615,32 +610,32 @@ function(Emitter, Promise, View, WindowTemplate) {
 			return this;
 		},
 
-		focus: function() {
+		focus() {
 			this.active = true;
 			return this;
 		},
 
-		blur: function() {
+		blur() {
 			this.active = false;
 			return this;
 		},
 
-		toLocal: function(coord) {
+		toLocal(coord) {
 			return {
 				x: coord.x - this.x,
 				y: coord.y - this.y
 			};
 		},
 
-		toGlobal: function(coord) {
+		toGlobal(coord) {
 			return {
 				x: coord.x + this.x,
 				y: coord.y + this.y
 			};
 		},
 
-		append: function(el) {
-			el.appendTo(this.$content);
+		append(content) {
+			this.$content.append(content);
 		}
 	};
 

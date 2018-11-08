@@ -2,135 +2,125 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Window Manager Experiment</title>
-        <meta name="viewport" content="width=1224">
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 
-        <link href='css/normalize.css' rel='stylesheet' type='text/css' />
-        <link href='css/desktop.css' rel='stylesheet' type='text/css' />
-        <link href='../../dist/ventus.css' rel='stylesheet' type='text/css' />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Window Manager Experiment</title>
+  <meta name="viewport" content="width=1224">
 
-        <link href='css/browseralert.css' rel='stylesheet' type='text/css' />
+  <link href='desktop.css' rel='stylesheet' type='text/css' />
 
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400" rel="stylesheet" type="text/css" />
 
-        <!-- TodoMVC App styles -->
-        <link href='todo/css/base.css' rel='stylesheet' type='text/css' />
-        <link href='http://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic' rel='stylesheet' type='text/css' />
+  <!-- TodoMVC App styles -->
+  <link href='todo/todo.css' rel='stylesheet' type='text/css' />
+  <link href='http://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic' rel='stylesheet' type='text/css' />
 
-         <!-- Terminus App styles -->
-        <link href='terminal/css/base.css' rel='stylesheet' type='text/css' />
-        <link href='terminal/css/terminus.css' rel='stylesheet' type='text/css' />
-        <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+  <!-- Terminus App styles -->
+  <link href='terminal/css/base.css' rel='stylesheet' type='text/css' />
+  <link href='terminal/css/terminus.css' rel='stylesheet' type='text/css' />
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css'
+  />
 
-        <!-- Video App -->
-        <link href="player/video-js.css" rel="stylesheet" type='text/css' />
-        <script src="player/video.js"></script>
+  <!-- Video App -->
+  <link href="player/video-js.css" rel="stylesheet" type='text/css' />
+  <script src="player/video.js"></script>
+</head>
 
-        <script type="text/javascript" src="../../vendor/modernizr.js"></script>
-    </head>
-    <body unselectable="on">
-        <div class="apps" style="display:none" unselectable="on">
-            <!-- TodoMVC App example with Backbone -->
+<body unselectable="on">
+  <div class="apps" style="display:none" unselectable="on">
+    <!-- TodoMVC App example with Backbone -->
 
-            <div class="todo-app">
-                <header class="todo-app-header">
-                    <input class="todo-app-new" placeholder="What needs to be done?" autofocus>
-                </header>
-                <section class="todo-app-main">
-                    <input class="todo-app-toggle-all" type="checkbox">
-                    <!--<label for="toggle-all">Mark all as complete</label>-->
-                    <ul class="todo-list"></ul>
-                </section>
+    <div class="todo-app">
+      <section class="todoapp">
+        <header class="header">
+          <input class="new-todo" placeholder="What needs to be done?" autofocus>
+        </header>
+        <section style="display:none" class="main">
+          <input class="toggle-all" type="checkbox">
+          <label for="toggle-all">Mark all as complete</label>
+          <ul class="todo-list"></ul>
+          <footer class="footer">
+            <span class="todo-count"></span>
+            <div class="filters">
+              <a href="#/" class="selected">All</a>
+              <a href="#/active">Active</a>
+              <a href="#/completed">Completed</a>
             </div>
+            <button class="clear-completed">Clear completed</button>
+          </footer>
+        </section>
+      </section>
+    </div>
+    <script type="text/javascript" src="todo/todo.js"></script>
 
-            <script type="text/template" id="item-template">
-                <div class="view">
-                    <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-                    <label><%- title %></label>
-                    <button class="destroy"></button>
-                </div>
-                <input class="edit" value="<%- title %>">
-            </script>
+    <script type="text/template" id="item-template">
+      <div class="view">
+        <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %> />
+        <label><%- title %></label>
+        <button class="destroy"></button>
+      </div>
+      <input class="edit" value="<%- title %>">
+    </script>
 
-            <!-- Terminus App example -->
+    <!-- Terminus App example -->
 
-            <div class="terminal-app"></div>
-            <script type="text/javascript" src="terminal/terminus.min.js"></script>
-            <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
-            <script type="text/javascript" src="terminal/commands/vendor/three.js"></script>
-            <script type="text/javascript" src="terminal/commands/vendor/supertags.js"></script>
-            <script type="text/javascript" src="terminal/commands/shapecommands.js"></script>
+    <div class="terminal-app"></div>
+    <script type="text/javascript" src="terminal/terminus.min.js"></script>
+    <script type="text/javascript" src="terminal/commands/testcommands.js"></script>
+    <script type="text/javascript" src="terminal/commands/vendor/three.js"></script>
+    <script type="text/javascript" src="terminal/commands/vendor/supertags.js"></script>
+    <script type="text/javascript" src="terminal/commands/shapecommands.js"></script>
 
-            <!-- Video Player App -->
+    <!-- Video Player App -->
 
-            <div class="player-app">
-                <video class="video-js vjs-default-skin" controls preload="auto" width="635" height="264" poster="player/oceans-clip.jpg" data-setup="{}">
-                    <source src="player/oceans-clip.mp4" type='video/mp4' />
-                </video>
-            </div>
+    <div class="player-app">
+      <video class="video-js vjs-default-skin" controls preload="auto" width="635" height="264" poster="player/oceans-clip.jpg"
+        data-setup="{}">
+        <source src="player/oceans-clip.mp4" type='video/mp4' />
+      </video>
+    </div>
 
-            <!-- About App -->
-            <div class="about-app">
-                <h1>Desktop</h1>
-                <h2>HTML5 & CSS3 Window Manager Experiment</h2>
+    <!-- About App -->
+    <div class="about-app">
+      <h1>Desktop</h1>
+      <h2>HTML5 & CSS3 Window Manager Experiment</h2>
 
-                <button class="expose-button">Try Exposé</button>
-                <p>or <strong>right-click</strong> to activate it</p>
+      <button class="expose-button">Try Exposé</button>
+      <p>or
+        <strong>right-click</strong> to activate it</p>
 
-                <div class="copyright">
-                    <p>Copyright (c) 2012 Ramón Lamana</p>
-                    <p class="vendor">
-                        Basejs by A. Matías Quezada.<br/>
-                        Video.js by Steve Heffernan and Zencoder Inc.
-                    </p>
-                </div>
-            </div>
-         </div>
+      <div class="copyright">
+        <p>Copyright (c) 2012 Ramón Lamana</p>
+        <p class="vendor">
+          Basejs by A. Matías Quezada.
+          <br/> Video.js by Steve Heffernan and Zencoder Inc.
+        </p>
+      </div>
+    </div>
+  </div>
 
-        <!-- Ventus Loader Screen -->
+  <!-- Ventus Loader Screen -->
 
-        <div id="loading-screen" unselectable="on">
-            <section>
-                <div class="content">
-                    <header>
-                        <h1>Desktop</h1>
-                    </header>
-                    <p><img src="img/loader.gif" /> Loading...</p>
-                </div>
-            </section>
-        </div>
+  <div id="loading-screen" unselectable="on">
+    <section>
+      <div class="content">
+        <header>
+          <h1>Desktop</h1>
+        </header>
+        <p>
+          <img src="images/loader.gif" /> Loading...</p>
+      </div>
+    </section>
+  </div>
 
-        <div class="browser-overlay">
-            <div class="wrapper">
-                <h2>This experiment has only been tested on <strong>Chrome</strong> and <strong>Safari</strong> browsers!</h2>
-                <i class="icon-chrome" style="font-size: 50px; color: white; float: right;"></i>
-                <p>This means we cannot guarantee that everything will be displayed properly on your browser. Sorry.</p>
-                <small><a href="#" class="close-button">Continue anyway &gt;</a></small>
-            </div>
-        </div>
+  <!-- Ventus -->
+  <script type="text/javascript" src="../../dist/ventus.js"></script>
+  <script type="text/javascript" src="desktop.js"></script>
+</body>
 
-        <!-- Ventus -->
-        <script type="text/javascript" src="../../vendor/jquery.js"></script>
-        <script type="text/javascript" src="../../vendor/handlebars.js"></script>
-        <script type="text/javascript" src="../../dist/ventus.js"></script>
-        <script type="text/javascript" data-main="todo/main.js" src="../../vendor/require.js"></script>
-
-        <script type="text/javascript" src="desktop.js"></script>
-
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-11674457-1']);
-            _gaq.push(['_trackPageview']);
-
-            (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
-    </body>
 </html>
