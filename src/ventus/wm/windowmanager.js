@@ -17,8 +17,10 @@ function(Window, View, DefaultMode, ExposeMode) {
 		var createWindow;
     var root = container ? container : document.body;
 
-		this.el = View('<div class="wm-space"><div class="wm-overlay" /></div>');
-    root.insertBefore(this.el[0], root.firstChild);
+		this.view = new View(
+      '<div class="wm-space"><div class="wm-overlay" /></div>'
+    );
+    root.insertBefore(this.view.el, root.firstChild);
 
 		this.$overlay = this.view.find('.wm-overlay');
 		this.$overlay.el.style.zIndex = this._baseZ - 1;

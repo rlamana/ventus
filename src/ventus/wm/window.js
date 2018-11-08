@@ -300,7 +300,7 @@ function(Emitter, View) {
 		},
 
 		set space(el) {
-			if (el && !el.listen) {
+			if (el && !(el instanceof View)) {
 				console.error('The given space element is not a valid View.');
 				return;
 			}
