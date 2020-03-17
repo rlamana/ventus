@@ -23,7 +23,7 @@ define(['lodash.throttle', 'ventus/less/expose.less'], function(throttle) {
             this.mode = 'default';
           }
 					event.stopPropagation();
-					event.preventDEfault();
+					event.preventDefault();
         }, 1000)
       );
     },
