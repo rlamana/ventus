@@ -96,7 +96,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
-/***/ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/expose.less":
+/***/ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js?!./ventus/less/expose.less":
 /*!*************************************************************************************************************************************************!*\
   !*** ../node_modules/css-loader!../node_modules/postcss-loader/lib!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/expose.less ***!
   \*************************************************************************************************************************************************/
@@ -115,7 +115,7 @@ exports.push([module.i, "/**\n * Ventus\n * Copyright © 2012-2013 Ramón Lamana
 
 /***/ }),
 
-/***/ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/window.less":
+/***/ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js?!./ventus/less/window.less":
 /*!*************************************************************************************************************************************************!*\
   !*** ../node_modules/css-loader!../node_modules/postcss-loader/lib!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/window.less ***!
   \*************************************************************************************************************************************************/
@@ -134,7 +134,7 @@ exports.push([module.i, "/**\n * Ventus\n * Copyright © 2012-2013 Ramón Lamana
 
 /***/ }),
 
-/***/ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/windowmanager.less":
+/***/ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js?!./ventus/less/windowmanager.less":
 /*!********************************************************************************************************************************************************!*\
   !*** ../node_modules/css-loader!../node_modules/postcss-loader/lib!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/windowmanager.less ***!
   \********************************************************************************************************************************************************/
@@ -1198,7 +1198,7 @@ g = (function() {
 
 try {
 	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
+	g = g || new Function("return this")();
 } catch (e) {
 	// This works if the window reference is available
 	if (typeof window === "object") g = window;
@@ -1678,7 +1678,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/postcss-loader/lib!../../../node_modules/less-loader/dist/cjs.js??ref--6-3!./expose.less */ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/expose.less");
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/postcss-loader/lib!../../../node_modules/less-loader/dist/cjs.js??ref--6-3!./expose.less */ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js?!./ventus/less/expose.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -1708,7 +1708,7 @@ if(false) {}
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/postcss-loader/lib!../../../node_modules/less-loader/dist/cjs.js??ref--6-3!./window.less */ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/window.less");
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/postcss-loader/lib!../../../node_modules/less-loader/dist/cjs.js??ref--6-3!./window.less */ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js?!./ventus/less/window.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -1738,7 +1738,7 @@ if(false) {}
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/postcss-loader/lib!../../../node_modules/less-loader/dist/cjs.js??ref--6-3!./windowmanager.less */ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js??ref--6-3!./ventus/less/windowmanager.less");
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/postcss-loader/lib!../../../node_modules/less-loader/dist/cjs.js??ref--6-3!./windowmanager.less */ "../node_modules/css-loader/index.js!../node_modules/postcss-loader/lib/index.js!../node_modules/less-loader/dist/cjs.js?!./ventus/less/windowmanager.less");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -1839,7 +1839,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
           _this.mode = 'default';
         }
         event.stopPropagation();
-        event.preventDEfault();
+        event.preventDefault();
       }, 1000));
     },
 
