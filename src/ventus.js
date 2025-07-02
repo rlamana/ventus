@@ -6,9 +6,12 @@
 import WindowManager from 'ventus/wm/windowmanager';
 import Window from 'ventus/wm/window';
 
-module.exports = {
+export const version = '0.3.0';
+export { WindowManager, Window };
+
+// Default export for backward compatibility
+export default {
 	version: '0.3.0',
-	
-  WindowManager,
-  Window
+	WindowManager,
+	Window
 };

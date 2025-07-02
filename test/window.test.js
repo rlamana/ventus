@@ -1,25 +1,27 @@
+import { describe, it, beforeEach, expect } from 'vitest';
+import { WindowManager } from '../src/ventus.js';
 
-describe('Window', function() {
-  var wm;
-  var testWindow;
+describe('Window', () => {
+  let wm;
+  let testWindow;
 
-  beforeEach(function() {
-    wm = new Ventus.WindowManager();
-    testWindow = wm.createWindow({title: 'test'});
+  beforeEach(() => {
+    wm = new WindowManager();
+    testWindow = wm.createWindow({ title: 'test' });
   });
 
-  it('new window should be in closed state', function() {
-    expect(testWindow.closed).to.equal(true);
+  it('new window should be in closed state', () => {
+    expect(testWindow.closed).toBe(true);
   });
 
-  it('sets is initialized with opened state', function() {
+  it('sets is initialized with opened state', () => {
     testWindow.open();
-    expect(testWindow.closed).to.equal(false);
+    expect(testWindow.closed).toBe(false);
   });
 
-  it('sets closed state to true when closed', function() {
+  it('sets closed state to true when closed', () => {
     testWindow.open();
     testWindow.close();
-    expect(testWindow.closed).to.equal(true);
+    expect(testWindow.closed).toBe(true);
   });
 });

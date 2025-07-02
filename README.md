@@ -7,7 +7,41 @@ A window manager written in Javascript, HTML5 and CSS3.
 
 This project started as an experiment and even though it was stable enough **it was never meant to be mantained over time**. However, feel free to fork and send PRs!
 
-Version 0.3.0 migrates code to webpack and ES6 and is available in branch: https://github.com/rlamana/Ventus/tree/v0.3.0.
+Version 0.3.0 has been modernized to use Vite for faster development and building, with ES6 modules and modern tooling.
+
+## Development Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Preview production build
+npm run preview
+```
+
+## Installation
+
+The library is built as both ES modules and UMD for compatibility:
+
+```javascript
+// ES modules
+import { WindowManager, Window } from 'ventus';
+
+// CommonJS
+const { WindowManager, Window } = require('ventus');
+
+// UMD (browser)
+const wm = new Ventus.WindowManager();
+```
 
 ### Creating a new window manager
 
