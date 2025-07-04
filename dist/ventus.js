@@ -954,7 +954,7 @@ const ExposeMode = {
     this.view.el.classList.add("expose");
     for (let win, i = 0, len = this.windows.length; i < len; i++) {
       win = this.windows[i];
-      win.stamp();
+      win._exposeRestore = win.stamp();
       if (win.height > win.width) {
         scale = win.height > maxHeight ? maxHeight / win.height : 1;
       } else {
@@ -996,7 +996,7 @@ const ExposeMode = {
       }
       for (let win, i = this.windows.length; i--; ) {
         win = this.windows[i];
-        win.restore();
+        win.restore(win._exposeRestore);
         win.view.el.style.transform = "scale(1)";
         win.view.el.style.transformOrigin = "50% 50%";
         const removeTransform = /* @__PURE__ */ function(win2, windowIndex) {
@@ -1005,6 +1005,7 @@ const ExposeMode = {
               done();
             }
             win2.view.el.style.transform = "";
+            win2._exposeRestore = null;
           };
         }(win, i);
         if (win.animations) {
@@ -1182,15 +1183,16 @@ WindowManager.prototype.createWindow.fromElement = function(element, options) {
   return this.createWindow(options);
 };
 const version = "0.3.0";
-const ventus = {
-  version: "0.3.0",
-  WindowManager,
-  Window
-};
+if (typeof window !== "undefined") {
+  window.Ventus = {
+    version: "0.3.0",
+    WindowManager,
+    Window
+  };
+}
 export {
   Window,
   WindowManager,
-  ventus as default,
   version
 };
 //# sourceMappingURL=ventus.js.map

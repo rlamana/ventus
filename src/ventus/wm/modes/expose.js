@@ -39,7 +39,7 @@ const ExposeMode = {
 
     for (let win, i = 0, len = this.windows.length; i < len; i++) {
       win = this.windows[i];
-      win.stamp();
+      win._exposeRestore = win.stamp();
 
       // Scale factor.
       if (win.height > win.width) {
@@ -94,7 +94,7 @@ const ExposeMode = {
 
       for (let win, i = this.windows.length; i--; ) {
         win = this.windows[i];
-        win.restore();
+        win.restore(win._exposeRestore);
         win.view.el.style.transform = 'scale(1)';
         win.view.el.style.transformOrigin = '50% 50%';
 
@@ -104,6 +104,7 @@ const ExposeMode = {
               done();
             }
             win.view.el.style.transform = '';
+            win._exposeRestore = null;
           };
         })(win, i);
 
