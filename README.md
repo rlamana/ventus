@@ -5,9 +5,10 @@ A window manager written in Javascript, HTML5 and CSS3.
 
 <a href="http://www.rlamana.com/ventus">Live Demo!</a> (http://www.rlamana.com/ventus) | <a href="https://vimeo.com/62041866">Video Demo</a>
 
-This project started as an experiment and even though it was stable enough **it was never meant to be mantained over time**. However, feel free to fork and send PRs!
+> [!CAUTION]  
+> This project started as an experiment and even though it was stable enough **it was never meant to be mantained over time**. However, feel free to fork and send PRs!
 
-Version 0.3.0 has been modernized to use Vite for faster development and building, with ES6 modules and modern tooling.
+Version 0.4.0 has been modernized to use Vite for faster development and building, with ES6 modules and modern tooling.
 
 ## Development Setup
 
