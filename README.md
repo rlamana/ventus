@@ -8,7 +8,8 @@ A window manager written in Javascript, HTML5 and CSS3.
 > [!CAUTION]  
 > This project started as an experiment and even though it was stable enough **it was never meant to be mantained over time**. However, feel free to fork and send PRs!
 
-Version 0.4.0 has been modernized to use Vite for faster development and building, with ES6 modules and modern tooling.
+> [!NOTE]
+> Version 0.4.0 has been modernized by automated AI agents to use Vite, ES6 modules, and contemporary tooling. While the code appears stable, it remains an experimental project and is not intended for production use.
 
 ## Development Setup
 
