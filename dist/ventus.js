@@ -739,11 +739,11 @@ Window.prototype = {
     return this;
   },
   focus() {
-    this.signals.emit("focus", this);
+    this.active = true;
     return this;
   },
   blur() {
-    this.signals.emit("blur", this);
+    this.active = false;
     return this;
   },
   toLocal(coord) {
@@ -772,8 +772,9 @@ const DefaultMode = {
       win.move(0, 0);
       win.resize(this.view.width, this.view.height);
     },
-    restore(win, restore) {
-      restore.call(win);
+    restore(win, stamp) {
+      win.resize(stamp.width, stamp.height);
+      win.move(stamp.x, stamp.y);
     },
     minimize(win) {
       win.resize(0, 0);

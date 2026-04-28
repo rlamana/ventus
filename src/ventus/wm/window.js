@@ -593,12 +593,12 @@ Window.prototype = {
 	},
 
 	focus() {
-		this.signals.emit('focus', this);
+		this.active = true;
 		return this;
 	},
 
 	blur() {
-		this.signals.emit('blur', this);
+		this.active = false;
 		return this;
 	},
 

@@ -37,6 +37,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "serve": "npx serve ."
   }
 }

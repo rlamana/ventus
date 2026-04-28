@@ -15,8 +15,9 @@ const DefaultMode = {
       win.resize(this.view.width, this.view.height);
     },
 
-    restore(win, restore) {
-      restore.call(win);
+    restore(win, stamp) {
+      win.resize(stamp.width, stamp.height);
+      win.move(stamp.x, stamp.y);
     },
 
     minimize(win) {
