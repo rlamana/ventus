@@ -1,16 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ventus - Development</title>
-  </head>
-  <body>
-    <div id="app">
-      <h1>Ventus Window Manager - Development</h1>
-      <p>This is the development page for testing the Ventus library.</p>
-      <div id="desktop" style="width: 100vw; height: 100vh; position: relative; background: #f0f0f0;"></div>
-    </div>
-    <script type="module" src="/src/ventus.js"></script>
-  </body>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1024">
+  <title>Ventus - Window Manager</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: "Open Sans", sans-serif;
+      background-color: #334;
+      overflow: hidden;
+      user-select: none;
+    }
+    .buttonbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      padding: 0 20px;
+    }
+    .button {
+      display: inline-block;
+      cursor: pointer;
+      margin: 15px 0 4px 0;
+      padding: 5px 15px 6px;
+      background-color: #2DAEBF;
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+      border: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.25);
+    }
+    .button:hover {
+      box-shadow: 0 0 6px #2DAEBF;
+    }
+  </style>
+</head>
+<body unselectable="on">
+  <div class="buttonbar">
+    <button class="button create-button">Create Window</button>
+    <button class="button expose-button">Exposé</button>
+  </div>
+
+  <script type="module">
+    import { WindowManager } from '/src/ventus.js';
+
+    const wm = new WindowManager();
+    let pos = 50;
+    let num = 1;
+
+    document.querySelector('.create-button').addEventListener('click', () => {
+      wm.createWindow({
+        title: 'Window ' + (num++),
+        x: (pos += 60),
+        y: pos,
+        width: 400,
+        height: 250,
+        animations: true,
+        stayinspace: true,
+        events: {
+          closed() { this.destroy(); }
+        }
+      }).open();
+    });
+
+    document.querySelector('.expose-button').addEventListener('click', () => {
+      wm.mode = wm.mode === 'expose' ? 'default' : 'expose';
+    });
+  </script>
+</body>
 </html>
