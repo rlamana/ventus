@@ -784,155 +784,163 @@ var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof win
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
-var FUNC_ERROR_TEXT = "Expected a function";
-var NAN = 0 / 0;
-var symbolTag = "[object Symbol]";
-var reTrim = /^\s+|\s+$/g;
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-var reIsBinary = /^0b[01]+$/i;
-var reIsOctal = /^0o[0-7]+$/i;
-var freeParseInt = parseInt;
-var freeGlobal = typeof commonjsGlobal == "object" && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
-var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-var root = freeGlobal || freeSelf || Function("return this")();
-var objectProto = Object.prototype;
-var objectToString = objectProto.toString;
-var nativeMax = Math.max, nativeMin = Math.min;
-var now = function() {
-  return root.Date.now();
-};
-function debounce(func, wait, options) {
-  var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
-  if (typeof func != "function") {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  wait = toNumber(wait) || 0;
-  if (isObject(options)) {
-    leading = !!options.leading;
-    maxing = "maxWait" in options;
-    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
-    trailing = "trailing" in options ? !!options.trailing : trailing;
-  }
-  function invokeFunc(time) {
-    var args = lastArgs, thisArg = lastThis;
-    lastArgs = lastThis = void 0;
-    lastInvokeTime = time;
-    result = func.apply(thisArg, args);
-    return result;
-  }
-  function leadingEdge(time) {
-    lastInvokeTime = time;
-    timerId = setTimeout(timerExpired, wait);
-    return leading ? invokeFunc(time) : result;
-  }
-  function remainingWait(time) {
-    var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, result2 = wait - timeSinceLastCall;
-    return maxing ? nativeMin(result2, maxWait - timeSinceLastInvoke) : result2;
-  }
-  function shouldInvoke(time) {
-    var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
-    return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
-  }
-  function timerExpired() {
-    var time = now();
-    if (shouldInvoke(time)) {
-      return trailingEdge(time);
+var lodash_throttle;
+var hasRequiredLodash_throttle;
+function requireLodash_throttle() {
+  if (hasRequiredLodash_throttle) return lodash_throttle;
+  hasRequiredLodash_throttle = 1;
+  var FUNC_ERROR_TEXT = "Expected a function";
+  var NAN = 0 / 0;
+  var symbolTag = "[object Symbol]";
+  var reTrim = /^\s+|\s+$/g;
+  var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+  var reIsBinary = /^0b[01]+$/i;
+  var reIsOctal = /^0o[0-7]+$/i;
+  var freeParseInt = parseInt;
+  var freeGlobal = typeof commonjsGlobal == "object" && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+  var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+  var root = freeGlobal || freeSelf || Function("return this")();
+  var objectProto = Object.prototype;
+  var objectToString = objectProto.toString;
+  var nativeMax = Math.max, nativeMin = Math.min;
+  var now = function() {
+    return root.Date.now();
+  };
+  function debounce(func, wait, options) {
+    var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
+    if (typeof func != "function") {
+      throw new TypeError(FUNC_ERROR_TEXT);
     }
-    timerId = setTimeout(timerExpired, remainingWait(time));
-  }
-  function trailingEdge(time) {
-    timerId = void 0;
-    if (trailing && lastArgs) {
-      return invokeFunc(time);
+    wait = toNumber(wait) || 0;
+    if (isObject(options)) {
+      leading = !!options.leading;
+      maxing = "maxWait" in options;
+      maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+      trailing = "trailing" in options ? !!options.trailing : trailing;
     }
-    lastArgs = lastThis = void 0;
-    return result;
-  }
-  function cancel() {
-    if (timerId !== void 0) {
-      clearTimeout(timerId);
+    function invokeFunc(time) {
+      var args = lastArgs, thisArg = lastThis;
+      lastArgs = lastThis = void 0;
+      lastInvokeTime = time;
+      result = func.apply(thisArg, args);
+      return result;
     }
-    lastInvokeTime = 0;
-    lastArgs = lastCallTime = lastThis = timerId = void 0;
-  }
-  function flush() {
-    return timerId === void 0 ? result : trailingEdge(now());
-  }
-  function debounced() {
-    var time = now(), isInvoking = shouldInvoke(time);
-    lastArgs = arguments;
-    lastThis = this;
-    lastCallTime = time;
-    if (isInvoking) {
-      if (timerId === void 0) {
-        return leadingEdge(lastCallTime);
-      }
-      if (maxing) {
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
-      }
-    }
-    if (timerId === void 0) {
+    function leadingEdge(time) {
+      lastInvokeTime = time;
       timerId = setTimeout(timerExpired, wait);
+      return leading ? invokeFunc(time) : result;
     }
-    return result;
+    function remainingWait(time) {
+      var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, result2 = wait - timeSinceLastCall;
+      return maxing ? nativeMin(result2, maxWait - timeSinceLastInvoke) : result2;
+    }
+    function shouldInvoke(time) {
+      var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
+      return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
+    }
+    function timerExpired() {
+      var time = now();
+      if (shouldInvoke(time)) {
+        return trailingEdge(time);
+      }
+      timerId = setTimeout(timerExpired, remainingWait(time));
+    }
+    function trailingEdge(time) {
+      timerId = void 0;
+      if (trailing && lastArgs) {
+        return invokeFunc(time);
+      }
+      lastArgs = lastThis = void 0;
+      return result;
+    }
+    function cancel() {
+      if (timerId !== void 0) {
+        clearTimeout(timerId);
+      }
+      lastInvokeTime = 0;
+      lastArgs = lastCallTime = lastThis = timerId = void 0;
+    }
+    function flush() {
+      return timerId === void 0 ? result : trailingEdge(now());
+    }
+    function debounced() {
+      var time = now(), isInvoking = shouldInvoke(time);
+      lastArgs = arguments;
+      lastThis = this;
+      lastCallTime = time;
+      if (isInvoking) {
+        if (timerId === void 0) {
+          return leadingEdge(lastCallTime);
+        }
+        if (maxing) {
+          timerId = setTimeout(timerExpired, wait);
+          return invokeFunc(lastCallTime);
+        }
+      }
+      if (timerId === void 0) {
+        timerId = setTimeout(timerExpired, wait);
+      }
+      return result;
+    }
+    debounced.cancel = cancel;
+    debounced.flush = flush;
+    return debounced;
   }
-  debounced.cancel = cancel;
-  debounced.flush = flush;
-  return debounced;
+  function throttle2(func, wait, options) {
+    var leading = true, trailing = true;
+    if (typeof func != "function") {
+      throw new TypeError(FUNC_ERROR_TEXT);
+    }
+    if (isObject(options)) {
+      leading = "leading" in options ? !!options.leading : leading;
+      trailing = "trailing" in options ? !!options.trailing : trailing;
+    }
+    return debounce(func, wait, {
+      "leading": leading,
+      "maxWait": wait,
+      "trailing": trailing
+    });
+  }
+  function isObject(value) {
+    var type = typeof value;
+    return !!value && (type == "object" || type == "function");
+  }
+  function isObjectLike(value) {
+    return !!value && typeof value == "object";
+  }
+  function isSymbol(value) {
+    return typeof value == "symbol" || isObjectLike(value) && objectToString.call(value) == symbolTag;
+  }
+  function toNumber(value) {
+    if (typeof value == "number") {
+      return value;
+    }
+    if (isSymbol(value)) {
+      return NAN;
+    }
+    if (isObject(value)) {
+      var other = typeof value.valueOf == "function" ? value.valueOf() : value;
+      value = isObject(other) ? other + "" : other;
+    }
+    if (typeof value != "string") {
+      return value === 0 ? value : +value;
+    }
+    value = value.replace(reTrim, "");
+    var isBinary = reIsBinary.test(value);
+    return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+  }
+  lodash_throttle = throttle2;
+  return lodash_throttle;
 }
-function throttle(func, wait, options) {
-  var leading = true, trailing = true;
-  if (typeof func != "function") {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  if (isObject(options)) {
-    leading = "leading" in options ? !!options.leading : leading;
-    trailing = "trailing" in options ? !!options.trailing : trailing;
-  }
-  return debounce(func, wait, {
-    "leading": leading,
-    "maxWait": wait,
-    "trailing": trailing
-  });
-}
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == "object" || type == "function");
-}
-function isObjectLike(value) {
-  return !!value && typeof value == "object";
-}
-function isSymbol(value) {
-  return typeof value == "symbol" || isObjectLike(value) && objectToString.call(value) == symbolTag;
-}
-function toNumber(value) {
-  if (typeof value == "number") {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    var other = typeof value.valueOf == "function" ? value.valueOf() : value;
-    value = isObject(other) ? other + "" : other;
-  }
-  if (typeof value != "string") {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, "");
-  var isBinary = reIsBinary.test(value);
-  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
-}
-var lodash_throttle = throttle;
-const throttle$1 = /* @__PURE__ */ getDefaultExportFromCjs(lodash_throttle);
+var lodash_throttleExports = requireLodash_throttle();
+const throttle = /* @__PURE__ */ getDefaultExportFromCjs(lodash_throttleExports);
 const ExposeMode = {
   // Launch when plugin is registered.
   register() {
     console.log("Expose mode registered.");
     this.view.on(
       "contextmenu",
-      throttle$1((event) => {
+      throttle((event) => {
         if (this.mode !== "expose") {
           if (this.windows.length > 0) {
             this.mode = "expose";
@@ -999,7 +1007,7 @@ const ExposeMode = {
         win.restore(win._exposeRestore);
         win.view.el.style.transform = "scale(1)";
         win.view.el.style.transformOrigin = "50% 50%";
-        const removeTransform = /* @__PURE__ */ function(win2, windowIndex) {
+        const removeTransform = /* @__PURE__ */ (function(win2, windowIndex) {
           return function() {
             if (windowIndex === 0) {
               done();
@@ -1007,7 +1015,7 @@ const ExposeMode = {
             win2.view.el.style.transform = "";
             win2._exposeRestore = null;
           };
-        }(win, i);
+        })(win, i);
         if (win.animations) {
           this.view.onTransitionEnd(removeTransform, this);
         } else {
@@ -1035,11 +1043,11 @@ const ExposeMode = {
 };
 var WindowManager = function(container) {
   var createWindow;
-  var root2 = container ? container : document.body;
+  var root = container ? container : document.body;
   this.view = new View(
     '<div class="wm-space"><div class="wm-overlay" /></div>'
   );
-  root2.insertBefore(this.view.el, root2.firstChild);
+  root.insertBefore(this.view.el, root.firstChild);
   this.$overlay = this.view.find(".wm-overlay");
   this.$overlay.el.style.zIndex = this._baseZ - 1;
   this.actions.forEach(function(value) {
@@ -1182,10 +1190,10 @@ WindowManager.prototype.createWindow.fromElement = function(element, options) {
   options.content = new View(element);
   return this.createWindow(options);
 };
-const version = "0.3.0";
+const version = "0.4.0";
 if (typeof window !== "undefined") {
   window.Ventus = {
-    version: "0.3.0",
+    version: "0.4.0",
     WindowManager,
     Window
   };
